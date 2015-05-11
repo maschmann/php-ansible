@@ -1,0 +1,6 @@
+# dirs
+vendor
+tmp
+
+#files
+composer.lock
