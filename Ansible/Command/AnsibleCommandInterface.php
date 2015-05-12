@@ -8,15 +8,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Asm\Shell;
+namespace Asm\Ansible\Command;
 
 /**
- * Class Shell
+ * Interface AnsibleCommandInterface
  *
- * @package Asm\Shell
+ * @package Asm\Ansible\Command
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class Shell
+interface AnsibleCommandInterface
 {
-
+    /**
+     * Executes a command process
+     *
+     * @return stdout|stderr
+     */
+    public function execute();
 }

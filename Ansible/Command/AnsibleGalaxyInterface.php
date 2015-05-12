@@ -11,12 +11,12 @@
 namespace Asm\Ansible\Command;
 
 /**
- * Class Ansible
+ * Interface AnsibleGalaxyInterface
  *
  * @package Asm\Ansible\Command
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-class Ansible
+interface AnsibleGalaxyInterface extends AnsibleCommandInterface
 {
 
 }

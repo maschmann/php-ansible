@@ -10,22 +10,26 @@
 
 namespace Asm\Ansible\Command;
 
+use Symfony\Component\Process\ProcessBuilder;
+
 /**
- * Class AnsibleGalaxy
+ * Class AbstractAnsibleCommand
  *
  * @package Asm\Ansible\Command
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-final class AnsibleGalaxy implements AnsibleGalaxyInterface
+abstract class AbstractAnsibleCommand
 {
+    /**
+     * @var ProcessBuilder
+     */
+    protected $process;
 
     /**
-     * Executes a command process
-     *
-     * @return stdout|stderr
+     * @param ProcessBuilder $process
      */
-    public function execute()
+    public function __construct(ProcessBuilder $process)
     {
-        // TODO: Implement execute() method.
+        $this->process = $process;
     }
 }
