@@ -22,9 +22,10 @@ final class AnsibleGalaxy implements AnsibleGalaxyInterface
     /**
      * Executes a command process
      *
-     * @return stdout|stderr
+     * @param null $callback
+     * @return stderr|stdout
      */
-    public function execute()
+    public function execute($callback = null)
     {
         // TODO: Implement execute() method.
     }

@@ -13,6 +13,8 @@ namespace Asm\Tests\Ansible\Command;
 
 use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
+use SebastianBergmann\Comparator\DateTimeComparator;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 class AnsibleTest extends \PHPUnit_Framework_TestCase
@@ -23,7 +25,9 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
     public function testCreateInstance()
     {
         $process = new ProcessBuilder();
-        $process->setPrefix('ansible-playbook');
+        $process
+            ->setPrefix('ansible-playbook')
+            ->setWorkingDirectory('/home/wwwdev/htdocs/ansible-deploy');
 
         $ansible = new AnsiblePlaybook($process);
 
@@ -35,9 +39,35 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
     /**
      * @depends testCreateInstance
      * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
+    public function testDefaultDeployment(AnsiblePlaybookInterface $command)
+    {
+        $today = new \DateTime();
+
+        $command
+            ->play('kuechenkunst.yml')
+            ->user('maschmann')
+            ->extraVars(['project_release=' . $today->getTimestamp()])
+            ->limit('test')
+            ->check();
+
+        return $command;
+    }
+
+    /**
+     * @depends testDefaultDeployment
+     * @param AnsiblePlaybookInterface $command
      */
     public function testExecute(AnsiblePlaybookInterface $command)
     {
-        $command->execute();
+        echo $command
+            ->execute(function ($type, $buffer) {
+                if (Process::ERR === $type) {
+                    echo 'ERR > '.$buffer;
+                } else {
+                    echo 'OUT > '.$buffer;
+                }
+            });
     }
 }

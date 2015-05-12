@@ -21,7 +21,8 @@ interface AnsibleCommandInterface
     /**
      * Executes a command process
      *
-     * @return stdout|stderr
+     * @param null $callback optional callback to send to process->run()
+     * @return stderr|stdout
      */
-    public function execute();
+    public function execute($callback = null);
 }

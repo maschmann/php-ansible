@@ -19,6 +19,14 @@ namespace Asm\Ansible\Command;
 interface AnsiblePlaybookInterface extends AnsibleCommandInterface
 {
     /**
+     * The play to be executed.
+     *
+     * @param string $playbook
+     * @return $this
+     */
+    public function play($playbook);
+
+    /**
      * Ask for SSH password.
      *
      * @return $this
@@ -110,10 +118,10 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     /**
      * Further limit selected hosts to an additional pattern.
      *
-     * @param array $subset list of hosts
+     * @param rray|string $subset list of hosts
      * @return $this
      */
-    public function limit($subset = []);
+    public function limit($subset = '');
 
     /**
      * Outputs a list of matching hosts; does not execute anything else.
@@ -155,10 +163,10 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     /**
      * Only run plays and tasks whose tags do not match these values.
      *
-     * @param array $tags list of tags to skip
+     * @param array|string $tags list of tags to skip
      * @return $this
      */
-    public function skipTags($tags = []);
+    public function skipTags($tags = '');
 
     /**
      * Start the playbook at the task matching this name.

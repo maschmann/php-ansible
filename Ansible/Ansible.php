@@ -91,7 +91,9 @@ final class Ansible
     private function createProcess($prefix)
     {
         $process = new ProcessBuilder();
-        $process->setPrefix($prefix);
+        $process
+            ->setPrefix($prefix)
+            ->setWorkingDirectory($this->ansibleBaseDir);
 
         return $process;
     }

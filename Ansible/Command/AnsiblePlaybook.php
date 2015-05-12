@@ -18,16 +18,50 @@ namespace Asm\Ansible\Command;
  */
 final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePlaybookInterface
 {
+    /**
+     * @var string
+     */
+    private $playbook;
 
+    /**
+     * @var boolean
+     */
+    private $hasInventory = false;
 
-   /**
+    /**
      * Executes a command process
      *
-     * @return stdout|stderr
+     * @param null $callback
+     * @return stderr|stdout
      */
-    public function execute()
+    public function execute($callback = null)
     {
-        // TODO: Implement execute() method.
+        $this->checkInventory();
+
+        $arguments = array_merge(
+            [$this->playbook],
+            $this->getOptions(),
+            $this->getParameters()
+        );
+
+        $process = $this->processBuilder
+            ->setArguments($arguments)
+            ->getProcess();
+
+        return $process->run($callback);
+    }
+
+    /**
+     * The play to be executed.
+     *
+     * @param string $playbook
+     * @return $this
+     */
+    public function play($playbook)
+    {
+        $this->playbook = $playbook;
+
+        return $this;
     }
 
     /**
@@ -37,7 +71,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function askPass()
     {
-        // TODO: Implement askPass() method.
+        $this->addParameter('--ask-pass');
+
+        return $this;
     }
 
     /**
@@ -47,7 +83,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function askSuPass()
     {
-        // TODO: Implement askSuPass() method.
+        $this->addParameter('--ask-su-pass');
+
+        return $this;
     }
 
     /**
@@ -57,7 +95,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function askSudoPass()
     {
-        // TODO: Implement askSudoPass() method.
+        $this->addParameter('--ask-sudo-pass');
+
+        return $this;
     }
 
     /**
@@ -67,7 +107,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function askVaultPass()
     {
-        // TODO: Implement askVaultPass() method.
+        $this->addParameter('--ask-vault-pass');
+
+        return $this;
     }
 
     /**
@@ -77,7 +119,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function check()
     {
-        // TODO: Implement check() method.
+        $this->addParameter('--check');
+
+        return $this;
     }
 
     /**
@@ -88,7 +132,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function connection($connection = 'smart')
     {
-        // TODO: Implement connection() method.
+        $this->addOption('--connection', $connection);
+
+        return $this;
     }
 
     /**
@@ -99,7 +145,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function diff()
     {
-        // TODO: Implement diff() method.
+        $this->addParameter('--diff');
+
+        return $this;
     }
 
     /**
@@ -110,7 +158,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function extraVars($extraVars = [])
     {
-        // TODO: Implement extraVars() method.
+        $this->addOption('--extra-vars', implode(',', $extraVars));
+
+        return $this;
     }
 
     /**
@@ -120,7 +170,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function forceHandlers()
     {
-        // TODO: Implement forceHandlers() method.
+        $this->addParameter('--force-handlers');
+
+        return $this;
     }
 
     /**
@@ -131,7 +183,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function forks($forks = 5)
     {
-        // TODO: Implement forks() method.
+        $this->addOption('--forks', $forks);
+
+        return $this;
     }
 
     /**
@@ -141,7 +195,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function help()
     {
-        // TODO: Implement help() method.
+        $this->addParameter('--help');
+
+        return $this;
     }
 
     /**
@@ -152,18 +208,27 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function inventoryFile($inventory = '/etc/ansible/hosts')
     {
-        // TODO: Implement inventoryFile() method.
+        $this->addOption('--inventory-file', $inventory);
+        $this->hasInventory = true;
+
+        return $this;
     }
 
     /**
      * Further limit selected hosts to an additional pattern.
      *
-     * @param array $subset list of hosts
+     * @param array|string $subset list of hosts
      * @return $this
      */
-    public function limit($subset = [])
+    public function limit($subset = '')
     {
-        // TODO: Implement limit() method.
+        if (is_array($subset)) {
+            $subset = implode(',', $subset);
+        }
+
+        $this->addOption('--limit', $subset);
+
+        return $this;
     }
 
     /**
@@ -173,7 +238,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function listHosts()
     {
-        // TODO: Implement listHosts() method.
+        $this->addParameter('--list-hosts');
+
+        return $this;
     }
 
     /**
@@ -183,7 +250,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function listTasks()
     {
-        // TODO: Implement listTasks() method.
+        $this->addParameter('--list-tasks');
+
+        return $this;
     }
 
     /**
@@ -194,7 +263,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function modulePath($path = ['/usr/share/ansible/'])
     {
-        // TODO: Implement modulePath() method.
+        $this->addOption('--module-path', implode(',', $path));
+
+        return $this;
     }
 
     /**
@@ -204,7 +275,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function noCows()
     {
-        // TODO: Implement noCows() method.
+        $this->processBuilder->setEnv('ANSIBLE_NOCOWS', 1);
+
+        return $this;
     }
 
     /**
@@ -215,18 +288,26 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function privateKey($file)
     {
-        // TODO: Implement privateKey() method.
+        $this->addOption('--private-key', $file);
+
+        return $this;
     }
 
     /**
      * Only run plays and tasks whose tags do not match these values.
      *
-     * @param array $tags list of tags to skip
+     * @param array|string $tags list of tags to skip
      * @return $this
      */
-    public function skipTags($tags = [])
+    public function skipTags($tags = '')
     {
-        // TODO: Implement skipTags() method.
+        if (is_array($tags)) {
+            $tags = implode(',', $tags);
+        }
+
+        $this->addOption('--skip-tags', $tags);
+
+        return $this;
     }
 
     /**
@@ -237,7 +318,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function startAtTask($task)
     {
-        // TODO: Implement startAtTask() method.
+        $this->addOption('--start-at-task', $task);
+
+        return $this;
     }
 
     /**
@@ -247,7 +330,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function step()
     {
-        // TODO: Implement step() method.
+        $this->addParameter('--step');
+
+        return $this;
     }
 
     /**
@@ -257,7 +342,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function su()
     {
-        // TODO: Implement su() method.
+        $this->addParameter('--su');
+
+        return $this;
     }
 
     /**
@@ -268,7 +355,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function suUser($user = 'root')
     {
-        // TODO: Implement suUser() method.
+        $this->addOption('--su-user', $user);
+
+        return $this;
     }
 
     /**
@@ -278,7 +367,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function sudo()
     {
-        // TODO: Implement sudo() method.
+        $this->addParameter('--sudo');
+
+        return $this;
     }
 
     /**
@@ -289,7 +380,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function sudoUser($user = 'root')
     {
-        // TODO: Implement sudoUser() method.
+        $this->addOptions('--sudo-user', $user);
+
+        return $this;
     }
 
     /**
@@ -299,7 +392,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function syntaxCheck()
     {
-        // TODO: Implement syntaxCheck() method.
+        $this->addParameter('--syntax-check');
+
+        return $this;
     }
 
     /**
@@ -310,7 +405,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function tags($tags = [])
     {
-        // TODO: Implement tags() method.
+        $this->addOption('--tags', implode(',', $tags));
+
+        return $this;
     }
 
     /**
@@ -321,7 +418,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function timeout($timeout = 10)
     {
-        // TODO: Implement timeout() method.
+        $this->addOption('--timeout', $timeout);
+
+        return $this;
     }
 
     /**
@@ -332,7 +431,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function user($user)
     {
-        // TODO: Implement user() method.
+        $this->addOption('--user', $user);
+
+        return $this;
     }
 
     /**
@@ -343,7 +444,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function vaultPasswordFile($file)
     {
-        // TODO: Implement vaultPasswordFile() method.
+        $this->addoption('--vault-password-file', $file);
+
+        return $this;
     }
 
     /**
@@ -354,7 +457,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function verbose($verbose = 'v')
     {
-        // TODO: Implement verbose() method.
+        $this->addParameter('-' . $verbose);
+
+        return $this;
     }
 
     /**
@@ -364,6 +469,19 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function version()
     {
-        // TODO: Implement version() method.
+        $this->addParameter('--version');
+
+        return $this;
+    }
+
+    /**
+     * If no inventory file is given, assume
+     */
+    private function checkInventory()
+    {
+        if (!$this->hasInventory) {
+            $inventory = str_replace('.yml', '', $this->playbook);
+            $this->inventoryFile($inventory);
+        }
     }
 }
