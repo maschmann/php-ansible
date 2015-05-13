@@ -13,11 +13,12 @@ namespace Asm\Tests\Ansible\Command;
 
 use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
+use Asm\Test\AnsibleTestCase;
 use SebastianBergmann\Comparator\DateTimeComparator;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
-class AnsibleTest extends \PHPUnit_Framework_TestCase
+class AnsibleTest extends AnsibleTestCase
 {
     /**
      * @return AnsiblePlaybookInterface
@@ -26,8 +27,8 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
     {
         $process = new ProcessBuilder();
         $process
-            ->setPrefix('ansible-playbook')
-            ->setWorkingDirectory('/home/wwwdev/htdocs/ansible-deploy');
+            ->setPrefix($this->getPlaybookUri())
+            ->setWorkingDirectory($this->getProjectUri());
 
         $ansible = new AnsiblePlaybook($process);
 
@@ -46,7 +47,7 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
         $today = new \DateTime();
 
         $command
-            ->play('kuechenkunst.yml')
+            ->play($this->getPlayUri())
             ->user('maschmann')
             ->extraVars(['project_release=' . $today->getTimestamp()])
             ->limit('test')

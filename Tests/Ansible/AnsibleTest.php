@@ -13,9 +13,10 @@ namespace Asm\Tests\Ansible;
 use Asm\Ansible\Ansible;
 use Asm\Ansible\Command\AnsibleGalaxy;
 use Asm\Ansible\Command\AnsiblePlaybook;
+use Asm\Test\AnsibleTestCase;
 use org\bovigo\vfs\vfsStream;
 
-class AnsibleTest extends \PHPUnit_Framework_TestCase
+class AnsibleTest extends AnsibleTestCase
 {
     /**
      * @covers \Asm\Ansible\Ansible::checkCommand
@@ -24,19 +25,13 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testInstance()
     {
-        $project = vfsStream::setup('/tmp/ansible-project');
-
-        $ansible = new Ansible($project->url());
+        $ansible = new Ansible($this->getProjectUri());
         $this->assertInstanceOf('\Asm\Ansible\Ansible', $ansible, 'Instantiation with ansible PATH check');
 
-        $vfs = vfsStream::setup('/tmp');
-        $ansiblePlaybook = vfsStream::newFile('ansible-playbook', 755)->at($vfs);
-        $ansibleGalaxy = vfsStream::newFile('ansible-galaxy', 755)->at($vfs);
-
         $ansible = new Ansible(
-            $project->url(),
-            $ansiblePlaybook->url(),
-            $ansibleGalaxy->url()
+            $this->getProjectUri(),
+            $this->getPlaybookUri(),
+            $this->getGalaxyUri()
         );
         $this->assertInstanceOf('\Asm\Ansible\Ansible', $ansible, 'Instantiation with given paths');
     }
@@ -46,14 +41,10 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnsibleProjectPathNotFoundException()
     {
-        $vfs = vfsStream::setup('/tmp');
-        $ansiblePlaybook = vfsStream::newFile('ansible-playbook')->at($vfs);
-        $ansibleGalaxy = vfsStream::newFile('ansible-galaxy')->at($vfs);
-
         $ansible = new Ansible(
             'xxxxxxxx',
-            $ansiblePlaybook->url(),
-            $ansibleGalaxy->url()
+            $this->getPlaybookUri(),
+            $this->getGalaxyUri()
         );
     }
 
@@ -62,10 +53,8 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnsibleCommandNotFoundException()
     {
-        $project = vfsStream::setup('/tmp/ansible-project');
-
         $ansible = new Ansible(
-            $project->url(),
+            $this->getProjectUri(),
             '/tmp/ansible-playbook',
             '/tmp/ansible-galaxy'
         );
@@ -76,13 +65,12 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnsibleCommandNotExecutableException()
     {
-        $project = vfsStream::setup('/tmp/ansible-project');
         $vfs = vfsStream::setup('/tmp');
         $ansiblePlaybook = vfsStream::newFile('ansible-playbook')->at($vfs);
         $ansibleGalaxy = vfsStream::newFile('ansible-galaxy')->at($vfs);
 
         $ansible = new Ansible(
-            $project->url(),
+            $this->getProjectUri(),
             $ansiblePlaybook->url(),
             $ansibleGalaxy->url()
         );
@@ -94,8 +82,7 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testPlaybookCommandInstance()
     {
-        $project = vfsStream::setup('/tmp/ansible-project');
-        $ansible = new Ansible($project->url());
+        $ansible = new Ansible($this->getProjectUri());
         $playbook = $ansible->playbook();
 
         $this->assertInstanceOf('\Asm\Ansible\Command\AnsiblePlaybook', $playbook);
@@ -107,8 +94,7 @@ class AnsibleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGalaxyCommandInstance()
     {
-        $project = vfsStream::setup('/tmp/ansible-project');
-        $ansible = new Ansible($project->url());
+        $ansible = new Ansible($this->getProjectUri());
         $galaxy = $ansible->galaxy();
 
         $this->assertInstanceOf('\Asm\Ansible\Command\AnsibleGalaxy', $galaxy);
