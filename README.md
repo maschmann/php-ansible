@@ -18,7 +18,7 @@ The library try to find ansible-playbook and ansible-galaxy by itself or use a p
 First instantiate the base object which works as a factory for your commands.
 Only the first parameter with the path to your ansible deployment. The other two params are optional paths to your local ansible installation's binaries, in case they are not on PATH.
 
-```
+```php
     $ansible = new Ansible(
         '/path/to/ansible/deployment',
         '/optional/path/to/ansible-playbook',
@@ -29,7 +29,7 @@ Only the first parameter with the path to your ansible deployment. The other two
 Then you can use the object just like in your previous ansible deployment.
 If you don't specify an inventory file with ```->inventoryFile('filename')```, the wrapper tries to determine one, base on your playbook: 
 
-```
+```php
     $ansible
         ->playbook()
         ->play('mydeployment.yml') // based on deployment root 
@@ -41,7 +41,7 @@ If you don't specify an inventory file with ```->inventoryFile('filename')```, t
 
 For the execute command you can use a callback to get real-time output of the command:
 
-```
+```php
     $ansible
         ->playbook()
         ->play('mydeployment.yml') // based on deployment root 
@@ -56,3 +56,8 @@ For the execute command you can use a callback to get real-time output of the co
             }
         });
 ```
+
+License
+----
+
+php-ansible is licensed under the MIT license. See the [LICENSE](LICENSE) for the full license text.
