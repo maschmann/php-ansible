@@ -1,4 +1,8 @@
 # php-ansible library
+[![Build Status](https://travis-ci.org/maschmann/php-ansible.png?branch=master)](https://travis-ci.org/maschmann/php-ansible)
+[![phpci build status](http://phpci.br0ken.de/build-status/image/11)](http://phpci.br0ken.de)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/maschmann/php-ansible/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/maschmann/php-ansible/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/maschmann/php-ansible/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/maschmann/php-ansible/?branch=master)
 
 This library is a oop-wrapper for the ansible provisioning tool.
 I intend to use this library for a symfony2 bundle and also a deployment GUI, based on php.
