@@ -63,10 +63,8 @@ final class Ansible
      */
     public function playbook()
     {
-        $process = $this->createProcess($this->playbookCommand);
-
         return new AnsiblePlaybook(
-            $process
+            $this->createProcess($this->playbookCommand)
         );
     }
 
@@ -77,10 +75,8 @@ final class Ansible
      */
     public function galaxy()
     {
-        $process = $this->createProcess($this->galaxyCommand);
-
         return new AnsibleGalaxy(
-            $process
+            $this->createProcess($this->galaxyCommand)
         );
     }
 
@@ -91,11 +87,10 @@ final class Ansible
     private function createProcess($prefix)
     {
         $process = new ProcessBuilder();
-        $process
+
+        return $process
             ->setPrefix($prefix)
             ->setWorkingDirectory($this->ansibleBaseDir);
-
-        return $process;
     }
 
     /**
@@ -107,8 +102,8 @@ final class Ansible
     private function checkCommand($command, $default)
     {
         // normally ansible is in /usr/local/bin/*
-        if ('' == $command) {
-            if (true == shell_exec('which ' . $default)) {
+        if ('' === $command) {
+            if (true === shell_exec('which ' . $default)) {
                 $command = $default;
             // @codeCoverageIgnoreStart
             } else { // not testable without ansible installation

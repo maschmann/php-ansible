@@ -13,9 +13,10 @@ namespace Asm\Tests\Ansible\Command;
 
 use Asm\Ansible\Command\AnsibleGalaxy;
 use Asm\Ansible\Command\AnsibleGalaxyInterface;
+use Asm\Test\AnsibleTestCase;
 use Symfony\Component\Process\ProcessBuilder;
 
-class AnsibleGalaxyTest extends \PHPUnit_Framework_TestCase
+class AnsibleGalaxyTest extends AnsibleTestCase
 {
     /**
      * @return AnsibleGalaxyInterface
@@ -23,7 +24,9 @@ class AnsibleGalaxyTest extends \PHPUnit_Framework_TestCase
     public function testCreateInstance()
     {
         $process = new ProcessBuilder();
-        $process->setPrefix('ansible-galaxy');
+        $process
+            ->setPrefix($this->getGalaxyUri())
+            ->setWorkingDirectory($this->getProjectUri());
 
         $ansibleGalaxy = new AnsibleGalaxy($process);
 

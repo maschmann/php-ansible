@@ -59,14 +59,6 @@ abstract class AnsibleTestCase extends \PHPUnit_Framework_TestCase
 
         $this->project = vfsStream::setup('root', null, $projectStructure);
 
-        /*$this->ansiblePlaybook = vfsStream::newFile('ansible-playbook', 755)
-            ->at($this->project)
-            ->setContent($this->getPlaybookContent());
-        $this->ansibleGalaxy = vfsStream::newFile('ansible-galaxy', 755)
-            ->at($this->project)
-            ->setContent($this->getGalaxyContent());
-        */
-
         return $this->project;
     }
 
@@ -99,7 +91,6 @@ abstract class AnsibleTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getPlaybookUri()
     {
-        //return $this->ansiblePlaybook->url();
         return './Test/ansible-playbook';
     }
 
@@ -108,7 +99,6 @@ abstract class AnsibleTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getGalaxyUri()
     {
-        //return $this->ansibleGalaxy->url();
         return './Test/ansible-galaxy';
     }
 

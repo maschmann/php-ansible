@@ -483,7 +483,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             $this->getParameters()
         );
 
-        if (false == $asArray) {
+        if (false === $asArray) {
             $arguments = implode(' ', $arguments);
         }
 

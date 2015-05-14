@@ -25,9 +25,6 @@ class AnsibleTest extends AnsibleTestCase
      */
     public function testInstance()
     {
-        $ansible = new Ansible($this->getProjectUri());
-        $this->assertInstanceOf('\Asm\Ansible\Ansible', $ansible, 'Instantiation with ansible PATH check');
-
         $ansible = new Ansible(
             $this->getProjectUri(),
             $this->getPlaybookUri(),
@@ -85,7 +82,12 @@ class AnsibleTest extends AnsibleTestCase
      */
     public function testPlaybookCommandInstance()
     {
-        $ansible = new Ansible($this->getProjectUri());
+        $ansible = new Ansible(
+            $this->getProjectUri(),
+            $this->getPlaybookUri(),
+            $this->getGalaxyUri()
+        );
+
         $playbook = $ansible->playbook();
 
         $this->assertInstanceOf('\Asm\Ansible\Command\AnsiblePlaybook', $playbook);
@@ -97,7 +99,12 @@ class AnsibleTest extends AnsibleTestCase
      */
     public function testGalaxyCommandInstance()
     {
-        $ansible = new Ansible($this->getProjectUri());
+        $ansible = new Ansible(
+            $this->getProjectUri(),
+            $this->getPlaybookUri(),
+            $this->getGalaxyUri()
+        );
+
         $galaxy = $ansible->galaxy();
 
         $this->assertInstanceOf('\Asm\Ansible\Command\AnsibleGalaxy', $galaxy);
