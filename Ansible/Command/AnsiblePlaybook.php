@@ -271,6 +271,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Disable cowsay
      *
+     * @codeCoverageIgnore
      * @return $this
      */
     public function noCows()
@@ -380,7 +381,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function sudoUser($user = 'root')
     {
-        $this->addOptions('--sudo-user', $user);
+        $this->addOption('--sudo-user', $user);
 
         return $this;
     }
@@ -400,12 +401,16 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Only run plays and tasks tagged with these values.
      *
-     * @param array $tags list of tags
+     * @param string|array $tags list of tags
      * @return $this
      */
-    public function tags($tags = [])
+    public function tags($tags)
     {
-        $this->addOption('--tags', implode(',', $tags));
+        if (is_array($tags)) {
+            $tags = implode(',', $tags);
+        }
+
+        $this->addOption('--tags', $tags);
 
         return $this;
     }
@@ -460,6 +465,29 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         $this->addParameter('-' . $verbose);
 
         return $this;
+    }
+
+    /**
+     * Get parameter string which will be used to call ansible.
+     *
+     * @param bool $asArray
+     * @return string|array
+     */
+    public function getCommandlineArguments($asArray = true)
+    {
+        $this->checkInventory();
+
+        $arguments = array_merge(
+            [$this->playbook],
+            $this->getOptions(),
+            $this->getParameters()
+        );
+
+        if (false == $asArray) {
+            $arguments = implode(' ', $arguments);
+        }
+
+        return $arguments;
     }
 
     /**

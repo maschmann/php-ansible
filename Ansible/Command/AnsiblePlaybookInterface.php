@@ -223,10 +223,10 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     /**
      * Only run plays and tasks tagged with these values.
      *
-     * @param array $tags list of tags
+     * @param string|array $tags list of tags
      * @return $this
      */
-    public function tags($tags = []);
+    public function tags($tags);
 
     /**
      * Override the SSH timeout in seconds (default=10).
@@ -266,4 +266,12 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return $this
      */
     public function version();
+
+    /**
+     * Get parameter string which will be used to call ansible.
+     *
+     * @param bool $asArray
+     * @return string|array
+     */
+    public function getCommandlineArguments($asArray = true);
 }

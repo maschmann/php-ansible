@@ -38,6 +38,7 @@ class AnsibleTest extends AnsibleTestCase
 
     /**
      * @expectedException \ErrorException
+     * @covers \Asm\Ansible\Ansible::checkCommand
      */
     public function testAnsibleProjectPathNotFoundException()
     {
@@ -50,6 +51,7 @@ class AnsibleTest extends AnsibleTestCase
 
     /**
      * @expectedException \ErrorException
+     * @covers \Asm\Ansible\Ansible::checkCommand
      */
     public function testAnsibleCommandNotFoundException()
     {
@@ -62,12 +64,13 @@ class AnsibleTest extends AnsibleTestCase
 
     /**
      * @expectedException \ErrorException
+     * @covers \Asm\Ansible\Ansible::checkCommand
      */
     public function testAnsibleCommandNotExecutableException()
     {
         $vfs = vfsStream::setup('/tmp');
-        $ansiblePlaybook = vfsStream::newFile('ansible-playbook')->at($vfs);
-        $ansibleGalaxy = vfsStream::newFile('ansible-galaxy')->at($vfs);
+        $ansiblePlaybook = vfsStream::newFile('ansible-playbook', 600)->at($vfs);
+        $ansibleGalaxy = vfsStream::newFile('ansible-galaxy', 600)->at($vfs);
 
         $ansible = new Ansible(
             $this->getProjectUri(),
