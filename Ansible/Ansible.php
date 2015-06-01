@@ -25,6 +25,8 @@ use Symfony\Component\Process\ProcessBuilder;
 final class Ansible
 {
 
+    const DEFAULT_TIMEOUT = 300;
+
     /**
      * @var string
      */
@@ -90,7 +92,8 @@ final class Ansible
 
         return $process
             ->setPrefix($prefix)
-            ->setWorkingDirectory($this->ansibleBaseDir);
+            ->setWorkingDirectory($this->ansibleBaseDir)
+            ->setTimeout(Ansible::DEFAULT_TIMEOUT);
     }
 
     /**
