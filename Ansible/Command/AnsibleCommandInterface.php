@@ -19,10 +19,11 @@ namespace Asm\Ansible\Command;
 interface AnsibleCommandInterface
 {
     /**
-     * Executes a command process
+     * Executes a command process.
+     * Returns either exitcode or string output if no callback is given.
      *
-     * @param null $callback optional callback to send to process->run()
-     * @return stderr|stdout
+     * @param null $callback
+     * @return integer|string
      */
     public function execute($callback = null);
 }

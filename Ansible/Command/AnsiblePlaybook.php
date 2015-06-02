@@ -29,10 +29,11 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     private $hasInventory = false;
 
     /**
-     * Executes a command process
+     * Executes a command process.
+     * Returns either exitcode or string output if no callback is given.
      *
      * @param null $callback
-     * @return stderr|stdout
+     * @return integer|string
      */
     public function execute($callback = null)
     {
@@ -48,7 +49,20 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             ->setArguments($arguments)
             ->getProcess();
 
-        return $process->run($callback);
+        // exitcode
+        $result = $process->run($callback);
+
+        // text-mode
+        if (null === $callback) {
+            $process->run();
+            $result = $process->getOutput();
+
+            if (false === $process->isSuccessful()) {
+                $process->getErrorOutput();
+            }
+        }
+
+        return $result;
     }
 
     /**
