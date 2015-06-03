@@ -54,12 +54,13 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
 
         // text-mode
         if (null === $callback) {
-            $process->run();
+            // @codeCoverageIgnoreStart
             $result = $process->getOutput();
 
             if (false === $process->isSuccessful()) {
                 $process->getErrorOutput();
             }
+            // @codeCoverageIgnoreEnd
         }
 
         return $result;

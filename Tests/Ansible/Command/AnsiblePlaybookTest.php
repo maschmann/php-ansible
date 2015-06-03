@@ -634,9 +634,9 @@ class AnsibleTest extends AnsibleTestCase
      * @depends testDefaultDeployment
      * @param AnsiblePlaybookInterface $command
      */
-    public function testExecute(AnsiblePlaybookInterface $command)
+    public function testExecuteWithCallback(AnsiblePlaybookInterface $command)
     {
-        $output = $command
+        $exitcode = $command
             ->execute(function ($type, $buffer) {
                 if (Process::ERR === $type) {
                     echo 'ERR > '.$buffer;
@@ -644,5 +644,19 @@ class AnsibleTest extends AnsibleTestCase
                     echo 'OUT > '.$buffer;
                 }
             });
+
+        $this->assertTrue(is_integer($exitcode));
+    }
+
+    /**
+     * @depends testDefaultDeployment
+     * @param AnsiblePlaybookInterface $command
+     */
+    public function textExecuteWithTextOutput(AnsiblePlaybookInterface $command)
+    {
+        $result = $command
+            ->execute(null);
+
+        $this->assertTrue(is_string($result));
     }
 }
