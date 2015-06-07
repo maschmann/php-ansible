@@ -29,41 +29,43 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
     /**
      * @param string $role
      * @param string $version
-     * @return string
+     * @return $this
      */
     public function info($role, $version = '');
 
     /**
      * Install packages.
      *
-     * @param string|array $packages
-     * @param boolean $upgrade upgrade package if already installed
+     * If you are unsure whether the role(s) is already installed,
+     * either check first or use the "force" option.
+     *
+     * @param string|array $roles role_name(s)[,version] | scm+role_repo_url[,version]
      * @return $this
      */
-    public function install($packages = '', $upgrade = true);
+    public function install($roles = '');
 
     /**
      * Get a list of installed modules.
      *
+     * @param string $roleName
      * @return string list of installed modules
      */
-    public function modulelist();
+    public function modulelist($roleName = '');
 
     /**
      * Add package(s)
      *
-     * @param string|array $packages
+     * @param string|array $roles
      * @return $this
      */
-    public function remove($packages = '');
+    public function remove($roles = '');
 
     /**
      * Show general or specific help.
      *
-     * @param string $command command to show help for
      * @return string
      */
-    public function help($command = '');
+    public function help();
 
     /**
      * The path in which the skeleton role will be created.
@@ -75,6 +77,8 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
     public function initPath($path = '');
 
     /**
+     * Don't query the galaxy API when creating roles.
+     *
      * @return $this
      */
     public function offline();
@@ -88,6 +92,8 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
     public function server($apiServer);
 
     /**
+     * Force overwriting an existing role.
+     *
      * @return $this
      */
     public function force();
@@ -95,7 +101,7 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
     /**
      * A file containing a list of roles to be imported.
      *
-     * @param string $roleFile
+     * @param string|array $roleFile FILE | tar_file(s)]
      * @return $this
      */
     public function roleFile($roleFile);

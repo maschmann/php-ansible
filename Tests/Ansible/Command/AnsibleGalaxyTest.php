@@ -7,9 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Asm\Tests\Ansible\Command;
-
 
 use Asm\Ansible\Command\AnsibleGalaxy;
 use Asm\Ansible\Command\AnsibleGalaxyInterface;

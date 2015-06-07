@@ -16,8 +16,12 @@ namespace Asm\Ansible\Command;
  * @package Asm\Ansible\Command
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-final class AnsibleGalaxy implements AnsibleGalaxyInterface
+final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalaxyInterface
 {
+    /**
+     * @var array
+     */
+    private $baseOptions;
 
     /**
      * Executes a command process
@@ -27,7 +31,31 @@ final class AnsibleGalaxy implements AnsibleGalaxyInterface
      */
     public function execute($callback = null)
     {
-        // TODO: Implement execute() method.
+        $arguments = array_merge(
+            [$this->getBaseOptions()],
+            $this->getOptions(),
+            $this->getParameters()
+        );
+
+        $process = $this->processBuilder
+            ->setArguments($arguments)
+            ->getProcess();
+
+        // exitcode
+        $result = $process->run($callback);
+
+        // text-mode
+        if (null === $callback) {
+            // @codeCoverageIgnoreStart
+            $result = $process->getOutput();
+
+            if (false === $process->isSuccessful()) {
+                $process->getErrorOutput();
+            }
+            // @codeCoverageIgnoreEnd
+        }
+
+        return $result;
     }
 
     /**
@@ -38,61 +66,99 @@ final class AnsibleGalaxy implements AnsibleGalaxyInterface
      */
     public function init($roleName)
     {
-        // TODO: Implement init() method.
+        $this
+            ->addBaseoption('init')
+            ->addBaseoption($roleName);
+
+        return $this;
     }
 
     /**
      * @param string $role
      * @param string $version
-     * @return string
+     * @return $this
      */
     public function info($role, $version = '')
     {
-        // TODO: Implement info() method.
+        if ('' !== $version) {
+            $role = $role . ',' . $version;
+        }
+
+        $this
+            ->addBaseoption('info')
+            ->addBaseoption($role);
+
+        return $this;
     }
 
     /**
      * Install packages.
      *
-     * @param string|array $packages
-     * @param boolean $upgrade upgrade package if already installed
+     * If you are unsure whether the role(s) is already installed,
+     * either check first or use the "force" option.
+     *
+     * @param string|array $roles role_name(s)[,version] | scm+role_repo_url[,version]
      * @return $this
      */
-    public function install($packages = '', $upgrade = true)
+    public function install($roles = '')
     {
-        // TODO: Implement install() method.
+        if (true === is_array($roles)) {
+            $roles = implode(' ', $roles);
+        }
+
+        $this
+            ->addBaseoption('install')
+            ->addBaseoption($roles);
+
+        return $this;
     }
 
     /**
      * Get a list of installed modules.
      *
+     * @param string $roleName
      * @return string list of installed modules
      */
-    public function modulelist()
+    public function modulelist($roleName = '')
     {
-        // TODO: Implement modulelist() method.
+        $this->addBaseoption('list');
+
+        if ('' !== $roleName) {
+            $this->addBaseoption($roleName);
+        }
+
+        return $this;
     }
 
     /**
      * Add package(s)
      *
-     * @param string|array $packages
+     * @param string|array $roles
      * @return $this
      */
-    public function remove($packages = '')
+    public function remove($roles = '')
     {
-        // TODO: Implement remove() method.
+        if (true === is_array($roles)) {
+            $roles = implode(' ', $roles);
+        }
+
+        $this
+            ->addBaseoption('remove')
+            ->addBaseoption($roles);
+
+        return $this;
     }
 
     /**
      * Show general or specific help.
      *
-     * @param string $command command to show help for
-     * @return string
+     * @return $this
      */
-    public function help($command = '')
+    public function help()
     {
-        // TODO: Implement help() method.
+        $this->addParameter('--help');
+
+        return $this;
     }
 
     /**
@@ -104,15 +170,21 @@ final class AnsibleGalaxy implements AnsibleGalaxyInterface
      */
     public function initPath($path = '')
     {
-        // TODO: Implement initPath() method.
+        $this->addOption('--init-path', $path);
+
+        return $this;
     }
 
     /**
+     * Don't query the galaxy API when creating roles.
+     *
      * @return $this
      */
     public function offline()
     {
-        // TODO: Implement offline() method.
+        $this->addParameter('--offline');
+
+        return $this;
     }
 
     /**
@@ -123,26 +195,38 @@ final class AnsibleGalaxy implements AnsibleGalaxyInterface
      */
     public function server($apiServer)
     {
-        // TODO: Implement server() method.
+        $this->addOption('--server', $apiServer);
+
+        return $this;
     }
 
     /**
+     * Force overwriting an existing role.
+     *
      * @return $this
      */
     public function force()
     {
-        // TODO: Implement force() method.
+        $this->addParameter('--force');
+
+        return $this;
     }
 
     /**
      * A file containing a list of roles to be imported.
      *
-     * @param string $roleFile
+     * @param string $roleFile FILE | tar_file(s)]
      * @return $this
      */
     public function roleFile($roleFile)
     {
-        // TODO: Implement roleFile() method.
+        if (true === is_array($roleFile)) {
+            $roleFile = implode(' ', $roleFile);
+        }
+
+        $this->addOption('--role-file', $roleFile);
+
+        return $this;
     }
 
     /**
@@ -156,7 +240,9 @@ final class AnsibleGalaxy implements AnsibleGalaxyInterface
      */
     public function rolesPath($rolesPath)
     {
-        // TODO: Implement rolesPath() method.
+        $this->addOption('--roles-path', $rolesPath);
+
+        return $this;
     }
 
     /**
@@ -166,7 +252,9 @@ final class AnsibleGalaxy implements AnsibleGalaxyInterface
      */
     public function ignoreErrors()
     {
-        // TODO: Implement ignoreErrors() method.
+        $this->addParameter('--ignore-errors');
+
+        return $this;
     }
 
     /**
@@ -176,6 +264,31 @@ final class AnsibleGalaxy implements AnsibleGalaxyInterface
      */
     public function noDeps()
     {
-        // TODO: Implement noDeps() method.
+        $this->addParameter('--no-deps');
+
+        return $this;
+    }
+
+    /**
+     * Add base options to internal storage.
+     *
+     * @param string $baseOption
+     * @return $this
+     */
+    private function addBaseoption($baseOption)
+    {
+        $this->baseOptions[] = $baseOption;
+
+        return $this;
+    }
+
+    /**
+     * Generate base options string.
+     *
+     * @return string
+     */
+    private function getBaseOptions()
+    {
+        return implode(' ', $this->baseOptions);
     }
 }
