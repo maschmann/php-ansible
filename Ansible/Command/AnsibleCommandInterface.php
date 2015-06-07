@@ -26,4 +26,12 @@ interface AnsibleCommandInterface
      * @return integer|string
      */
     public function execute($callback = null);
+
+    /**
+     * Get parameter string which will be used to call ansible.
+     *
+     * @param bool $asArray
+     * @return string|array
+     */
+    public function getCommandlineArguments($asArray = true);
 }

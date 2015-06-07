@@ -19,11 +19,6 @@ namespace Asm\Ansible\Command;
 final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePlaybookInterface
 {
     /**
-     * @var string
-     */
-    private $playbook;
-
-    /**
      * @var boolean
      */
     private $hasInventory = false;
@@ -39,14 +34,10 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     {
         $this->checkInventory();
 
-        $arguments = array_merge(
-            [$this->playbook],
-            $this->getOptions(),
-            $this->getParameters()
-        );
-
         $process = $this->processBuilder
-            ->setArguments($arguments)
+            ->setArguments(
+                $this->prepareArguments()
+            )
             ->getProcess();
 
         // exitcode
@@ -74,7 +65,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function play($playbook)
     {
-        $this->playbook = $playbook;
+        $this->addBaseoption($playbook);
 
         return $this;
     }
@@ -237,9 +228,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function limit($subset = '')
     {
-        if (is_array($subset)) {
-            $subset = implode(',', $subset);
-        }
+        $subset = $this->checkParam($subset, ',');
 
         $this->addOption('--limit', $subset);
 
@@ -317,9 +306,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function skipTags($tags = '')
     {
-        if (is_array($tags)) {
-            $tags = implode(',', $tags);
-        }
+        $tags = $this->checkParam($tags, ',');
 
         $this->addOption('--skip-tags', $tags);
 
@@ -421,9 +408,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function tags($tags)
     {
-        if (is_array($tags)) {
-            $tags = implode(',', $tags);
-        }
+        $tags = $this->checkParam($tags, ',');
 
         $this->addOption('--tags', $tags);
 
@@ -492,17 +477,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     {
         $this->checkInventory();
 
-        $arguments = array_merge(
-            [$this->playbook],
-            $this->getOptions(),
-            $this->getParameters()
-        );
-
-        if (false === $asArray) {
-            $arguments = implode(' ', $arguments);
-        }
-
-        return $arguments;
+        return $this->prepareArguments($asArray);
     }
 
     /**
@@ -523,7 +498,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     private function checkInventory()
     {
         if (!$this->hasInventory) {
-            $inventory = str_replace('.yml', '', $this->playbook);
+            $inventory = str_replace('.yml', '', $this->getBaseOptions());
             $this->inventoryFile($inventory);
         }
     }

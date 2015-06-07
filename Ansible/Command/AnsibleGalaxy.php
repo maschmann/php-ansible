@@ -27,14 +27,10 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      */
     public function execute($callback = null)
     {
-        $arguments = array_merge(
-            [$this->getBaseOptions()],
-            $this->getOptions(),
-            $this->getParameters()
-        );
-
         $process = $this->processBuilder
-            ->setArguments($arguments)
+            ->setArguments(
+                $this->prepareArguments()
+            )
             ->getProcess();
 
         // exitcode
@@ -98,9 +94,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      */
     public function install($roles = '')
     {
-        if (true === is_array($roles)) {
-            $roles = implode(' ', $roles);
-        }
+        $roles = $this->checkParam($roles, ' ');
 
         $this->addBaseoption('install');
 
@@ -136,9 +130,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      */
     public function remove($roles = '')
     {
-        if (true === is_array($roles)) {
-            $roles = implode(' ', $roles);
-        }
+        $roles = $this->checkParam($roles, ' ');
 
         $this
             ->addBaseoption('remove')
@@ -271,16 +263,6 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      */
     public function getCommandlineArguments($asArray = true)
     {
-        $arguments = array_merge(
-            [$this->getBaseOptions()],
-            $this->getOptions(),
-            $this->getParameters()
-        );
-
-        if (false === $asArray) {
-            $arguments = implode(' ', $arguments);
-        }
-
-        return $arguments;
+        return $this->prepareArguments($asArray);
     }
 }

@@ -52,6 +52,27 @@ abstract class AbstractAnsibleCommand
     }
 
     /**
+     * Get parameter string which will be used to call ansible.
+     *
+     * @param bool $asArray
+     * @return string|array
+     */
+    protected function prepareArguments($asArray = true)
+    {
+        $arguments = array_merge(
+            [$this->getBaseOptions()],
+            $this->getOptions(),
+            $this->getParameters()
+        );
+
+        if (false === $asArray) {
+            $arguments = implode(' ', $arguments);
+        }
+
+        return $arguments;
+    }
+
+    /**
      * Add an Option.
      *
      * @param string $name
@@ -120,5 +141,21 @@ abstract class AbstractAnsibleCommand
     protected function getBaseOptions()
     {
         return implode(' ', $this->baseOptions);
+    }
+
+    /**
+     * Check if param is array or string and implode with glue if necessary.
+     *
+     * @param string|array $param
+     * @param string $glue
+     * @return string
+     */
+    protected function checkParam($param, $glue = ',')
+    {
+        if (true == is_array($param)) {
+            $param = implode($glue, $param);
+        }
+
+        return $param;
     }
 }
