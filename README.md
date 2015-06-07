@@ -26,6 +26,8 @@ Only the first parameter with the path to your ansible deployment. The other two
     );
 ```
 
+### playbooks
+
 Then you can use the object just like in your previous ansible deployment.
 If you don't specify an inventory file with ```->inventoryFile('filename')```, the wrapper tries to determine one, base on your playbook: 
 
@@ -56,6 +58,47 @@ For the execute command you can use a callback to get real-time output of the co
             }
         });
 ```
+
+### galaxy
+
+The galaxy command is, as with the playbook, feature-complete.
+The syntax follows ansible's syntax with one deviation: list is a reserved keyword in php (array context) and
+therefore I had to rename it to "modulelist()".
+
+```php
+    $ansible
+        ->galaxy()
+        ->init('my_role')
+        ->initPath('/tmp/my_path') // or default ansible roles path
+        ->execute();
+```
+would generate:
+
+```
+$ ansible-galaxy init my_role --init-path=/tmp/my_path
+```
+
+You can access all galaxy commands:
+
+ * init()
+ * info()
+ * install()
+ * help()
+ * modulelist() //list
+ * remove()
+
+You can combine the calls with their possible arguments, though I don't have any logic preventing e.g. ```--force``` from being applied to e.g. info().
+
+Possible arguments/options:
+
+ * initPath()
+ * offline()
+ * server()
+ * force()
+ * roleFile()
+ * rolesPath()
+ * ignoreErrors()
+ * noDeps()
 
 License
 ----
