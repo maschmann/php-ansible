@@ -18,10 +18,6 @@ namespace Asm\Ansible\Command;
  */
 final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalaxyInterface
 {
-    /**
-     * @var array
-     */
-    private $baseOptions;
 
     /**
      * Executes a command process
@@ -106,9 +102,11 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
             $roles = implode(' ', $roles);
         }
 
-        $this
-            ->addBaseoption('install')
-            ->addBaseoption($roles);
+        $this->addBaseoption('install');
+
+        if ('' !== $roles) {
+            $this->addBaseoption($roles);
+        }
 
         return $this;
     }
@@ -215,15 +213,11 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
     /**
      * A file containing a list of roles to be imported.
      *
-     * @param string $roleFile FILE | tar_file(s)]
+     * @param string $roleFile FILE
      * @return $this
      */
     public function roleFile($roleFile)
     {
-        if (true === is_array($roleFile)) {
-            $roleFile = implode(' ', $roleFile);
-        }
-
         $this->addOption('--role-file', $roleFile);
 
         return $this;
@@ -270,25 +264,23 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
     }
 
     /**
-     * Add base options to internal storage.
+     * Get parameter string which will be used to call ansible.
      *
-     * @param string $baseOption
-     * @return $this
+     * @param bool $asArray
+     * @return string|array
      */
-    private function addBaseoption($baseOption)
+    public function getCommandlineArguments($asArray = true)
     {
-        $this->baseOptions[] = $baseOption;
+        $arguments = array_merge(
+            [$this->getBaseOptions()],
+            $this->getOptions(),
+            $this->getParameters()
+        );
 
-        return $this;
-    }
+        if (false === $asArray) {
+            $arguments = implode(' ', $arguments);
+        }
 
-    /**
-     * Generate base options string.
-     *
-     * @return string
-     */
-    private function getBaseOptions()
-    {
-        return implode(' ', $this->baseOptions);
+        return $arguments;
     }
 }

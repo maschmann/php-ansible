@@ -36,6 +36,11 @@ abstract class AbstractAnsibleCommand
     private $parameters;
 
     /**
+     * @var array
+     */
+    private $baseOptions;
+
+    /**
      * @param ProcessBuilder $processBuilder
      */
     public function __construct(ProcessBuilder $processBuilder)
@@ -43,6 +48,7 @@ abstract class AbstractAnsibleCommand
         $this->processBuilder = $processBuilder;
         $this->options = [];
         $this->parameters = [];
+        $this->baseOptions = [];
     }
 
     /**
@@ -90,5 +96,29 @@ abstract class AbstractAnsibleCommand
     protected function getParameters()
     {
         return $this->parameters;
+    }
+
+
+    /**
+     * Add base options to internal storage.
+     *
+     * @param string $baseOption
+     * @return $this
+     */
+    protected function addBaseoption($baseOption)
+    {
+        $this->baseOptions[] = $baseOption;
+
+        return $this;
+    }
+
+    /**
+     * Generate base options string.
+     *
+     * @return string
+     */
+    protected function getBaseOptions()
+    {
+        return implode(' ', $this->baseOptions);
     }
 }

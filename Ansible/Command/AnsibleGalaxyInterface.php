@@ -48,7 +48,7 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
      * Get a list of installed modules.
      *
      * @param string $roleName
-     * @return string list of installed modules
+     * @return $this
      */
     public function modulelist($roleName = '');
 
@@ -63,7 +63,7 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
     /**
      * Show general or specific help.
      *
-     * @return string
+     * @return $this
      */
     public function help();
 
@@ -101,7 +101,7 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
     /**
      * A file containing a list of roles to be imported.
      *
-     * @param string|array $roleFile FILE | tar_file(s)]
+     * @param string $roleFile FILE
      * @return $this
      */
     public function roleFile($roleFile);
