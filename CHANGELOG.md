@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1
+
+ * added ansible-galaxy implementation and tests
+
 ## v0.0.2
 
  * small fixes to UnitTests
