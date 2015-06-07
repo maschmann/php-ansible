@@ -266,12 +266,4 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return $this
      */
     public function version();
-
-    /**
-     * Get parameter string which will be used to call ansible.
-     *
-     * @param bool $asArray
-     * @return string|array
-     */
-    public function getCommandlineArguments($asArray = true);
 }
