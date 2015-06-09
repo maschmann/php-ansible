@@ -5,18 +5,20 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/maschmann/php-ansible/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/maschmann/php-ansible/?branch=master)
 
 This library is a oop-wrapper for the ansible provisioning tool.
-I intend to use this library for a symfony2 bundle and also a deployment GUI, based on php.
-The current implementation is feature-complete for ansible-playbook. ansible-galaxy still needs to be implemented.
+I intend to use this library for a symfony2 bundle and also a deployment GUI, based on php/symfony2.
+The current implementation is feature-complete for ansible-playbook and ansible-galaxy
+
+Next steps for implementation are: wrapping the lib into a bundle and provide e.g. commandline-capabilities.
 
 ## prerequisites
 
 Your OS should be a flavor of linux and ansible has to be installed. It's easiest if ansible is in PATH :-)
-The library try to find ansible-playbook and ansible-galaxy by itself or use a path you provide. 
+The library tries to find ansible-playbook and ansible-galaxy by itself or use the paths/executables you provide. 
 
 ## usage
 
-First instantiate the base object which works as a factory for your commands.
-Only the first parameter with the path to your ansible deployment. The other two params are optional paths to your local ansible installation's binaries, in case they are not on PATH.
+First instantiate the base object which works as a factory for the commands.
+Only the first parameter is mandatory, and provides the library with the path to your ansible deployment file structure. The other two params are optional paths to your local ansible installation's binaries, in case they are not in PATH.
 
 ```php
     $ansible = new Ansible(
@@ -29,7 +31,7 @@ Only the first parameter with the path to your ansible deployment. The other two
 ### playbooks
 
 Then you can use the object just like in your previous ansible deployment.
-If you don't specify an inventory file with ```->inventoryFile('filename')```, the wrapper tries to determine one, base on your playbook: 
+If you don't specify an inventory file with ```->inventoryFile('filename')```, the wrapper tries to determine one, based on your playbook name: 
 
 ```php
     $ansible
@@ -40,6 +42,13 @@ If you don't specify an inventory file with ```->inventoryFile('filename')```, t
         ->limit('test')
         ->execute();
 ```
+
+This will create following ansible command:
+
+```
+$ ansible-playbook mydeployment.yml -i mydeployment --user=maschmann --extra-vars="project-release=20150514092022" --limit=test
+```
+
 
 For the execute command you can use a callback to get real-time output of the command:
 
@@ -58,10 +67,10 @@ For the execute command you can use a callback to get real-time output of the co
             }
         });
 ```
+If no callback is given, the method will return the ansible-playbook output as a string, so you can either ```echo``` or directly pipe it into a log/whatever.
 
 ### galaxy
 
-The galaxy command is, as with the playbook, feature-complete.
 The syntax follows ansible's syntax with one deviation: list is a reserved keyword in php (array context) and
 therefore I had to rename it to "modulelist()".
 
@@ -100,7 +109,7 @@ Possible arguments/options:
  * ignoreErrors()
  * noDeps()
 
-License
+license
 ----
 
 php-ansible is licensed under the MIT license. See the [LICENSE](LICENSE) for the full license text.
