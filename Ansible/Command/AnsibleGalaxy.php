@@ -20,34 +20,15 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
 {
 
     /**
-     * Executes a command process
+     * Executes a command process.
+     * Returns either exitcode or string output if no callback is given.
      *
      * @param null $callback
-     * @return stderr|stdout
+     * @return integer|string
      */
     public function execute($callback = null)
     {
-        $process = $this->processBuilder
-            ->setArguments(
-                $this->prepareArguments()
-            )
-            ->getProcess();
-
-        // exitcode
-        $result = $process->run($callback);
-
-        // text-mode
-        if (null === $callback) {
-            // @codeCoverageIgnoreStart
-            $result = $process->getOutput();
-
-            if (false === $process->isSuccessful()) {
-                $process->getErrorOutput();
-            }
-            // @codeCoverageIgnoreEnd
-        }
-
-        return $result;
+        return $this->runProcess($callback);
     }
 
     /**

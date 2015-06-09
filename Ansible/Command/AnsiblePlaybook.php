@@ -34,27 +34,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     {
         $this->checkInventory();
 
-        $process = $this->processBuilder
-            ->setArguments(
-                $this->prepareArguments()
-            )
-            ->getProcess();
-
-        // exitcode
-        $result = $process->run($callback);
-
-        // text-mode
-        if (null === $callback) {
-            // @codeCoverageIgnoreStart
-            $result = $process->getOutput();
-
-            if (false === $process->isSuccessful()) {
-                $process->getErrorOutput();
-            }
-            // @codeCoverageIgnoreEnd
-        }
-
-        return $result;
+        return $this->runProcess($callback);
     }
 
     /**

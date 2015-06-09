@@ -158,4 +158,33 @@ abstract class AbstractAnsibleCommand
 
         return $param;
     }
+
+    /**
+     * Creates process with process builder and executes it.
+     *
+     * @param null $callback
+     * @return int|string
+     */
+    protected function runProcess($callback)
+    {
+        $process = $this->processBuilder
+            ->setArguments(
+                $this->prepareArguments()
+            )
+            ->getProcess();
+
+        // exitcode
+        $result = $process->run($callback);
+
+        // text-mode
+        if (null === $callback) {
+            $result = $process->getOutput();
+
+            if (false === $process->isSuccessful()) {
+                $process->getErrorOutput();
+            }
+        }
+
+        return $result;
+    }
 }
