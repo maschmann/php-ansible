@@ -152,7 +152,7 @@ abstract class AbstractAnsibleCommand
      */
     protected function checkParam($param, $glue = ',')
     {
-        if (true == is_array($param)) {
+        if (is_array($param)) {
             $param = implode($glue, $param);
         }
 
