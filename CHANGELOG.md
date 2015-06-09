@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2
+ 
+ * configurable timeout for processes
+ * refactored --extra-vars to take string or array parameters
+
 ## v0.1
 
  * added ansible-galaxy implementation and tests

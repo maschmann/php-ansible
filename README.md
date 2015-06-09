@@ -109,6 +109,16 @@ Possible arguments/options:
  * ignoreErrors()
  * noDeps()
 
+### process timeout
+Default process timeout is set to 300 seconds. If you need more time to execute your processes: Adjust the timeout :-) 
+
+```php
+    $ansible
+        ->galaxy()
+        ->setTimeout(600)
+        ...
+```
+
 license
 ----
 

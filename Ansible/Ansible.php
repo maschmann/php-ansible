@@ -43,6 +43,11 @@ final class Ansible
     private $ansibleBaseDir;
 
     /**
+     * @var integer
+     */
+    private $timeout;
+
+    /**
      * @param string $ansibleBaseDir base directory of ansible project structure
      * @param string $playbookCommand path to playbook executable, default ansible-playbook
      * @param string $galaxyCommand path to galaxy executable, default ansible-galaxy
@@ -56,6 +61,8 @@ final class Ansible
         $this->ansibleBaseDir = $this->checkDir($ansibleBaseDir);
         $this->playbookCommand = $this->checkCommand($playbookCommand, 'ansible-playbook');
         $this->galaxyCommand = $this->checkCommand($galaxyCommand, 'ansible-galaxy');
+
+        $this->timeout = Ansible::DEFAULT_TIMEOUT;
     }
 
     /**
@@ -80,6 +87,19 @@ final class Ansible
         return new AnsibleGalaxy(
             $this->createProcess($this->galaxyCommand)
         );
+    }
+
+    /**
+     * Set process timeout in seconds.
+     *
+     * @param integer $timeout
+     * @return $this
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+
+        return $this;
     }
 
     /**
