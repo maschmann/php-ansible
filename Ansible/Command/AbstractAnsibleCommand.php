@@ -86,7 +86,7 @@ abstract class AbstractAnsibleCommand
     /**
      * Add a parameter.
      *
-     * @param $name
+     * @param string $name
      */
     protected function addParameter($name)
     {
