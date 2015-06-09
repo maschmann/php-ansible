@@ -108,10 +108,9 @@ final class Ansible
         if ('' === $command) {
             if (true === shell_exec('which ' . $default)) {
                 $command = $default;
-            // @codeCoverageIgnoreStart
             } else { // not testable without ansible installation
                 throw new \ErrorException('No ' . $default . ' executable present in PATH!');
-            }// @codeCoverageIgnoreEnd
+            }
         } else {
             if (!is_file($command)) {
                 throw new \ErrorException('Command ' . $command . ' does not exist!');

@@ -36,6 +36,8 @@ class AnsibleTest extends AnsibleTestCase
     /**
      * @expectedException \ErrorException
      * @covers \Asm\Ansible\Ansible::checkCommand
+     * @covers \Asm\Ansible\Ansible::checkDir
+     * @covers \Asm\Ansible\Ansible::__construct
      */
     public function testAnsibleProjectPathNotFoundException()
     {
@@ -49,6 +51,8 @@ class AnsibleTest extends AnsibleTestCase
     /**
      * @expectedException \ErrorException
      * @covers \Asm\Ansible\Ansible::checkCommand
+     * @covers \Asm\Ansible\Ansible::checkDir
+     * @covers \Asm\Ansible\Ansible::__construct
      */
     public function testAnsibleCommandNotFoundException()
     {
@@ -62,12 +66,27 @@ class AnsibleTest extends AnsibleTestCase
     /**
      * @expectedException \ErrorException
      * @covers \Asm\Ansible\Ansible::checkCommand
+     * @covers \Asm\Ansible\Ansible::checkDir
+     * @covers \Asm\Ansible\Ansible::__construct
+     */
+    public function testAnsibleNoCommandGivenException()
+    {
+        $ansible = new Ansible(
+            $this->getProjectUri()
+        );
+    }
+
+    /**
+     * @expectedException \ErrorException
+     * @covers \Asm\Ansible\Ansible::checkCommand
+     * @covers \Asm\Ansible\Ansible::checkDir
+     * @covers \Asm\Ansible\Ansible::__construct
      */
     public function testAnsibleCommandNotExecutableException()
     {
         $vfs = vfsStream::setup('/tmp');
         $ansiblePlaybook = vfsStream::newFile('ansible-playbook', 600)->at($vfs);
-        $ansibleGalaxy = vfsStream::newFile('ansible-galaxy', 600)->at($vfs);
+        $ansibleGalaxy = vfsStream::newFile('ansible-galaxy', 444)->at($vfs);
 
         $ansible = new Ansible(
             $this->getProjectUri(),
@@ -79,6 +98,9 @@ class AnsibleTest extends AnsibleTestCase
     /**
      * @covers \Asm\Ansible\Ansible::playbook
      * @covers \Asm\Ansible\Ansible::createProcess
+     * @covers \Asm\Ansible\Ansible::checkCommand
+     * @covers \Asm\Ansible\Ansible::checkDir
+     * @covers \Asm\Ansible\Ansible::__construct
      */
     public function testPlaybookCommandInstance()
     {
@@ -96,6 +118,9 @@ class AnsibleTest extends AnsibleTestCase
     /**
      * @covers \Asm\Ansible\Ansible::galaxy
      * @covers \Asm\Ansible\Ansible::createProcess
+     * @covers \Asm\Ansible\Ansible::checkCommand
+     * @covers \Asm\Ansible\Ansible::checkDir
+     * @covers \Asm\Ansible\Ansible::__construct
      */
     public function testGalaxyCommandInstance()
     {

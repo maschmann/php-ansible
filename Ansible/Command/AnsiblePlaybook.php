@@ -157,14 +157,15 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Set additional variables as array [ 'key' => 'value' ].
+     * Set additional variables as array [ 'key' => 'value' ] or string.
      *
-     * @param array $extraVars
+     * @param string|array $extraVars
      * @return $this
      */
-    public function extraVars($extraVars = [])
+    public function extraVars($extraVars = '')
     {
-        $this->addOption('--extra-vars', implode(',', $extraVars));
+        $extraVars = $this->checkParam($extraVars, ',');
+        $this->addOption('--extra-vars', $extraVars);
 
         return $this;
     }

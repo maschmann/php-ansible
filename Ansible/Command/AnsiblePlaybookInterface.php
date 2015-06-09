@@ -78,12 +78,12 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function diff();
 
     /**
-     * Set additional variables as array [ 'key' => 'value' ].
+     * Set additional variables as array [ 'key' => 'value' ] or string.
      *
-     * @param array $extraVars
+     * @param string|array $extraVars
      * @return $this
      */
-    public function extraVars($extraVars = []);
+    public function extraVars($extraVars = '');
 
     /**
      * Run handlers even if a task fails.
