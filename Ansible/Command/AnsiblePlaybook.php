@@ -144,7 +144,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function extraVars($extraVars = '')
     {
-        $extraVars = $this->checkParam($extraVars, ',');
+        $extraVars = $this->checkParam($extraVars, ' ');
         $this->addOption('--extra-vars', $extraVars);
 
         return $this;
