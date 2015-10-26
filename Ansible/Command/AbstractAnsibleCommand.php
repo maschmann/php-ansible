@@ -55,7 +55,7 @@ abstract class AbstractAnsibleCommand
      * Get parameter string which will be used to call ansible.
      *
      * @param bool $asArray
-     * @return string|array
+     * @return string[]
      */
     protected function prepareArguments($asArray = true)
     {
