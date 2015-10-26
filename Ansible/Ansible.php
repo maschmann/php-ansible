@@ -14,6 +14,7 @@ use Asm\Ansible\Command\AnsibleGalaxy;
 use Asm\Ansible\Command\AnsibleGalaxyInterface;
 use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
+use Asm\Ansible\Exception\CommandException;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
@@ -51,7 +52,7 @@ final class Ansible
      * @param string $ansibleBaseDir base directory of ansible project structure
      * @param string $playbookCommand path to playbook executable, default ansible-playbook
      * @param string $galaxyCommand path to galaxy executable, default ansible-galaxy
-     * @throws \ErrorException
+     * @throws CommandException
      */
     public function __construct(
         $ansibleBaseDir,
@@ -120,7 +121,7 @@ final class Ansible
      * @param string $command
      * @param string $default
      * @return string
-     * @throws \ErrorException
+     * @throws CommandException
      */
     private function checkCommand($command, $default)
     {
@@ -129,14 +130,14 @@ final class Ansible
             if (true === shell_exec('which ' . $default)) {
                 $command = $default;
             } else { // not testable without ansible installation
-                throw new \ErrorException('No ' . $default . ' executable present in PATH!');
+                throw new CommandException('No ' . $default . ' executable present in PATH!');
             }
         } else {
             if (!is_file($command)) {
-                throw new \ErrorException('Command ' . $command . ' does not exist!');
+                throw new CommandException('Command ' . $command . ' does not exist!');
             }
             if (!is_executable($command)) {
-                throw new \ErrorException('Command ' . $command . ' is not executable!');
+                throw new CommandException('Command ' . $command . ' is not executable!');
             }
         }
 
@@ -146,12 +147,12 @@ final class Ansible
     /**
      * @param string $dir directory to check
      * @return string
-     * @throws \ErrorException
+     * @throws CommandException
      */
     private function checkDir($dir)
     {
         if (!is_dir($dir)) {
-            throw new \ErrorException('Ansible project root ' . $dir . ' not found!');
+            throw new CommandException('Ansible project root ' . $dir . ' not found!');
         }
 
         return $dir;
