@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.1
+ * Added domain specific exception
+
+## v1.0
+ * Enhanced TravisCI tests to include several versions of process component
+
 ## v0.2
  
  * configurable timeout for processes
