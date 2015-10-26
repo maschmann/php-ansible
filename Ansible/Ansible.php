@@ -14,6 +14,7 @@ use Asm\Ansible\Command\AnsibleGalaxy;
 use Asm\Ansible\Command\AnsibleGalaxyInterface;
 use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
+use Asm\Ansible\Exception\CommandException;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
@@ -129,14 +130,14 @@ final class Ansible
             if (true === shell_exec('which ' . $default)) {
                 $command = $default;
             } else { // not testable without ansible installation
-                throw new \ErrorException('No ' . $default . ' executable present in PATH!');
+                throw new CommandException('No ' . $default . ' executable present in PATH!');
             }
         } else {
             if (!is_file($command)) {
-                throw new \ErrorException('Command ' . $command . ' does not exist!');
+                throw new CommandException('Command ' . $command . ' does not exist!');
             }
             if (!is_executable($command)) {
-                throw new \ErrorException('Command ' . $command . ' is not executable!');
+                throw new CommandException('Command ' . $command . ' is not executable!');
             }
         }
 
@@ -151,7 +152,7 @@ final class Ansible
     private function checkDir($dir)
     {
         if (!is_dir($dir)) {
-            throw new \ErrorException('Ansible project root ' . $dir . ' not found!');
+            throw new CommandException('Ansible project root ' . $dir . ' not found!');
         }
 
         return $dir;

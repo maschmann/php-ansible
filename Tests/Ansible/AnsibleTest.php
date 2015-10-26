@@ -34,7 +34,7 @@ class AnsibleTest extends AnsibleTestCase
     }
 
     /**
-     * @expectedException \ErrorException
+     * @expectedException \Asm\Ansible\Exception\CommandException
      * @covers \Asm\Ansible\Ansible::checkCommand
      * @covers \Asm\Ansible\Ansible::checkDir
      * @covers \Asm\Ansible\Ansible::__construct
@@ -49,7 +49,7 @@ class AnsibleTest extends AnsibleTestCase
     }
 
     /**
-     * @expectedException \ErrorException
+     * @expectedException \Asm\Ansible\Exception\CommandException
      * @covers \Asm\Ansible\Ansible::checkCommand
      * @covers \Asm\Ansible\Ansible::checkDir
      * @covers \Asm\Ansible\Ansible::__construct
@@ -64,7 +64,7 @@ class AnsibleTest extends AnsibleTestCase
     }
 
     /**
-     * @expectedException \ErrorException
+     * @expectedException \Asm\Ansible\Exception\CommandException
      * @covers \Asm\Ansible\Ansible::checkCommand
      * @covers \Asm\Ansible\Ansible::checkDir
      * @covers \Asm\Ansible\Ansible::__construct
@@ -77,7 +77,7 @@ class AnsibleTest extends AnsibleTestCase
     }
 
     /**
-     * @expectedException \ErrorException
+     * @expectedException \Asm\Ansible\Exception\CommandException
      * @covers \Asm\Ansible\Ansible::checkCommand
      * @covers \Asm\Ansible\Ansible::checkDir
      * @covers \Asm\Ansible\Ansible::__construct
