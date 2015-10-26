@@ -52,7 +52,7 @@ final class Ansible
      * @param string $ansibleBaseDir base directory of ansible project structure
      * @param string $playbookCommand path to playbook executable, default ansible-playbook
      * @param string $galaxyCommand path to galaxy executable, default ansible-galaxy
-     * @throws \ErrorException
+     * @throws CommandException
      */
     public function __construct(
         $ansibleBaseDir,
@@ -121,7 +121,7 @@ final class Ansible
      * @param string $command
      * @param string $default
      * @return string
-     * @throws \ErrorException
+     * @throws CommandException
      */
     private function checkCommand($command, $default)
     {
@@ -147,7 +147,7 @@ final class Ansible
     /**
      * @param string $dir directory to check
      * @return string
-     * @throws \ErrorException
+     * @throws CommandException
      */
     private function checkDir($dir)
     {
