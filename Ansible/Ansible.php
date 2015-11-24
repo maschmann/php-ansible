@@ -114,7 +114,7 @@ final class Ansible
         return $process
             ->setPrefix($prefix)
             ->setWorkingDirectory($this->ansibleBaseDir)
-            ->setTimeout(Ansible::DEFAULT_TIMEOUT);
+            ->setTimeout($this->timeout);
     }
 
     /**
