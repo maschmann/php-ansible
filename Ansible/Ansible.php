@@ -127,7 +127,7 @@ final class Ansible
     {
         // normally ansible is in /usr/local/bin/*
         if ('' === $command) {
-            if (true === shell_exec('which ' . $default)) {
+            if (shell_exec('which ' . $default)) {
                 $command = $default;
             } else { // not testable without ansible installation
                 throw new CommandException('No ' . $default . ' executable present in PATH!');
