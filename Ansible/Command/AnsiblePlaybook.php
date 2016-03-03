@@ -79,9 +79,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      *
      * @return $this
      */
-    public function askSudoPass()
+    public function askBecomePass()
     {
-        $this->addParameter('--ask-sudo-pass');
+        $this->addParameter('--ask-become-pass');
 
         return $this;
     }
@@ -345,13 +345,14 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Run operations with sudo (nopasswd).
+     * Enable privilege escalation
      *
      * @return $this
+     * @see http://docs.ansible.com/ansible/become.html
      */
-    public function sudo()
+    public function become()
     {
-        $this->addParameter('--sudo');
+        $this->addParameter('--become');
 
         return $this;
     }
@@ -362,9 +363,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string $user
      * @return $this
      */
-    public function sudoUser($user = 'root')
+    public function becomeUser($user = 'root')
     {
-        $this->addOption('--sudo-user', $user);
+        $this->addOption('--become-user', $user);
 
         return $this;
     }

@@ -96,14 +96,14 @@ class AnsibleTest extends AnsibleTestCase
      * @param AnsiblePlaybookInterface $command
      * @return AnsiblePlaybookInterface
      */
-    public function testAskSudoPassArgumentPresent(AnsiblePlaybookInterface $command)
+    public function testAskBecomePassArgumentPresent(AnsiblePlaybookInterface $command)
     {
         $command
             ->play($this->getPlayUri())
-            ->askSudoPass();
+            ->askBecomePass();
 
         $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--ask-sudo-pass', $arguments);
+        $this->assertArrayHasKey('--ask-become-pass', $arguments);
 
         return $command;
     }
@@ -433,14 +433,14 @@ class AnsibleTest extends AnsibleTestCase
      * @param AnsiblePlaybookInterface $command
      * @return AnsiblePlaybookInterface
      */
-    public function testSudoArgumentPresent(AnsiblePlaybookInterface $command)
+    public function testBecomeArgumentPresent(AnsiblePlaybookInterface $command)
     {
         $command
             ->play($this->getPlayUri())
-            ->sudo();
+            ->become();
 
         $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--sudo', $arguments);
+        $this->assertArrayHasKey('--become', $arguments);
 
         return $command;
     }
@@ -450,20 +450,20 @@ class AnsibleTest extends AnsibleTestCase
      * @param AnsiblePlaybookInterface $command
      * @return AnsiblePlaybookInterface
      */
-    public function testSudoUserArgumentPresent(AnsiblePlaybookInterface $command)
+    public function testBecomeUserArgumentPresent(AnsiblePlaybookInterface $command)
     {
         $command
             ->play($this->getPlayUri())
-            ->sudoUser();
+            ->becomeUser();
 
         $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--sudo-user=root', $arguments);
+        $this->assertArrayHasKey('--become-user=root', $arguments);
 
         $command
-            ->sudoUser('maschmann');
+            ->becomeUser('maschmann');
 
         $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--sudo-user=maschmann', $arguments);
+        $this->assertArrayHasKey('--become-user=maschmann', $arguments);
 
         return $command;
     }

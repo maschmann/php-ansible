@@ -45,7 +45,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      *
      * @return $this
      */
-    public function askSudoPass();
+    public function askBecomePass();
 
     /**
      * Ask for vault password.
@@ -199,19 +199,20 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function suUser($user = 'root');
 
     /**
-     * Run operations with sudo (nopasswd).
+     * Enable privilege escalation
      *
      * @return $this
+     * @see http://docs.ansible.com/ansible/become.html
      */
-    public function sudo();
+    public function become();
 
     /**
-     * Desired sudo user (default=root).
+     * Desired become user (default=root).
      *
      * @param string $user
      * @return $this
      */
-    public function sudoUser($user = 'root');
+    public function becomeUser($user = 'root');
 
     /**
      * Perform a syntax check on the playbook, but do not execute it.
