@@ -114,7 +114,8 @@ final class Ansible
         return $process
             ->setPrefix($prefix)
             ->setWorkingDirectory($this->ansibleBaseDir)
-            ->setTimeout($this->timeout);
+            ->setTimeout($this->timeout)
+            ->setEnv('ANSIBLE_FORCE_COLOR', true);
     }
 
     /**
