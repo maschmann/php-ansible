@@ -103,6 +103,9 @@ abstract class AbstractAnsibleCommand
         $options = [];
 
         foreach ($this->options as $name => $value) {
+            if ($name == '--extra-vars')
+                $value = "\"$value\"";
+
             $options[] = $name . '=' . $value;
         }
 
