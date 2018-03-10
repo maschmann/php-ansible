@@ -267,6 +267,19 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * Disable host key checking
+     *
+     * @codeCoverageIgnore
+     * @return $this
+     */
+    public function noHostKeyChecking()
+    {
+        $this->processBuilder->setEnv('ANSIBLE_HOST_KEY_CHECKING', 'False');
+
+        return $this;
+    }
+
+    /**
      * Use this file to authenticate the connection.
      *
      * @param string $file private key file
@@ -275,6 +288,19 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function privateKey($file)
     {
         $this->addOption('--private-key', $file);
+
+        return $this;
+    }
+
+    /**
+     * Set an environment var in the Ansible process
+     *
+     * @codeCoverageIgnore
+     * @return $this
+     */
+    public function setEnv($var, $value)
+    {
+        $this->processBuilder->setEnv($var, $value);
 
         return $this;
     }
