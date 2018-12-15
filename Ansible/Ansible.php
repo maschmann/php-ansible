@@ -17,7 +17,6 @@ use Asm\Ansible\Command\AnsiblePlaybookInterface;
 use Asm\Ansible\Exception\CommandException;
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Process\ProcessBuilderInterface;
-use Symfony\Component\Process\Process;
 
 /**
  * Ansible command factory

@@ -10,8 +10,7 @@
 
 namespace Asm\Ansible\Command;
 
-use Asm\Ansible\Process\ProcessBuilder;
-use Symfony\Component\Process\Process;
+use Asm\Ansible\Process\ProcessBuilderInterface;
 
 /**
  * Class AbstractAnsibleCommand
@@ -22,7 +21,7 @@ use Symfony\Component\Process\Process;
 abstract class AbstractAnsibleCommand
 {
     /**
-     * @var ProcessBuilder
+     * @var ProcessBuilderInterface
      */
     protected $processBuilder;
 
@@ -42,9 +41,9 @@ abstract class AbstractAnsibleCommand
     private $baseOptions;
 
     /**
-     * @param ProcessBuilder $processBuilder
+     * @param ProcessBuilderInterface $processBuilder
      */
-    public function __construct(ProcessBuilder $processBuilder)
+    public function __construct(ProcessBuilderInterface $processBuilder)
     {
         $this->processBuilder = $processBuilder;
         $this->options = [];
@@ -56,7 +55,7 @@ abstract class AbstractAnsibleCommand
      * Get parameter string which will be used to call ansible.
      *
      * @param bool $asArray
-     * @return string[]
+     * @return string|array
      */
     protected function prepareArguments(bool $asArray = true)
     {
