@@ -22,249 +22,257 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * The play to be executed.
      *
      * @param string $playbook
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function play($playbook);
+    public function play(string $playbook): AnsiblePlaybookInterface;
 
     /**
      * Ask for SSH password.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function askPass();
+    public function askPass(): AnsiblePlaybookInterface;
 
     /**
      * Ask for su password.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function askSuPass();
+    public function askSuPass(): AnsiblePlaybookInterface;
 
     /**
      * Ask for sudo password.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function askBecomePass();
+    public function askBecomePass(): AnsiblePlaybookInterface;
 
     /**
      * Ask for vault password.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function askVaultPass();
+    public function askVaultPass(): AnsiblePlaybookInterface;
 
     /**
      * Don't make any changes; instead, try to predict some of the changes that may occur.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function check();
+    public function check(): AnsiblePlaybookInterface;
 
     /**
      * Connection type to use (default=smart).
      *
      * @param string $connection
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function connection($connection = 'smart');
+    public function connection(string $connection = 'smart'): AnsiblePlaybookInterface;
 
     /**
      * When changing (small) files and templates, show the
      * differences in those files; works great with --check.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function diff();
+    public function diff(): AnsiblePlaybookInterface;
 
     /**
      * Set additional variables as array [ 'key' => 'value' ] or string.
      *
      * @param string|array $extraVars
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function extraVars($extraVars = '');
+    public function extraVars(string $extraVars = ''): AnsiblePlaybookInterface;
 
     /**
      * Run handlers even if a task fails.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function forceHandlers();
+    public function forceHandlers(): AnsiblePlaybookInterface;
 
     /**
      * Specify number of parallel processes to use (default=5).
      *
      * @param int $forks
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function forks($forks = 5);
+    public function forks(int $forks = 5): AnsiblePlaybookInterface;
 
     /**
      * Show help message and exit.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function help();
+    public function help(): AnsiblePlaybookInterface;
 
     /**
      * Specify inventory host file (default=/etc/ansible/hosts).
      *
      * @param string $inventory filename for hosts file
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function inventoryFile($inventory = '/etc/ansible/hosts');
+    public function inventoryFile(string $inventory = '/etc/ansible/hosts'): AnsiblePlaybookInterface;
 
     /**
      * Further limit selected hosts to an additional pattern.
      *
-     * @param rray|string $subset list of hosts
-     * @return $this
+     * @param array|string $subset list of hosts
+     * @return AnsiblePlaybookInterface
      */
-    public function limit($subset = '');
+    public function limit($subset = ''): AnsiblePlaybookInterface;
 
     /**
      * Outputs a list of matching hosts; does not execute anything else.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function listHosts();
+    public function listHosts(): AnsiblePlaybookInterface;
 
     /**
      * List all tasks that would be executed.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function listTasks();
+    public function listTasks(): AnsiblePlaybookInterface;
 
     /**
      * Specify path(s) to module library (default=/usr/share/ansible/).
      *
      * @param array $path list of paths for modules
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function modulePath($path = ['/usr/share/ansible/']);
+    public function modulePath(array $path = ['/usr/share/ansible/']): AnsiblePlaybookInterface;
 
     /**
      * Disable cowsay
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function noCows();
+    public function noCows(): AnsiblePlaybookInterface;
+
+    /**
+     * Disable console colors
+     *
+     * @param bool $colors
+     * @return AnsiblePlaybookInterface
+     */
+    public function colors(bool $colors = true): AnsiblePlaybookInterface;
 
     /**
      * Use this file to authenticate the connection.
      *
      * @param string $file private key file
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function privateKey($file);
+    public function privateKey(string $file): AnsiblePlaybookInterface;
 
     /**
      * Only run plays and tasks whose tags do not match these values.
      *
      * @param array|string $tags list of tags to skip
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function skipTags($tags = '');
+    public function skipTags(string $tags = ''): AnsiblePlaybookInterface;
 
     /**
      * Start the playbook at the task matching this name.
      *
      * @param string $task name of task
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function startAtTask($task);
+    public function startAtTask(string $task): AnsiblePlaybookInterface;
 
     /**
      * One-step-at-a-time: confirm each task before running.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function step();
+    public function step(): AnsiblePlaybookInterface;
 
     /**
      * Run operations with su.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function su();
+    public function su(): AnsiblePlaybookInterface;
 
     /**
      * Run operations with su as this user (default=root).
      *
      * @param string $user
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function suUser($user = 'root');
+    public function suUser(string $user = 'root'): AnsiblePlaybookInterface;
 
     /**
      * Enable privilege escalation
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      * @see http://docs.ansible.com/ansible/become.html
      */
-    public function become();
+    public function become(): AnsiblePlaybookInterface;
 
     /**
      * Desired become user (default=root).
      *
      * @param string $user
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function becomeUser($user = 'root');
+    public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface;
 
     /**
      * Perform a syntax check on the playbook, but do not execute it.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function syntaxCheck();
+    public function syntaxCheck(): AnsiblePlaybookInterface;
 
     /**
      * Only run plays and tasks tagged with these values.
      *
      * @param string|array $tags list of tags
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function tags($tags);
+    public function tags($tags): AnsiblePlaybookInterface;
 
     /**
      * Override the SSH timeout in seconds (default=10).
      *
      * @param int $timeout
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function timeout($timeout = 10);
+    public function timeout(int $timeout = 10): AnsiblePlaybookInterface;
 
     /**
      * Connect as this user.
      *
      * @param string $user
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function user($user);
+    public function user(string $user): AnsiblePlaybookInterface;
 
     /**
      * Vault password file.
      *
      * @param string $file
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function vaultPasswordFile($file);
+    public function vaultPasswordFile(string $file): AnsiblePlaybookInterface;
 
     /**
      * Verbose mode (vvv for more, vvvv to enable connection debugging).
      *
      * @param string $verbose
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function verbose($verbose = 'v');
+    public function verbose(string $verbose = 'v'): AnsiblePlaybookInterface;
 
     /**
      * Show program's version number and exit.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function version();
+    public function version(): AnsiblePlaybookInterface;
 }

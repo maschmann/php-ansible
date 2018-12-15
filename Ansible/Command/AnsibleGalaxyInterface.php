@@ -22,16 +22,16 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
      * Initialize a new role with base structure.
      *
      * @param string $roleName
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function init($roleName);
+    public function init(string $roleName): AnsibleGalaxyInterface;
 
     /**
      * @param string $role
      * @param string $version
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function info($role, $version = '');
+    public function info(string $role, string $version = ''): AnsibleGalaxyInterface;
 
     /**
      * Install packages.
@@ -40,71 +40,71 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
      * either check first or use the "force" option.
      *
      * @param string|array $roles role_name(s)[,version] | scm+role_repo_url[,version]
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function install($roles = '');
+    public function install($roles = ''): AnsibleGalaxyInterface;
 
     /**
      * Get a list of installed modules.
      *
      * @param string $roleName
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function modulelist($roleName = '');
+    public function modulelist(string $roleName = ''): AnsibleGalaxyInterface;
 
     /**
      * Add package(s)
      *
      * @param string|array $roles
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function remove($roles = '');
+    public function remove($roles = ''): AnsibleGalaxyInterface;
 
     /**
      * Show general or specific help.
      *
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function help();
+    public function help(): AnsibleGalaxyInterface;
 
     /**
      * The path in which the skeleton role will be created.
      * The default is the current working directory.
      *
      * @param string $path
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function initPath($path = '');
+    public function initPath(string $path = ''): AnsibleGalaxyInterface;
 
     /**
      * Don't query the galaxy API when creating roles.
      *
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function offline();
+    public function offline(): AnsibleGalaxyInterface;
 
     /**
      * The API server destination.
      *
      * @param string $apiServer
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function server($apiServer);
+    public function server(string $apiServer): AnsibleGalaxyInterface;
 
     /**
      * Force overwriting an existing role.
      *
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function force();
+    public function force(): AnsibleGalaxyInterface;
 
     /**
      * A file containing a list of roles to be imported.
      *
      * @param string $roleFile FILE
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function roleFile($roleFile);
+    public function roleFile(string $roleFile): AnsibleGalaxyInterface;
 
     /**
      * The path to the directory containing your roles.
@@ -113,21 +113,21 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
      * ansible.cfg file (/etc/ansible/roles if not configured).
      *
      * @param string $rolesPath
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function rolesPath($rolesPath);
+    public function rolesPath(string $rolesPath): AnsibleGalaxyInterface;
 
     /**
      * Ignore errors and continue with the next specified role.
      *
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function ignoreErrors();
+    public function ignoreErrors(): AnsibleGalaxyInterface;
 
     /**
      * Don't download roles listed as dependencies.
      *
-     * @return $this
+     * @return AnsibleGalaxyInterface
      */
-    public function noDeps();
+    public function noDeps(): AnsibleGalaxyInterface;
 }

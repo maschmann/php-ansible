@@ -41,9 +41,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * The play to be executed.
      *
      * @param string $playbook
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function play($playbook)
+    public function play(string $playbook): AnsiblePlaybookInterface
     {
         $this->addBaseoption($playbook);
 
@@ -53,9 +53,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Ask for SSH password.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function askPass()
+    public function askPass(): AnsiblePlaybookInterface
     {
         $this->addParameter('--ask-pass');
 
@@ -65,9 +65,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Ask for su password.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function askSuPass()
+    public function askSuPass(): AnsiblePlaybookInterface
     {
         $this->addParameter('--ask-su-pass');
 
@@ -77,9 +77,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Ask for sudo password.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function askBecomePass()
+    public function askBecomePass(): AnsiblePlaybookInterface
     {
         $this->addParameter('--ask-become-pass');
 
@@ -89,9 +89,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Ask for vault password.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function askVaultPass()
+    public function askVaultPass(): AnsiblePlaybookInterface
     {
         $this->addParameter('--ask-vault-pass');
 
@@ -101,9 +101,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Don't make any changes; instead, try to predict some of the changes that may occur.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function check()
+    public function check(): AnsiblePlaybookInterface
     {
         $this->addParameter('--check');
 
@@ -114,9 +114,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Connection type to use (default=smart).
      *
      * @param string $connection
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function connection($connection = 'smart')
+    public function connection($connection = 'smart'): AnsiblePlaybookInterface
     {
         $this->addOption('--connection', $connection);
 
@@ -127,9 +127,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * When changing (small) files and templates, show the
      * differences in those files; works great with --check.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function diff()
+    public function diff(): AnsiblePlaybookInterface
     {
         $this->addParameter('--diff');
 
@@ -140,9 +140,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Set additional variables as array [ 'key' => 'value' ] or string.
      *
      * @param string|array $extraVars
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function extraVars($extraVars = '')
+    public function extraVars($extraVars = ''): AnsiblePlaybookInterface
     {
         $extraVars = $this->checkParam($extraVars, ' ');
         $this->addOption('--extra-vars', $extraVars);
@@ -153,9 +153,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Run handlers even if a task fails.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function forceHandlers()
+    public function forceHandlers(): AnsiblePlaybookInterface
     {
         $this->addParameter('--force-handlers');
 
@@ -166,9 +166,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Specify number of parallel processes to use (default=5).
      *
      * @param int $forks
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function forks($forks = 5)
+    public function forks($forks = 5): AnsiblePlaybookInterface
     {
         $this->addOption('--forks', $forks);
 
@@ -178,9 +178,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Show help message and exit.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function help()
+    public function help(): AnsiblePlaybookInterface
     {
         $this->addParameter('--help');
 
@@ -191,9 +191,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Specify inventory host file (default=/etc/ansible/hosts).
      *
      * @param string $inventory filename for hosts file
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function inventoryFile($inventory = '/etc/ansible/hosts')
+    public function inventoryFile($inventory = '/etc/ansible/hosts'): AnsiblePlaybookInterface
     {
         $this->addOption('--inventory-file', $inventory);
         $this->hasInventory = true;
@@ -205,9 +205,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Further limit selected hosts to an additional pattern.
      *
      * @param array|string $subset list of hosts
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function limit($subset = '')
+    public function limit($subset = ''): AnsiblePlaybookInterface
     {
         $subset = $this->checkParam($subset, ',');
 
@@ -219,9 +219,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Outputs a list of matching hosts; does not execute anything else.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function listHosts()
+    public function listHosts(): AnsiblePlaybookInterface
     {
         $this->addParameter('--list-hosts');
 
@@ -231,9 +231,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * List all tasks that would be executed.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function listTasks()
+    public function listTasks(): AnsiblePlaybookInterface
     {
         $this->addParameter('--list-tasks');
 
@@ -244,9 +244,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Specify path(s) to module library (default=/usr/share/ansible/).
      *
      * @param array $path list of paths for modules
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function modulePath($path = ['/usr/share/ansible/'])
+    public function modulePath($path = ['/usr/share/ansible/']): AnsiblePlaybookInterface
     {
         $this->addOption('--module-path', implode(',', $path));
 
@@ -257,9 +257,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Disable cowsay
      *
      * @codeCoverageIgnore
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function noCows()
+    public function noCows(): AnsiblePlaybookInterface
     {
         $this->processBuilder->setEnv('ANSIBLE_NOCOWS', 1);
 
@@ -267,12 +267,23 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * Enable/Disable Colors
+     *
+     * @param bool $colors
+     * @return AnsiblePlaybookInterface
+     */
+    public function colors(bool $colors = true): AnsiblePlaybookInterface
+    {
+        $this->processBuilder->setEnv('ANSIBLE_FORCE_COLOR', $colors);
+    }
+
+    /**
      * Use this file to authenticate the connection.
      *
      * @param string $file private key file
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function privateKey($file)
+    public function privateKey(string $file): AnsiblePlaybookInterface
     {
         $this->addOption('--private-key', $file);
 
@@ -283,9 +294,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Only run plays and tasks whose tags do not match these values.
      *
      * @param array|string $tags list of tags to skip
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function skipTags($tags = '')
+    public function skipTags($tags = ''): AnsiblePlaybookInterface
     {
         $tags = $this->checkParam($tags, ',');
 
@@ -298,9 +309,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Start the playbook at the task matching this name.
      *
      * @param string $task name of task
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function startAtTask($task)
+    public function startAtTask(string $task): AnsiblePlaybookInterface
     {
         $this->addOption('--start-at-task', $task);
 
@@ -310,9 +321,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * One-step-at-a-time: confirm each task before running.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function step()
+    public function step(): AnsiblePlaybookInterface
     {
         $this->addParameter('--step');
 
@@ -322,9 +333,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Run operations with su.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function su()
+    public function su(): AnsiblePlaybookInterface
     {
         $this->addParameter('--su');
 
@@ -335,9 +346,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Run operations with su as this user (default=root).
      *
      * @param string $user
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function suUser($user = 'root')
+    public function suUser(string $user = 'root'): AnsiblePlaybookInterface
     {
         $this->addOption('--su-user', $user);
 
@@ -347,10 +358,10 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Enable privilege escalation
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      * @see http://docs.ansible.com/ansible/become.html
      */
-    public function become()
+    public function become(): AnsiblePlaybookInterface
     {
         $this->addParameter('--become');
 
@@ -361,9 +372,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Desired sudo user (default=root).
      *
      * @param string $user
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function becomeUser($user = 'root')
+    public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface
     {
         $this->addOption('--become-user', $user);
 
@@ -373,9 +384,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Perform a syntax check on the playbook, but do not execute it.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function syntaxCheck()
+    public function syntaxCheck(): AnsiblePlaybookInterface
     {
         $this->addParameter('--syntax-check');
 
@@ -386,9 +397,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Only run plays and tasks tagged with these values.
      *
      * @param string|array $tags list of tags
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function tags($tags)
+    public function tags($tags): AnsiblePlaybookInterface
     {
         $tags = $this->checkParam($tags, ',');
 
@@ -401,9 +412,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Override the SSH timeout in seconds (default=10).
      *
      * @param int $timeout
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function timeout($timeout = 10)
+    public function timeout(int $timeout = 10): AnsiblePlaybookInterface
     {
         $this->addOption('--timeout', $timeout);
 
@@ -414,9 +425,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Connect as this user.
      *
      * @param string $user
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function user($user)
+    public function user(string $user): AnsiblePlaybookInterface
     {
         $this->addOption('--user', $user);
 
@@ -427,9 +438,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Vault password file.
      *
      * @param string $file
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function vaultPasswordFile($file)
+    public function vaultPasswordFile(string $file): AnsiblePlaybookInterface
     {
         $this->addoption('--vault-password-file', $file);
 
@@ -440,9 +451,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Verbose mode (vvv for more, vvvv to enable connection debugging).
      *
      * @param string $verbose
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function verbose($verbose = 'v')
+    public function verbose(string $verbose = 'v'): AnsiblePlaybookInterface
     {
         $this->addParameter('-' . $verbose);
 
@@ -455,7 +466,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param bool $asArray
      * @return string|array
      */
-    public function getCommandlineArguments($asArray = true)
+    public function getCommandlineArguments(bool $asArray = true)
     {
         $this->checkInventory();
 
@@ -465,9 +476,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Show program's version number and exit.
      *
-     * @return $this
+     * @return AnsiblePlaybookInterface
      */
-    public function version()
+    public function version(): AnsiblePlaybookInterface
     {
         $this->addParameter('--version');
 
@@ -477,7 +488,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * If no inventory file is given, assume
      */
-    private function checkInventory()
+    private function checkInventory(): void
     {
         if (!$this->hasInventory) {
             $inventory = str_replace('.yml', '', $this->getBaseOptions());

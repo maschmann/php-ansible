@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.0.0
+ * migration to php >=7.1 only
+ * move to ansible 2.x
+ * general library upgrades
+ * cleanup
+
 ## v1.0.1
  * Added domain specific exception
 

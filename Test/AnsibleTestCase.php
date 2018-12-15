@@ -10,9 +10,9 @@
 
 namespace Asm\Test;
 
-
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class AnsibleTestCase
@@ -20,7 +20,7 @@ use org\bovigo\vfs\vfsStreamFile;
  * @package Asm\Test
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-abstract class AnsibleTestCase extends \PHPUnit_Framework_TestCase
+abstract class AnsibleTestCase extends TestCase
 {
     /**
      * @var \org\bovigo\vfs\vfsStreamFile

@@ -11,10 +11,10 @@ namespace Asm\Tests\Ansible\Command;
 
 use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
+use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Test\AnsibleTestCase;
 use SebastianBergmann\Comparator\DateTimeComparator;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 
 class AnsibleTest extends AnsibleTestCase
 {
@@ -23,11 +23,7 @@ class AnsibleTest extends AnsibleTestCase
      */
     public function testCreateInstance()
     {
-        $process = new ProcessBuilder();
-        $process
-            ->setPrefix($this->getPlaybookUri())
-            ->setWorkingDirectory($this->getProjectUri());
-
+        $process = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
         $ansible = new AnsiblePlaybook($process);
 
         $this->assertInstanceOf('\Asm\Ansible\Command\AnsiblePlaybook', $ansible);
@@ -39,6 +35,7 @@ class AnsibleTest extends AnsibleTestCase
      * @depends testCreateInstance
      * @param AnsiblePlaybookInterface $command
      * @return AnsiblePlaybookInterface
+     * @throws \Exception
      */
     public function testDefaultDeployment(AnsiblePlaybookInterface $command)
     {

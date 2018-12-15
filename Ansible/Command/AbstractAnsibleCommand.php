@@ -10,7 +10,8 @@
 
 namespace Asm\Ansible\Command;
 
-use Symfony\Component\Process\ProcessBuilder;
+use Asm\Ansible\Process\ProcessBuilder;
+use Symfony\Component\Process\Process;
 
 /**
  * Class AbstractAnsibleCommand
@@ -57,7 +58,7 @@ abstract class AbstractAnsibleCommand
      * @param bool $asArray
      * @return string[]
      */
-    protected function prepareArguments($asArray = true)
+    protected function prepareArguments(bool $asArray = true)
     {
         $arguments = array_merge(
             [$this->getBaseOptions()],
@@ -78,7 +79,7 @@ abstract class AbstractAnsibleCommand
      * @param string $name
      * @param string $value
      */
-    protected function addOption($name, $value)
+    protected function addOption(string $name, string $value): void
     {
         $this->options[$name] = $value;
     }
@@ -88,7 +89,7 @@ abstract class AbstractAnsibleCommand
      *
      * @param string $name
      */
-    protected function addParameter($name)
+    protected function addParameter(string $name): void
     {
         $this->parameters[] = $name;
     }
@@ -96,9 +97,9 @@ abstract class AbstractAnsibleCommand
     /**
      * Get all options as array.
      *
-     * @return string
+     * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         $options = [];
 
@@ -112,9 +113,9 @@ abstract class AbstractAnsibleCommand
     /**
      * Get all parameters as array.
      *
-     * @return string
+     * @return array
      */
-    protected function getParameters()
+    protected function getParameters(): array
     {
         return $this->parameters;
     }
@@ -126,7 +127,7 @@ abstract class AbstractAnsibleCommand
      * @param string $baseOption
      * @return $this
      */
-    protected function addBaseoption($baseOption)
+    protected function addBaseoption(string $baseOption)
     {
         $this->baseOptions[] = $baseOption;
 
@@ -138,7 +139,7 @@ abstract class AbstractAnsibleCommand
      *
      * @return string
      */
-    protected function getBaseOptions()
+    protected function getBaseOptions(): string
     {
         return implode(' ', $this->baseOptions);
     }
@@ -150,7 +151,7 @@ abstract class AbstractAnsibleCommand
      * @param string $glue
      * @return string
      */
-    protected function checkParam($param, $glue = ' ')
+    protected function checkParam($param, string $glue = ' '): string
     {
         if (is_array($param)) {
             $param = implode($glue, $param);
@@ -160,7 +161,7 @@ abstract class AbstractAnsibleCommand
     }
 
     /**
-     * Creates process with process builder and executes it.
+     * Creates process with processBuilder builder and executes it.
      *
      * @param null $callback
      * @return int|string
@@ -173,7 +174,7 @@ abstract class AbstractAnsibleCommand
             )
             ->getProcess();
 
-        // exitcode
+        // exit code
         $result = $process->run($callback);
 
         // text-mode
