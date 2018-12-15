@@ -33,5 +33,5 @@ interface AnsibleCommandInterface
      * @param bool $asArray
      * @return string|array
      */
-    public function getCommandlineArguments($asArray = true);
+    public function getCommandlineArguments(bool $asArray = true);
 }

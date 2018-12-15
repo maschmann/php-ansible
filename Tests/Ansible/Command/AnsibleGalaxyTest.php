@@ -11,9 +11,9 @@ namespace Asm\Tests\Ansible\Command;
 
 use Asm\Ansible\Command\AnsibleGalaxy;
 use Asm\Ansible\Command\AnsibleGalaxyInterface;
+use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Test\AnsibleTestCase;
 use org\bovigo\vfs\vfsStream;
-use Symfony\Component\Process\ProcessBuilder;
 
 class AnsibleGalaxyTest extends AnsibleTestCase
 {
@@ -22,11 +22,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
      */
     public function testCreateInstance()
     {
-        $process = new ProcessBuilder();
-        $process
-            ->setPrefix($this->getGalaxyUri())
-            ->setWorkingDirectory($this->getProjectUri());
-
+        $process = new ProcessBuilder($this->getGalaxyUri(), $this->getProjectUri());
         $ansibleGalaxy = new AnsibleGalaxy($process);
 
         $this->assertInstanceOf('\Asm\Ansible\Command\AnsibleGalaxy', $ansibleGalaxy);

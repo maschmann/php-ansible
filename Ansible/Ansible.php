@@ -15,7 +15,8 @@ use Asm\Ansible\Command\AnsibleGalaxyInterface;
 use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
 use Asm\Ansible\Exception\CommandException;
-use Symfony\Component\Process\ProcessBuilder;
+use Asm\Ansible\Process\ProcessBuilder;
+use Asm\Ansible\Process\ProcessBuilderInterface;
 
 /**
  * Ansible command factory
@@ -52,12 +53,11 @@ final class Ansible
      * @param string $ansibleBaseDir base directory of ansible project structure
      * @param string $playbookCommand path to playbook executable, default ansible-playbook
      * @param string $galaxyCommand path to galaxy executable, default ansible-galaxy
-     * @throws CommandException
      */
     public function __construct(
-        $ansibleBaseDir,
-        $playbookCommand = '',
-        $galaxyCommand = ''
+        string $ansibleBaseDir,
+        string $playbookCommand = '',
+        string $galaxyCommand = ''
     ) {
         $this->ansibleBaseDir = $this->checkDir($ansibleBaseDir);
         $this->playbookCommand = $this->checkCommand($playbookCommand, 'ansible-playbook');
@@ -71,7 +71,7 @@ final class Ansible
      *
      * @return AnsiblePlaybookInterface
      */
-    public function playbook()
+    public function playbook(): AnsiblePlaybookInterface
     {
         return new AnsiblePlaybook(
             $this->createProcess($this->playbookCommand)
@@ -83,7 +83,7 @@ final class Ansible
      *
      * @return AnsibleGalaxyInterface
      */
-    public function galaxy()
+    public function galaxy(): AnsibleGalaxyInterface
     {
         return new AnsibleGalaxy(
             $this->createProcess($this->galaxyCommand)
@@ -93,10 +93,10 @@ final class Ansible
     /**
      * Set process timeout in seconds.
      *
-     * @param integer $timeout
-     * @return $this
+     * @param int $timeout
+     * @return Ansible
      */
-    public function setTimeout($timeout)
+    public function setTimeout(int $timeout): Ansible
     {
         $this->timeout = $timeout;
 
@@ -104,17 +104,14 @@ final class Ansible
     }
 
     /**
-     * @param string $prefix command to execute
-     * @return ProcessBuilder
+     * @param string $prefix base command
+     * @return ProcessBuilderInterface
      */
-    private function createProcess($prefix)
+    private function createProcess(string  $prefix): ProcessBuilderInterface
     {
-        $process = new ProcessBuilder();
+        $process = new ProcessBuilder($prefix, $this->ansibleBaseDir);
 
-        return $process
-            ->setPrefix($prefix)
-            ->setWorkingDirectory($this->ansibleBaseDir)
-            ->setTimeout($this->timeout);
+        return $process->setTimeout($this->timeout);
     }
 
     /**
@@ -123,7 +120,7 @@ final class Ansible
      * @return string
      * @throws CommandException
      */
-    private function checkCommand($command, $default)
+    private function checkCommand(string $command, string $default): string
     {
         // normally ansible is in /usr/local/bin/*
         if ('' === $command) {
@@ -149,7 +146,7 @@ final class Ansible
      * @return string
      * @throws CommandException
      */
-    private function checkDir($dir)
+    private function checkDir(string $dir): string
     {
         if (!is_dir($dir)) {
             throw new CommandException('Ansible project root ' . $dir . ' not found!');

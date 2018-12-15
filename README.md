@@ -1,6 +1,5 @@
 # php-ansible library
 [![Build Status](https://travis-ci.org/maschmann/php-ansible.png?branch=master)](https://travis-ci.org/maschmann/php-ansible)
-[![phpci build status](http://phpci.br0ken.de/build-status/image/11)](http://phpci.br0ken.de)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/maschmann/php-ansible/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/maschmann/php-ansible/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/maschmann/php-ansible/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/maschmann/php-ansible/?branch=master)
 

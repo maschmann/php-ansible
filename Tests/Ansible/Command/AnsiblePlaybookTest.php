@@ -11,10 +11,10 @@ namespace Asm\Tests\Ansible\Command;
 
 use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
+use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Test\AnsibleTestCase;
 use SebastianBergmann\Comparator\DateTimeComparator;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 
 class AnsibleTest extends AnsibleTestCase
 {
@@ -23,11 +23,7 @@ class AnsibleTest extends AnsibleTestCase
      */
     public function testCreateInstance()
     {
-        $process = new ProcessBuilder();
-        $process
-            ->setPrefix($this->getPlaybookUri())
-            ->setWorkingDirectory($this->getProjectUri());
-
+        $process = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
         $ansible = new AnsiblePlaybook($process);
 
         $this->assertInstanceOf('\Asm\Ansible\Command\AnsiblePlaybook', $ansible);
@@ -39,6 +35,7 @@ class AnsibleTest extends AnsibleTestCase
      * @depends testCreateInstance
      * @param AnsiblePlaybookInterface $command
      * @return AnsiblePlaybookInterface
+     * @throws \Exception
      */
     public function testDefaultDeployment(AnsiblePlaybookInterface $command)
     {
@@ -616,6 +613,142 @@ class AnsibleTest extends AnsibleTestCase
      * @param AnsiblePlaybookInterface $command
      * @return AnsiblePlaybookInterface
      */
+    public function testFlushCacheParameterPresent(AnsiblePlaybookInterface $command)
+    {
+        $command
+            ->play($this->getPlayUri())
+            ->flushCache();
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--flush-cache', $arguments);
+
+        return $command;
+    }
+
+    /**
+     * @depends testCreateInstance
+     * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
+    public function testNewVaultIdArgumentPresent(AnsiblePlaybookInterface $command)
+    {
+        $command
+            ->play($this->getPlayUri())
+            ->newVaultId('someId');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--new-vault-id=someId', $arguments);
+
+        return $command;
+    }
+
+    /**
+     * @depends testCreateInstance
+     * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
+    public function testNewVaultPasswordFileArgumentPresent(AnsiblePlaybookInterface $command)
+    {
+        $command
+            ->play($this->getPlayUri())
+            ->newVaultPasswordFile('/path/to/vault');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--new-vault-password-file=/path/to/vault', $arguments);
+
+        return $command;;
+    }
+
+    /**
+     * @depends testCreateInstance
+     * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
+    public function testScpExtraArgsArgumentPresent(AnsiblePlaybookInterface $command)
+    {
+        $command
+            ->play($this->getPlayUri())
+            ->scpExtraArgs('SomeExtraArgs');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--scp-extra-args=SomeExtraArgs', $arguments);
+
+        return $command;
+    }
+
+    /**
+     * @depends testCreateInstance
+     * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
+    public function testSftpExtraArgsArgumentPresent(AnsiblePlaybookInterface $command)
+    {
+        $command
+            ->play($this->getPlayUri())
+            ->sftpExtraArgs('SftExtraArgs');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--sftp-extra-args=SftExtraArgs', $arguments);
+
+        return $command;
+    }
+
+    /**
+     * @depends testCreateInstance
+     * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
+    public function testSshCommonArgsArgumentPresent(AnsiblePlaybookInterface $command)
+    {
+        $command
+            ->play($this->getPlayUri())
+            ->sshCommonArgs('SshCommonArgs');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--ssh-common-args=SshCommonArgs', $arguments);
+
+        return $command;
+    }
+
+    /**
+     * @depends testCreateInstance
+     * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
+    public function testSshExtraArgsArgumentPresent(AnsiblePlaybookInterface $command)
+    {
+        $command
+            ->play($this->getPlayUri())
+            ->sshExtraArgs('SshExtraArgs');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--ssh-extra-args=SshExtraArgs', $arguments);
+
+        return $command;
+    }
+
+    /**
+     * @depends testCreateInstance
+     * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
+    public function testVaultIdArgumentPresent(AnsiblePlaybookInterface $command)
+    {
+        $command
+            ->play($this->getPlayUri())
+            ->vaultId('VaultId');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--vault-id=VaultId', $arguments);
+
+        return $command;
+    }
+
+    /**
+     * @depends testCreateInstance
+     * @param AnsiblePlaybookInterface $command
+     * @return AnsiblePlaybookInterface
+     */
     public function testGetCommandlineArguments(AnsiblePlaybookInterface $command)
     {
         $arguments = $command
@@ -657,4 +790,5 @@ class AnsibleTest extends AnsibleTestCase
 
         $this->assertTrue(is_string($result));
     }
+
 }
