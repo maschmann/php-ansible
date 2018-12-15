@@ -461,6 +461,121 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * Show program's version number and exit.
+     *
+     * @return AnsiblePlaybookInterface
+     */
+    public function version(): AnsiblePlaybookInterface
+    {
+        $this->addParameter('--version');
+
+        return $this;
+    }
+
+    /**
+     * clear the fact cache
+     *
+     * @return AnsiblePlaybookInterface
+     */
+    public function flushCache(): AnsiblePlaybookInterface
+    {
+         $this->addParameter('--flush-cache');
+
+         return $this;
+    }
+
+    /**
+     * the new vault identity to use for rekey
+     *
+     * @param string $vaultId
+     * @return AnsiblePlaybookInterface
+     */
+    public function newVaultId(string $vaultId): AnsiblePlaybookInterface
+    {
+        $this->addOption('--new-vault-id', $vaultId);
+
+        return $this;
+    }
+
+    /**
+     * new vault password file for rekey
+     *
+     * @param string $passwordFile
+     * @return AnsiblePlaybookInterface
+     */
+    public function newVaultPasswordFile(string $passwordFile): AnsiblePlaybookInterface
+    {
+        $this->addOption('--new-vault-password-file', $passwordFile);
+
+        return $this;
+    }
+
+    /**
+     * specify extra arguments to pass to scp only (e.g. -l)
+     *
+     * @param string $scpExtraArgs
+     * @return AnsiblePlaybookInterface
+     */
+    public function scpExtraArgs(string $scpExtraArgs): AnsiblePlaybookInterface
+    {
+        $this->addOption('--scp-extra-args', $scpExtraArgs);
+
+        return $this;
+    }
+
+    /**
+     * specify extra arguments to pass to sftp only (e.g. -f, -l)
+     *
+     * @param string $sftpExtraArgs
+     * @return AnsiblePlaybookInterface
+     */
+    public function sftpExtraArgs(string $sftpExtraArgs): AnsiblePlaybookInterface
+    {
+        $this->addOption('--sftp-extra-args', $sftpExtraArgs);
+
+        return $this;
+    }
+
+    /**
+     * specify common arguments to pass to sftp/scp/ssh (e.g. ProxyCommand)
+     *
+     * @param string $sshArgs
+     * @return AnsiblePlaybookInterface
+     */
+    public function sshCommonArgs(string $sshArgs): AnsiblePlaybookInterface
+    {
+        $this->addOption('--ssh-common-args', $sshArgs);
+
+        return $this;
+    }
+
+    /**
+     * specify extra arguments to pass to ssh only (e.g. -R)
+     *
+     * @param string $extraArgs
+     * @return AnsiblePlaybookInterface
+     */
+    public function sshExtraArgs(string $extraArgs): AnsiblePlaybookInterface
+    {
+        $this->addOption('--ssh-extra-args', $extraArgs);
+
+        return $this;
+    }
+
+    /**
+     * the vault identity to use
+     *
+     * @param string $vaultId
+     * @return AnsiblePlaybookInterface
+     */
+    public function vaultId(string $vaultId): AnsiblePlaybookInterface
+    {
+        $this->addOption('--vault-id', $vaultId);
+
+        return $this;
+    }
+
+    /**
      * Get parameter string which will be used to call ansible.
      *
      * @param bool $asArray
@@ -471,18 +586,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         $this->checkInventory();
 
         return $this->prepareArguments($asArray);
-    }
-
-    /**
-     * Show program's version number and exit.
-     *
-     * @return AnsiblePlaybookInterface
-     */
-    public function version(): AnsiblePlaybookInterface
-    {
-        $this->addParameter('--version');
-
-        return $this;
     }
 
     /**

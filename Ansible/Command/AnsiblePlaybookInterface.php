@@ -55,6 +55,22 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function askVaultPass(): AnsiblePlaybookInterface;
 
     /**
+     * Enable privilege escalation
+     *
+     * @return AnsiblePlaybookInterface
+     * @see http://docs.ansible.com/ansible/become.html
+     */
+    public function become(): AnsiblePlaybookInterface;
+
+    /**
+     * Desired become user (default=root).
+     *
+     * @param string $user
+     * @return AnsiblePlaybookInterface
+     */
+    public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface;
+
+    /**
      * Don't make any changes; instead, try to predict some of the changes that may occur.
      *
      * @return AnsiblePlaybookInterface
@@ -84,6 +100,13 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return AnsiblePlaybookInterface
      */
     public function extraVars(string $extraVars = ''): AnsiblePlaybookInterface;
+
+    /**
+     * clear the fact cache
+     *
+     * @return AnsiblePlaybookInterface
+     */
+    public function flushCache(): AnsiblePlaybookInterface;
 
     /**
      * Run handlers even if a task fails.
@@ -144,6 +167,22 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return AnsiblePlaybookInterface
      */
     public function modulePath(array $path = ['/usr/share/ansible/']): AnsiblePlaybookInterface;
+
+    /**
+     * the new vault identity to use for rekey
+     *
+     * @param string $vaultId
+     * @return AnsiblePlaybookInterface
+     */
+    public function newVaultId(string $vaultId): AnsiblePlaybookInterface;
+
+    /**
+     * new vault password file for rekey
+     *
+     * @param string $passwordFile
+     * @return AnsiblePlaybookInterface
+     */
+    public function newVaultPasswordFile(string $passwordFile): AnsiblePlaybookInterface;
 
     /**
      * Disable cowsay
@@ -207,20 +246,36 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function suUser(string $user = 'root'): AnsiblePlaybookInterface;
 
     /**
-     * Enable privilege escalation
+     * specify extra arguments to pass to scp only (e.g. -l)
      *
+     * @param string $scpExtraArgs
      * @return AnsiblePlaybookInterface
-     * @see http://docs.ansible.com/ansible/become.html
      */
-    public function become(): AnsiblePlaybookInterface;
+    public function scpExtraArgs(string $scpExtraArgs): AnsiblePlaybookInterface;
 
     /**
-     * Desired become user (default=root).
+     * specify extra arguments to pass to sftp only (e.g. -f, -l)
      *
-     * @param string $user
+     * @param string $sftpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface;
+    public function sftpExtraArgs(string $sftpExtraArgs): AnsiblePlaybookInterface;
+
+    /**
+     * specify common arguments to pass to sftp/scp/ssh (e.g. ProxyCommand)
+     *
+     * @param string $sshArgs
+     * @return AnsiblePlaybookInterface
+     */
+    public function sshCommonArgs(string $sshArgs): AnsiblePlaybookInterface;
+
+    /**
+     * specify extra arguments to pass to ssh only (e.g. -R)
+     *
+     * @param string $extraArgs
+     * @return AnsiblePlaybookInterface
+     */
+    public function sshExtraArgs(string $extraArgs): AnsiblePlaybookInterface;
 
     /**
      * Perform a syntax check on the playbook, but do not execute it.
@@ -252,6 +307,14 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return AnsiblePlaybookInterface
      */
     public function user(string $user): AnsiblePlaybookInterface;
+
+    /**
+     * the vault identity to use
+     *
+     * @param string $vaultId
+     * @return AnsiblePlaybookInterface
+     */
+    public function vaultId(string $vaultId): AnsiblePlaybookInterface;
 
     /**
      * Vault password file.
