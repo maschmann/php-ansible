@@ -16,6 +16,7 @@ use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
 use Asm\Ansible\Exception\CommandException;
 use Asm\Ansible\Process\ProcessBuilder;
+use Asm\Ansible\Process\ProcessBuilderInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -105,9 +106,9 @@ final class Ansible
 
     /**
      * @param string $prefix base command
-     * @return Process
+     * @return ProcessBuilderInterface
      */
-    private function createProcess(string  $prefix): ProcessBuilder
+    private function createProcess(string  $prefix): ProcessBuilderInterface
     {
         $process = new ProcessBuilder($prefix, $this->ansibleBaseDir);
 
