@@ -300,7 +300,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function colors(bool $colors = true): AnsiblePlaybookInterface
     {
-        $this->processBuilder->setEnv('ANSIBLE_FORCE_COLOR', $colors);
+        $this->processBuilder->setEnv('ANSIBLE_FORCE_COLOR', intval($colors));
     }
 
     /**
