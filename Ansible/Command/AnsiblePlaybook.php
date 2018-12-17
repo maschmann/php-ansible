@@ -381,32 +381,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Enable privilege escalation
-     *
-     * @return AnsiblePlaybookInterface
-     * @see http://docs.ansible.com/ansible/become.html
-     */
-    public function become(): AnsiblePlaybookInterface
-    {
-        $this->addParameter('--become');
-
-        return $this;
-    }
-
-    /**
-     * Desired sudo user (default=root).
-     *
-     * @param string $user
-     * @return AnsiblePlaybookInterface
-     */
-    public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface
-    {
-        $this->addOption('--become-user', $user);
-
-        return $this;
-    }
-
-    /**
      * Perform a syntax check on the playbook, but do not execute it.
      *
      * @return AnsiblePlaybookInterface
