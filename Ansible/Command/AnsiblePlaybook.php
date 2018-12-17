@@ -27,7 +27,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * Executes a command process.
      * Returns either exitcode or string output if no callback is given.
      *
-     * @param null $callback
+     * @param callable|null $callback
      * @return integer|string
      */
     public function execute($callback = null)
