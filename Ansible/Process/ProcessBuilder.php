@@ -37,11 +37,13 @@ class ProcessBuilder implements ProcessBuilderInterface
     private $path;
 
     /**
+
      * @var array
      */
     private $envVars;
 
     /**
+
      * ProcessBuilder constructor.
      *
      * @param string $prefix
@@ -90,6 +92,7 @@ class ProcessBuilder implements ProcessBuilderInterface
     }
 
     /**
+
      * @return Process
      */
     public function getProcess(): Process
