@@ -770,9 +770,9 @@ class AnsibleTest extends AnsibleTestCase
         $exitcode = $command
             ->execute(function ($type, $buffer) {
                 if (Process::ERR === $type) {
-                    echo 'ERR > '.$buffer;
+                    $out = 'ERR > '.$buffer;
                 } else {
-                    echo 'OUT > '.$buffer;
+                    $out = 'OUT > '.$buffer;
                 }
             });
 

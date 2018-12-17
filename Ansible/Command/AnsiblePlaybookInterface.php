@@ -248,34 +248,34 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     /**
      * specify extra arguments to pass to scp only (e.g. -l)
      *
-     * @param string $scpExtraArgs
+     * @param string|array $scpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function scpExtraArgs(string $scpExtraArgs): AnsiblePlaybookInterface;
+    public function scpExtraArgs($scpExtraArgs): AnsiblePlaybookInterface;
 
     /**
      * specify extra arguments to pass to sftp only (e.g. -f, -l)
      *
-     * @param string $sftpExtraArgs
+     * @param string|array $sftpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sftpExtraArgs(string $sftpExtraArgs): AnsiblePlaybookInterface;
+    public function sftpExtraArgs($sftpExtraArgs): AnsiblePlaybookInterface;
 
     /**
      * specify common arguments to pass to sftp/scp/ssh (e.g. ProxyCommand)
      *
-     * @param string $sshArgs
+     * @param string|array $sshArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sshCommonArgs(string $sshArgs): AnsiblePlaybookInterface;
+    public function sshCommonArgs($sshArgs): AnsiblePlaybookInterface;
 
     /**
      * specify extra arguments to pass to ssh only (e.g. -R)
      *
-     * @param string $extraArgs
+     * @param string|array $extraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sshExtraArgs(string $extraArgs): AnsiblePlaybookInterface;
+    public function sshExtraArgs($extraArgs): AnsiblePlaybookInterface;
 
     /**
      * Perform a syntax check on the playbook, but do not execute it.

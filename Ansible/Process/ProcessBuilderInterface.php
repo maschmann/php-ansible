@@ -32,6 +32,13 @@ interface ProcessBuilderInterface
     public function setTimeout(int $timeout): ProcessBuilderInterface;
 
     /**
+     * @param string $name name of ENV VAR
+     * @param string $value
+     * @return ProcessBuilderInterface
+     */
+    public function setEnv(string $name, string $value): ProcessBuilderInterface;
+
+    /**
      * @return Process
      */
     public function getProcess(): Process;

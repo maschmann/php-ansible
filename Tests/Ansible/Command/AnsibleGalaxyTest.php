@@ -37,6 +37,9 @@ class AnsibleGalaxyTest extends AnsibleTestCase
     public function testExecute(AnsibleGalaxyInterface $command)
     {
         $command->execute();
+
+        // if command executes without exception
+        $this->assertTrue(true);
     }
 
     public function testInit()
