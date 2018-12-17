@@ -99,6 +99,32 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * Enable privilege escalation
+     *
+     * @return AnsiblePlaybookInterface
+     * @see http://docs.ansible.com/ansible/become.html
+     */
+    public function become(): AnsiblePlaybookInterface
+    {
+        $this->addParameter('--become');
+
+        return $this;
+    }
+
+    /**
+     * Desired sudo user (default=root).
+     *
+     * @param string $user
+     * @return AnsiblePlaybookInterface
+     */
+    public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface
+    {
+        $this->addOption('--become-user', $user);
+
+        return $this;
+    }
+
+    /**
      * Don't make any changes; instead, try to predict some of the changes that may occur.
      *
      * @return AnsiblePlaybookInterface
@@ -356,32 +382,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Enable privilege escalation
-     *
-     * @return AnsiblePlaybookInterface
-     * @see http://docs.ansible.com/ansible/become.html
-     */
-    public function become(): AnsiblePlaybookInterface
-    {
-        $this->addParameter('--become');
-
-        return $this;
-    }
-
-    /**
-     * Desired sudo user (default=root).
-     *
-     * @param string $user
-     * @return AnsiblePlaybookInterface
-     */
-    public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface
-    {
-        $this->addOption('--become-user', $user);
-
-        return $this;
-    }
-
-    /**
      * Perform a syntax check on the playbook, but do not execute it.
      *
      * @return AnsiblePlaybookInterface
@@ -513,11 +513,12 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * specify extra arguments to pass to scp only (e.g. -l)
      *
-     * @param string $scpExtraArgs
+     * @param string|array $scpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function scpExtraArgs(string $scpExtraArgs): AnsiblePlaybookInterface
+    public function scpExtraArgs($scpExtraArgs): AnsiblePlaybookInterface
     {
+        $scpExtraArgs = $this->checkParam($scpExtraArgs, ',');
         $this->addOption('--scp-extra-args', $scpExtraArgs);
 
         return $this;
@@ -526,11 +527,12 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * specify extra arguments to pass to sftp only (e.g. -f, -l)
      *
-     * @param string $sftpExtraArgs
+     * @param string|array $sftpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sftpExtraArgs(string $sftpExtraArgs): AnsiblePlaybookInterface
+    public function sftpExtraArgs($sftpExtraArgs): AnsiblePlaybookInterface
     {
+        $sftpExtraArgs = $this->checkParam($sftpExtraArgs, ',');
         $this->addOption('--sftp-extra-args', $sftpExtraArgs);
 
         return $this;
@@ -539,11 +541,13 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * specify common arguments to pass to sftp/scp/ssh (e.g. ProxyCommand)
      *
-     * @param string $sshArgs
+     * @param string|array $sshArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sshCommonArgs(string $sshArgs): AnsiblePlaybookInterface
+    public function sshCommonArgs($sshArgs): AnsiblePlaybookInterface
     {
+        $sshArgs = $this->checkParam($sshArgs, ',');
+
         $this->addOption('--ssh-common-args', $sshArgs);
 
         return $this;
@@ -552,11 +556,12 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * specify extra arguments to pass to ssh only (e.g. -R)
      *
-     * @param string $extraArgs
+     * @param string|array $extraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sshExtraArgs(string $extraArgs): AnsiblePlaybookInterface
+    public function sshExtraArgs($extraArgs): AnsiblePlaybookInterface
     {
+        $extraArgs = $this->checkParam($extraArgs, ',');
         $this->addOption('--ssh-extra-args', $extraArgs);
 
         return $this;

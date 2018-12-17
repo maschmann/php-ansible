@@ -38,6 +38,7 @@ class ProcessBuilderTest extends AnsibleTestCase
     {
         $process = $processBuilder
             ->setArguments([])
+            ->setEnv('SOME', 'value')
             ->setTimeout(5)
             ->getProcess();
 

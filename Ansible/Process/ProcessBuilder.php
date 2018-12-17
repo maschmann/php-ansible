@@ -37,6 +37,11 @@ class ProcessBuilder implements ProcessBuilderInterface
     private $path;
 
     /**
+     * @var array
+     */
+    private $envVars;
+
+    /**
      * ProcessBuilder constructor.
      *
      * @param string $prefix
@@ -47,6 +52,7 @@ class ProcessBuilder implements ProcessBuilderInterface
         $this->arguments = [$prefix];
         $this->path = $path;
         $this->timeout = 900;
+        $this->envVars = [];
     }
 
     /**
@@ -72,6 +78,18 @@ class ProcessBuilder implements ProcessBuilderInterface
     }
 
     /**
+     * @param string $name name of ENV VAR
+     * @param string $value
+     * @return ProcessBuilderInterface
+     */
+    public function setEnv(string $name, string $value): ProcessBuilderInterface
+    {
+        $this->envVars[$name] = $value;
+
+        return $this;
+    }
+
+    /**
      * @return Process
      */
     public function getProcess(): Process
@@ -81,6 +99,8 @@ class ProcessBuilder implements ProcessBuilderInterface
                 $this->arguments,
                 $this->path
             )
-        )->setTimeout($this->timeout);
+        )
+        ->setTimeout($this->timeout)
+        ->setEnv($this->envVars);
     }
 }
