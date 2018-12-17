@@ -325,7 +325,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function skipTags($tags = ''): AnsiblePlaybookInterface
     {
         $tags = $this->checkParam($tags, ',');
-
         $this->addOption('--skip-tags', $tags);
 
         return $this;
@@ -402,7 +401,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function tags($tags): AnsiblePlaybookInterface
     {
         $tags = $this->checkParam($tags, ',');
-
         $this->addOption('--tags', $tags);
 
         return $this;
