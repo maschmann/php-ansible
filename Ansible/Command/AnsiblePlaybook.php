@@ -168,7 +168,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars($extraVars = ''): AnsiblePlaybookInterface
+    public function extraVars(string $extraVars = ''): AnsiblePlaybookInterface
     {
         $extraVars = $this->checkParam($extraVars, ' ');
         $this->addOption('--extra-vars', $extraVars);
@@ -194,7 +194,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param int $forks
      * @return AnsiblePlaybookInterface
      */
-    public function forks($forks = 5): AnsiblePlaybookInterface
+    public function forks(int $forks = 5): AnsiblePlaybookInterface
     {
         $this->addOption('--forks', $forks);
 
@@ -219,7 +219,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string $inventory filename for hosts file
      * @return AnsiblePlaybookInterface
      */
-    public function inventoryFile($inventory = '/etc/ansible/hosts'): AnsiblePlaybookInterface
+    public function inventoryFile(string $inventory = '/etc/ansible/hosts'): AnsiblePlaybookInterface
     {
         $this->addOption('--inventory-file', $inventory);
         $this->hasInventory = true;
@@ -272,7 +272,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param array $path list of paths for modules
      * @return AnsiblePlaybookInterface
      */
-    public function modulePath($path = ['/usr/share/ansible/']): AnsiblePlaybookInterface
+    public function modulePath(array $path = ['/usr/share/ansible/']): AnsiblePlaybookInterface
     {
         $this->addOption('--module-path', implode(',', $path));
 

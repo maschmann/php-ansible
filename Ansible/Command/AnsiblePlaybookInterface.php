@@ -213,7 +213,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param array|string $tags list of tags to skip
      * @return AnsiblePlaybookInterface
      */
-    public function skipTags(string $tags = ''): AnsiblePlaybookInterface;
+    public function skipTags($tags = ''): AnsiblePlaybookInterface;
 
     /**
      * Start the playbook at the task matching this name.
