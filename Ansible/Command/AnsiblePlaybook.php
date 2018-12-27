@@ -142,7 +142,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string $connection
      * @return AnsiblePlaybookInterface
      */
-    public function connection($connection = 'smart'): AnsiblePlaybookInterface
+    public function connection(string $connection = 'smart'): AnsiblePlaybookInterface
     {
         $this->addOption('--connection', $connection);
 
