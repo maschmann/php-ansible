@@ -99,7 +99,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars(string $extraVars = ''): AnsiblePlaybookInterface;
+    public function extraVars($extraVars = ''): AnsiblePlaybookInterface;
 
     /**
      * clear the fact cache

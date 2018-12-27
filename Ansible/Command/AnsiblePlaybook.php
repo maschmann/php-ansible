@@ -168,7 +168,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars(string $extraVars = ''): AnsiblePlaybookInterface
+    public function extraVars($extraVars = ''): AnsiblePlaybookInterface
     {
         $extraVars = $this->checkParam($extraVars, ' ');
         $this->addOption('--extra-vars', $extraVars);
@@ -301,6 +301,8 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function colors(bool $colors = true): AnsiblePlaybookInterface
     {
         $this->processBuilder->setEnv('ANSIBLE_FORCE_COLOR', intval($colors));
+
+        return $this;
     }
 
     /**
