@@ -99,7 +99,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars(string $extraVars = ''): AnsiblePlaybookInterface;
+    public function extraVars($extraVars = ''): AnsiblePlaybookInterface;
 
     /**
      * clear the fact cache
@@ -213,7 +213,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param array|string $tags list of tags to skip
      * @return AnsiblePlaybookInterface
      */
-    public function skipTags(string $tags = ''): AnsiblePlaybookInterface;
+    public function skipTags($tags = ''): AnsiblePlaybookInterface;
 
     /**
      * Start the playbook at the task matching this name.
