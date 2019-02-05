@@ -63,7 +63,11 @@ class ProcessBuilder implements ProcessBuilderInterface
      */
     public function setArguments(array $arguments): ProcessBuilderInterface
     {
-        $this->arguments = $arguments;
+        if (!empty($this->arguments)) {
+            $this->arguments = array_merge($this->arguments, $arguments);
+        } else {
+            $this->arguments = $arguments;
+        }
 
         return $this;
     }
