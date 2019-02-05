@@ -37,12 +37,15 @@ class ProcessBuilderTest extends AnsibleTestCase
     public function testGetProcess(ProcessBuilderInterface $processBuilder)
     {
         $process = $processBuilder
-            ->setArguments([])
+            ->setArguments(['more_args'])
             ->setEnv('SOME', 'value')
             ->setTimeout(5)
             ->getProcess();
 
         $this->assertInstanceOf(Process::class, $process);
+
+        // verify, all args are kept and merged correctly
+        $this->assertEquals("'{$this->getGalaxyUri()}' 'more_args'", $process->getCommandLine());
     }
 }
 
