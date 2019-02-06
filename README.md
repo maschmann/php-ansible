@@ -118,6 +118,10 @@ Default process timeout is set to 300 seconds. If you need more time to execute 
         ...
 ```
 
+### thank you for your contributions!
+thank you for reviewing, bug reporting, suggestions and PRs :-)
+[xabbuh](https://github.com/xabbuh), [emielmolenaar](https://github.com/emielmolenaar), [saverio](https://github.com/saverio), [soupdiver](https://github.com/soupdiver), [linaori](https://github.com/linaori), [paveldanilin](https://github.com/paveldanilin)
+
 license
 ----
 
