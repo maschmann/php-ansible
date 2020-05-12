@@ -1,6 +1,18 @@
+# Generic exclusions
+.idea/
+.DS_Store
+
 # dirs
 vendor
 tmp
 
 #files
 composer.lock
+
+# Unit Test files
+.phpunit.result.cache
+Tests/data/**
+!Tests/data/.43905164-f3ed-462d-9536-bf6e96583523
+!Tests/data/cache/.empty
+!Tests/data/logs/.empty
+!Tests/data/temp/.empty

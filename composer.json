@@ -1,27 +1,40 @@
 {
-  "name": "asm/php-ansible",
-  "description": "php wrapper for ansible commands",
-  "keywords": ["php", "ansible"],
-  "homepage": "https://github.com/maschmann/php-ansible",
-  "type": "library",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Marc Aschmann",
-      "email": "maschmann@gmail.com"
+    "name": "asm/php-ansible",
+    "description": "php wrapper for ansible commands",
+    "keywords": [
+        "php",
+        "ansible"
+    ],
+    "homepage": "https://github.com/maschmann/php-ansible",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marc Aschmann",
+            "email": "maschmann@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1.0",
+        "symfony/process": "^4.0|^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "mikey179/vfsstream": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Asm\\": "Asm"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Asm\\": "Tests/Asm"
+        }
+    },
+    "scripts": {
+        "test": [
+            "phpunit --configuration phpunit.xml.dist"
+        ]
     }
-  ],
-  "require": {
-    "php": "^7.1.0",
-    "symfony/process": "^4.0|^5.0"
-  },
-  "require-dev": {
-    "phpunit\/phpunit": "^7.0",
-    "mikey179/vfsStream": "^1.6"
-  },
-  "autoload": {
-    "psr-4": {
-      "Asm\\": ""
-    }
-  }
 }
