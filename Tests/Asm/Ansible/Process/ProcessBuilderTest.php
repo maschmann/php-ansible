@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace Asm\Ansible\Process;
 
-use Asm\Ansible\Process\ProcessBuilder;
-use Asm\Ansible\Process\ProcessBuilderInterface;
 use Asm\Ansible\Testing\AnsibleTestCase;
 use Symfony\Component\Process\Process;
 

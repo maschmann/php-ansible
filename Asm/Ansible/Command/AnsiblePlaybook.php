@@ -163,13 +163,48 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Set additional variables as array [ 'key' => 'value' ] or string.
+     * Sends extra variables to Ansible. The $extraVars parameter can be one of the following.
+     *
+     * ## Array
+     * If an array is passed, it must contain the [ 'key' => 'value' ] pairs of the variables.
+     *
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->extraVars(['path' => 'some/path']);
+     * ```
+     *
+     * ## File
+     * As Ansible also supports extra vars loaded from an YML file, you can also pass a file path.
+     *
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->extraVars('/path/to/extra/vars.yml');
+     * ```
+     *
+     * ## String
+     * You can also pass the raw extra vars string directly.
+
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->extraVars('path=/some/path');
+     * ```
      *
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars($extraVars = ''): AnsiblePlaybookInterface
+    public function extraVars($extraVars=''): AnsiblePlaybookInterface
     {
+        if (empty($extraVars))
+            return $this;
+
+        if (is_array($extraVars)){
+            $vars = '';
+            foreach ($extraVars as $key => $value){
+
+            }
+        }
+
+
         $extraVars = $this->checkParam($extraVars, ' ');
         $this->addOption('--extra-vars', $extraVars);
 

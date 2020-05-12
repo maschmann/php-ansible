@@ -12,6 +12,8 @@ namespace Asm\Ansible\Command;
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Testing\AnsibleTestCase;
 use Asm\Ansible\Utils\Env;
+use DateTime;
+use Exception;
 use Symfony\Component\Process\Process;
 
 class AnsiblePlaybookTest extends AnsibleTestCase
@@ -33,11 +35,11 @@ class AnsiblePlaybookTest extends AnsibleTestCase
      * @depends testCreateInstance
      * @param AnsiblePlaybookInterface $command
      * @return AnsiblePlaybookInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDefaultDeployment(AnsiblePlaybookInterface $command)
     {
-        $today = new \DateTime();
+        $today = new DateTime();
 
         $command
             ->play($this->getPlayUri())
@@ -654,7 +656,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--new-vault-password-file=/path/to/vault', $arguments);
 
-        return $command;;
+        return $command;
     }
 
     /**
