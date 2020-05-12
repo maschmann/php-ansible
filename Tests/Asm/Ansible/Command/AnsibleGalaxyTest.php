@@ -9,8 +9,6 @@
  */
 namespace Asm\Ansible\Command;
 
-use Asm\Ansible\Command\AnsibleGalaxy;
-use Asm\Ansible\Command\AnsibleGalaxyInterface;
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Testing\AnsibleTestCase;
 use Asm\Ansible\Utils\Env;
