@@ -9,11 +9,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Asm\Ansible\Test\Process;
+namespace Asm\Ansible\Process;
 
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Process\ProcessBuilderInterface;
-use Asm\Test\AnsibleTestCase;
+use Asm\Ansible\Testing\AnsibleTestCase;
 use Symfony\Component\Process\Process;
 
 class ProcessBuilderTest extends AnsibleTestCase
@@ -45,7 +45,7 @@ class ProcessBuilderTest extends AnsibleTestCase
         $this->assertInstanceOf(Process::class, $process);
 
         // verify, all args are kept and merged correctly
-        $this->assertEquals("'{$this->getGalaxyUri()}' 'more_args'", $process->getCommandLine());
+        $this->assertEquals("\"{$this->getGalaxyUri()}\" more_args", $process->getCommandLine());
     }
 }
 

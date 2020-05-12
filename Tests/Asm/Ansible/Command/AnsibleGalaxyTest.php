@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Asm\Tests\Ansible\Command;
+namespace Asm\Ansible\Command;
 
 use Asm\Ansible\Command\AnsibleGalaxy;
 use Asm\Ansible\Command\AnsibleGalaxyInterface;
 use Asm\Ansible\Process\ProcessBuilder;
-use Asm\Test\AnsibleTestCase;
-use org\bovigo\vfs\vfsStream;
+use Asm\Ansible\Testing\AnsibleTestCase;
+use Asm\Ansible\Utils\Env;
 
 class AnsibleGalaxyTest extends AnsibleTestCase
 {
@@ -36,6 +36,9 @@ class AnsibleGalaxyTest extends AnsibleTestCase
      */
     public function testExecute(AnsibleGalaxyInterface $command)
     {
+        if (Env::isWindows())
+            $this->markTestSkipped('Skipped on Windows');
+
         $command->execute();
 
         // if command executes without exception

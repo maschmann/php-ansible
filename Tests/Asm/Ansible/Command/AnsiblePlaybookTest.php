@@ -7,16 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Asm\Tests\Ansible\Command;
+namespace Asm\Ansible\Command;
 
-use Asm\Ansible\Command\AnsiblePlaybook;
-use Asm\Ansible\Command\AnsiblePlaybookInterface;
 use Asm\Ansible\Process\ProcessBuilder;
-use Asm\Test\AnsibleTestCase;
-use SebastianBergmann\Comparator\DateTimeComparator;
+use Asm\Ansible\Testing\AnsibleTestCase;
+use Asm\Ansible\Utils\Env;
 use Symfony\Component\Process\Process;
 
-class AnsibleTest extends AnsibleTestCase
+class AnsiblePlaybookTest extends AnsibleTestCase
 {
     /**
      * @return AnsiblePlaybookInterface
@@ -767,6 +765,9 @@ class AnsibleTest extends AnsibleTestCase
      */
     public function testExecuteWithCallback(AnsiblePlaybookInterface $command)
     {
+        if (Env::isWindows())
+            $this->markTestSkipped('Skipped on Windows');
+
         $exitcode = $command
             ->execute(function ($type, $buffer) {
                 if (Process::ERR === $type) {
