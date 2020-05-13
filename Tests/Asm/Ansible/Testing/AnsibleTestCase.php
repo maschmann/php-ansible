@@ -44,7 +44,7 @@ abstract class AnsibleTestCase extends TestCase
     /**
      * default setup
      */
-    protected function setUp()
+    protected function setUp():void
     {
         $this->createProjectStructure();
     }
