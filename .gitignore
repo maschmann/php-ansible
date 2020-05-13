@@ -6,8 +6,6 @@
 vendor
 tmp
 
-#files
-composer.lock
 
 # Unit Test files
 .phpunit.result.cache

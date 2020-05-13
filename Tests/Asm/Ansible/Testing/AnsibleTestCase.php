@@ -194,4 +194,35 @@ EOT;
         return implode('/', [$this->getAssetsPath(), 'bin']);
     }
 
+    /**
+     * Returns the assets path.
+     * @return string
+     */
+    protected function getSamplesPath(): string
+    {
+        return implode('/', [$this->getAssetsPath(), 'samples']);
+    }
+
+    /**
+     * Returns the assets path for a given class.
+     *
+     * Example:
+     * ```php
+     * $path = $this->getSamplesPathFor(Ansible::class);
+     *
+     * // Returns
+     * // /your/project/pathTests/samples/Asm/Ansible
+     * ```
+     *
+     * @param string $class The class FQN. E.g. Asm\Ansibe\Ansible
+     * @return string
+     */
+    protected function getSamplesPathFor(string $class): string
+    {
+        return implode('/', [$this->getSamplesPath(), str_replace('\\', '/', $class)]);
+    }
+
+
+
+
 }
