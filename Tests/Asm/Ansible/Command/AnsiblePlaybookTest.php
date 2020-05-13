@@ -834,6 +834,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $process = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
         foreach ($tests as $test) {
+
             $input = $test['input'];
             $expect = $test['expect'];
 
@@ -871,6 +872,44 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             catch (InvalidArgumentException $ignored) {
 
             }
+        }
+    }
+
+    public function testInventory()
+    {
+        $tests = [
+            [
+                'input' => [],
+                'expect' => false,
+            ],
+            [
+                'input' => ['localhost'],
+                'expect' => '--inventory="localhost,"',
+            ],
+            [
+                'input' => ['localhost', 'host1'],
+                'expect' => '--inventory="localhost, host1"',
+            ],
+
+        ];
+
+        $process = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
+        foreach ($tests as $test) {
+
+            $input = $test['input'];
+            $expect = $test['expect'];
+
+            $ansible = new AnsiblePlaybook($process);
+            $ansible->inventory($input);
+            $arguments = array_flip($ansible->getCommandlineArguments());
+
+            // Handles cases when the --inventory params should be missing.
+            if ($expect === false) {
+                $this->assertArrayNotHasKey('--inventory', $arguments);
+                continue;
+            }
+
+            $this->assertArrayHasKey($expect, $arguments);
         }
     }
 

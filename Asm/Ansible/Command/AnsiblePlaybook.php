@@ -165,34 +165,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Sends extra variables to Ansible. The $extraVars parameter can be one of the following.
-     *
-     * ## Array
-     * If an array is passed, it must contain the [ 'key' => 'value' ] pairs of the variables.
-     *
-     * Example:
-     * ```php
-     * $ansible = new Ansible()->extraVars(['path' => 'some/path']);
-     * ```
-     *
-     * ## File
-     * As Ansible also supports extra vars loaded from an YML file, you can also pass a file path.
-     *
-     * Example:
-     * ```php
-     * $ansible = new Ansible()->extraVars('/path/to/extra/vars.yml');
-     * ```
-     *
-     * ## String
-     * You can also pass the raw extra vars string directly.
-
-     * Example:
-     * ```php
-     * $ansible = new Ansible()->extraVars('path=/some/path');
-     * ```
-     *
-     * @param string|array $extraVars
-     * @return AnsiblePlaybookInterface
+     * @inheritDoc
      */
     public function extraVars($extraVars=''): AnsiblePlaybookInterface
     {
@@ -281,6 +254,30 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function inventoryFile(string $inventory = '/etc/ansible/hosts'): AnsiblePlaybookInterface
     {
         $this->addOption('--inventory-file', $inventory);
+        $this->hasInventory = true;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function inventory(array $hosts = []): AnsiblePlaybookInterface
+    {
+        if (empty($hosts))
+            return $this;
+
+        // In order to let ansible-playbook understand that the given option is a list of hosts, the list must end by
+        // comma "," if it contains just an entry. For example, supposing just a single host, "localhosts":
+        //
+        //   Wrong: --inventory="locahost"
+        // Correct: --inventory="locahost,"
+        $hostList = implode(', ', $hosts);
+
+        if (count($hosts) === 1)
+            $hostList .= ',';
+
+        $this->addOption('--inventory', sprintf('"%s"', $hostList));
         $this->hasInventory = true;
 
         return $this;
