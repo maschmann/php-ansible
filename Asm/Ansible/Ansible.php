@@ -17,6 +17,7 @@ use Asm\Ansible\Command\AnsiblePlaybookInterface;
 use Asm\Ansible\Exception\CommandException;
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Process\ProcessBuilderInterface;
+use Asm\Ansible\Utils\Env;
 
 /**
  * Ansible command factory
@@ -123,19 +124,25 @@ final class Ansible
     private function checkCommand(string $command, string $default): string
     {
         // normally ansible is in /usr/local/bin/*
-        if ('' === $command) {
-            if (null !== shell_exec('which ' . $default)) {
-                $command = $default;
-            } else { // not testable without ansible installation
-                throw new CommandException('No ' . $default . ' executable present in PATH!');
+        if (empty($command)) {
+            if (Env::isWindows())
+                return $default;
+
+            // not testable without ansible installation
+            if (null === shell_exec('which ' . $default)) {
+                throw new CommandException(sprintf('No "%s" executable present in PATH!', $default));
             }
-        } else {
-            if (!is_file($command)) {
-                throw new CommandException('Command ' . $command . ' does not exist!');
-            }
-            if (!is_executable($command)) {
-                throw new CommandException('Command ' . $command . ' is not executable!');
-            }
+
+            return $default;
+        }
+
+        // Here: we have a given command, just need to check it exists and it's executable
+        if (!is_file($command)) {
+            throw new CommandException(sprintf('Command "%s" does not exist!', $command));
+        }
+
+        if (!$this->isExecutable($command)) {
+            throw new CommandException(sprintf('Command "%s" is not executable!', $command));
         }
 
         return $command;
@@ -153,5 +160,25 @@ final class Ansible
         }
 
         return $dir;
+    }
+
+    /**
+     * @param string $command
+     * @return bool
+     */
+    private function isExecutable($command): bool
+    {
+        if (empty($command))
+            return false;
+
+        if (!Env::isWindows())
+            return is_executable($command);
+
+        foreach (['exe', 'com','bat','cmd','ps1'] as $ext){
+            if (strtolower(substr($command, -3,3))=== $ext)
+                return true;
+        }
+
+        return false;
     }
 }

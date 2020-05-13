@@ -8,8 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Asm\Test;
+namespace Asm\Ansible\Testing;
 
+use Asm\Ansible\Utils\Env;
+use LogicException;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
@@ -18,24 +20,26 @@ use PHPUnit\Framework\TestCase;
  * Class AnsibleTestCase
  *
  * @package Asm\Test
- * @author Marc Aschmann <maschmann@gmail.com>
+ * @author  Marc Aschmann <maschmann@gmail.com>
  */
 abstract class AnsibleTestCase extends TestCase
 {
     /**
-     * @var \org\bovigo\vfs\vfsStreamFile
+     * @var vfsStreamFile
      */
     protected $ansiblePlaybook;
-
     /**
-     * @var \org\bovigo\vfs\vfsStreamFile
+     * @var vfsStreamFile
      */
     protected $ansibleGalaxy;
-
     /**
      * @var
      */
     protected $project;
+    /**
+     * @var string|null
+     */
+    protected $testRootPath = null;
 
     /**
      * default setup
@@ -91,7 +95,11 @@ abstract class AnsibleTestCase extends TestCase
      */
     protected function getPlaybookUri()
     {
-        return './Test/ansible-playbook';
+        Env::isWindows() ?
+            $command = 'ansible-playbook.bat' :
+            $command = 'ansible-playbook';
+
+        return implode('/', [$this->getAssetsBinPath(), $command]);
     }
 
     /**
@@ -99,7 +107,11 @@ abstract class AnsibleTestCase extends TestCase
      */
     protected function getGalaxyUri()
     {
-        return './Test/ansible-galaxy';
+        Env::isWindows() ?
+            $command = 'ansible-galaxy.bat' :
+            $command = 'ansible-galaxy';
+
+        return implode('/', [$this->getAssetsBinPath(), $command]);
     }
 
     /**
@@ -146,4 +158,40 @@ EOT;
 127.0.0.1
 EOT;
     }
+
+    /**
+     * Returns the absolute path of the Tests/ folder
+     * @return string
+     */
+    protected function getTestRootPath(): string
+    {
+        if ($this->testRootPath === null) {
+            $this->testRootPath = realpath(__DIR__ . str_repeat('/..', 3));
+            if ($this->testRootPath === false) {
+                throw new LogicException('Cannot identify the Tests/ root path.');
+            }
+            $this->testRootPath = str_replace('\\', '/', $this->testRootPath);
+        }
+
+        return $this->testRootPath;
+    }
+
+    /**
+     * Returns the assets path.
+     * @return string
+     */
+    protected function getAssetsPath(): string
+    {
+        return implode('/', [$this->getTestRootPath(), 'assets']);
+    }
+
+    /**
+     * Returns the assets path.
+     * @return string
+     */
+    protected function getAssetsBinPath(): string
+    {
+        return implode('/', [$this->getAssetsPath(), 'bin']);
+    }
+
 }
