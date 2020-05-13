@@ -209,16 +209,16 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             return $this;
         }
 
-        // At this point, the only allowed type is string.
-        if (!is_string($extraVars))
-            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
-
-
         // Should we consider $extraVars as a JSON/YML file?
         if (@is_file($extraVars)) {
             $this->addOption('--extra-vars', sprintf('@"%s"', $extraVars));
             return $this;
         }
+
+        // At this point, the only allowed type is string.
+        if (!is_string($extraVars))
+            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
+
 
         if (strpos($extraVars, '=') === false) {
             throw new InvalidArgumentException('The extra vars raw string should be in the "key=value" form.');
