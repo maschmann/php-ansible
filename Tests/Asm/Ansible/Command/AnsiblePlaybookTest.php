@@ -14,6 +14,7 @@ use Asm\Ansible\Testing\AnsibleTestCase;
 use Asm\Ansible\Utils\Env;
 use DateTime;
 use Exception;
+use InvalidArgumentException;
 use Symfony\Component\Process\Process;
 
 class AnsiblePlaybookTest extends AnsibleTestCase
@@ -26,7 +27,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $process = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
         $ansible = new AnsiblePlaybook($process);
 
-        $this->assertInstanceOf('\Asm\Ansible\Command\AnsiblePlaybook', $ansible);
+        $this->assertInstanceOf(AnsiblePlaybook::class, $ansible);
 
         return $ansible;
     }
@@ -767,8 +768,11 @@ class AnsiblePlaybookTest extends AnsibleTestCase
      */
     public function testExecuteWithCallback(AnsiblePlaybookInterface $command)
     {
-        if (Env::isWindows())
-            $this->markTestSkipped('Skipped on Windows');
+        // Skipped on Windows
+        if (Env::isWindows()) {
+            $this->assertTrue(true);
+            return;
+        }
 
         $exitcode = $command
             ->execute(function ($type, $buffer) {
@@ -777,6 +781,8 @@ class AnsiblePlaybookTest extends AnsibleTestCase
                 } else {
                     $out = 'OUT > '.$buffer;
                 }
+                // Silly assert, just to remove the unused warning.
+                $this->assertNotNull($out);
             });
 
         $this->assertTrue(is_integer($exitcode));
@@ -792,6 +798,80 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             ->execute(null);
 
         $this->assertTrue(is_string($result));
+    }
+
+    public function testExtraVars()
+    {
+        $playbookFile = $this->getSamplesPathFor(AnsiblePlaybook::class) . '/playbook1.yml';
+
+        $tests = [
+            [
+                'input' => '',
+                'expect' => false,
+            ],
+            [
+                'input' => [],
+                'expect' => false,
+            ],
+            [
+                'input' => ['key' => 'value'],
+                'expect' => '--extra-vars="key=value"',
+            ],
+            [
+                'input' => ['key1' => 'value1', 'key2' => 'value2'],
+                'expect' => '--extra-vars="key1=value1 key2=value2"',
+            ],
+            [
+                'input' => 'key=value',
+                'expect' => '--extra-vars="key=value"',
+            ],
+            [
+                'input' => $playbookFile,
+                'expect' => sprintf('--extra-vars=@"%s"', $playbookFile),
+            ],
+        ];
+
+
+        $process = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
+        foreach ($tests as $test) {
+            $input = $test['input'];
+            $expect = $test['expect'];
+
+            $ansible = new AnsiblePlaybook($process);
+            $ansible->extraVars($input);
+            $arguments = array_flip($ansible->getCommandlineArguments());
+
+            // Handles cases when the --extra-vars params should be missing.
+            if ($expect === false) {
+                $this->assertArrayNotHasKey('--extra-vars', $arguments);
+                continue;
+            }
+
+            $this->assertArrayHasKey($expect, $arguments);
+        }
+
+
+        // Testing exceptions
+        // ------------------
+        // The following tests should throw an InvalidArgumentException
+
+        $tests = [
+            'string without equals',
+            new DateTime()
+        ];
+
+        foreach ($tests as $input) {
+            try {
+                $ansible = new AnsiblePlaybook($process);
+                $ansible->extraVars($input);
+
+                // We should never reach this line!
+                $this->fail(sprintf('Failing asserting that %s exception has been thrown', InvalidArgumentException::class));
+            }
+            catch (InvalidArgumentException $ignored) {
+
+            }
+        }
     }
 
 }

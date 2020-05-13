@@ -10,6 +10,8 @@
 
 namespace Asm\Ansible\Command;
 
+use InvalidArgumentException;
+
 /**
  * Class AnsiblePlaybook
  *
@@ -197,17 +199,39 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         if (empty($extraVars))
             return $this;
 
+        // Building the key=>value parameter
         if (is_array($extraVars)){
-            $vars = '';
+            $vars = [];
             foreach ($extraVars as $key => $value){
-
+                $vars[] = sprintf('%s=%s', $key, $value);
             }
+            $this->addOption('--extra-vars', sprintf('"%s"', implode(' ', $vars)));
+            return $this;
         }
 
+        // At this point, the only allowed type is string.
+        if (!is_string($extraVars))
+            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
 
-        $extraVars = $this->checkParam($extraVars, ' ');
+
+        // Should we consider $extraVars as a JSON/YML file?
+        if (@is_file($extraVars)) {
+            $this->addOption('--extra-vars', sprintf('@"%s"', $extraVars));
+            return $this;
+        }
+
+        if (strpos($extraVars, '=') === false) {
+            throw new InvalidArgumentException('The extra vars raw string should be in the "key=value" form.');
+        }
+
+        // Here: we have a plain variable=value string
+        if (substr($extraVars, 0, 1) !== '"')
+            $extraVars = '"' . $extraVars;
+
+        if (substr($extraVars, -1, 1) !== '"')
+            $extraVars = $extraVars . '"';
+
         $this->addOption('--extra-vars', $extraVars);
-
         return $this;
     }
 
