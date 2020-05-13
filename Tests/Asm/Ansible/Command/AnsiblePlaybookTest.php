@@ -873,7 +873,6 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             }
         }
 
-
         // Testing multiple params instances
         // (see https://github.com/metagusto/php-ansible/issues/7)
         // ------------------------------------------------------

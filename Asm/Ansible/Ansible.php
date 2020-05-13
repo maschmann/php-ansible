@@ -181,8 +181,8 @@ final class Ansible implements LoggerAwareInterface
         if (!Env::isWindows())
             return is_executable($command);
 
-        foreach (['exe', 'com','bat','cmd','ps1'] as $ext){
-            if (strtolower(substr($command, -3,3))=== $ext)
+        foreach (['exe', 'com', 'bat', 'cmd', 'ps1'] as $ext) {
+            if (strtolower(substr($command, -3, 3)) === $ext)
                 return true;
         }
 

@@ -34,7 +34,7 @@ abstract class AbstractAnsibleCommand
     protected $processBuilder;
 
     /**
-     * @var array
+     * @var Option[]
      */
     private $options;
 
@@ -90,7 +90,7 @@ abstract class AbstractAnsibleCommand
      */
     protected function addOption(string $name, string $value): void
     {
-        $this->options[$name] = $value;
+        $this->options[] = new Option($name, $value);
     }
 
     /**
@@ -112,8 +112,8 @@ abstract class AbstractAnsibleCommand
     {
         $options = [];
 
-        foreach ($this->options as $name => $value) {
-            $options[] = $name . '=' . $value;
+        foreach ($this->options as $option) {
+            $options[] = $option->toString();
         }
 
         return $options;
