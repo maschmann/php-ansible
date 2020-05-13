@@ -1,6 +1,7 @@
 {
     "name": "asm/php-ansible",
-    "description": "php wrapper for ansible commands",
+    "description": "A PHP wrapper for Ansible.",
+    "version": "2.0.1-dev",
     "keywords": [
         "php",
         "ansible"
