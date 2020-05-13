@@ -285,6 +285,24 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
 
         return $this;
     }
+    /**
+     * Specify inventory host list manually.
+     * Example:
+     *
+     * ```php
+     * $ansible = new Ansible()->extraVars('/path/to/extra/vars.yml');
+     * ```
+     *
+     * @param array $hosts An array containing the list of hosts.
+     * @return AnsiblePlaybookInterface
+     */
+    public function inventory(array $hosts=[]): AnsiblePlaybookInterface
+    {
+//        $this->addOption('--inventory-file', $inventory);
+//        $this->hasInventory = true;
+
+        return $this;
+    }
 
     /**
      * Further limit selected hosts to an additional pattern.
