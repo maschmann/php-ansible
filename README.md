@@ -37,6 +37,17 @@ $ansible = new Ansible(
 );
 ```
 
+You can also pass any PSR compliant logging class to have further details logged. This is **especially useful to have the actual run command logged**.
+
+```php
+$ansible = new Ansible(
+    '/path/to/ansible/deployment'
+);
+
+// $logger is a PSR-compliant logging implementation (e.g. monolog)
+$ansible->setLogger($logger);
+```
+
 
 
 ### Playbooks

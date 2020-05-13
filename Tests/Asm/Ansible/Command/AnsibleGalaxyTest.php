@@ -12,6 +12,7 @@ namespace Asm\Ansible\Command;
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Testing\AnsibleTestCase;
 use Asm\Ansible\Utils\Env;
+use Psr\Log\NullLogger;
 
 class AnsibleGalaxyTest extends AnsibleTestCase
 {
