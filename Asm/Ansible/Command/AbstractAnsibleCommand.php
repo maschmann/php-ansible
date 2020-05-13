@@ -11,6 +11,9 @@
 namespace Asm\Ansible\Command;
 
 use Asm\Ansible\Process\ProcessBuilderInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Class AbstractAnsibleCommand
@@ -20,6 +23,10 @@ use Asm\Ansible\Process\ProcessBuilderInterface;
  */
 abstract class AbstractAnsibleCommand
 {
+    /**
+     * Adds a local $logger instance and the setter.
+     */
+    use LoggerAwareTrait;
     /**
      * @var ProcessBuilderInterface
      */
@@ -42,13 +49,15 @@ abstract class AbstractAnsibleCommand
 
     /**
      * @param ProcessBuilderInterface $processBuilder
+     * @param LoggerInterface|null         $logger
      */
-    public function __construct(ProcessBuilderInterface $processBuilder)
+    public function __construct(ProcessBuilderInterface $processBuilder, LoggerInterface $logger = null)
     {
         $this->processBuilder = $processBuilder;
         $this->options = [];
         $this->parameters = [];
         $this->baseOptions = [];
+        $this->setLogger($logger ?? new NullLogger());
     }
 
     /**
