@@ -832,13 +832,13 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         ];
 
 
-        $process = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
+        $builder = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
         foreach ($tests as $test) {
 
             $input = $test['input'];
             $expect = $test['expect'];
 
-            $ansible = new AnsiblePlaybook($process);
+            $ansible = new AnsiblePlaybook($builder);
             $ansible->extraVars($input);
             $arguments = array_flip($ansible->getCommandlineArguments());
 
@@ -863,7 +863,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         foreach ($tests as $input) {
             try {
-                $ansible = new AnsiblePlaybook($process);
+                $ansible = new AnsiblePlaybook($builder);
                 $ansible->extraVars($input);
 
                 // We should never reach this line!
@@ -893,13 +893,13 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         ];
 
-        $process = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
+        $builder = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
         foreach ($tests as $test) {
 
             $input = $test['input'];
             $expect = $test['expect'];
 
-            $ansible = new AnsiblePlaybook($process);
+            $ansible = new AnsiblePlaybook($builder);
             $ansible->inventory($input);
             $arguments = array_flip($ansible->getCommandlineArguments());
 
@@ -913,4 +913,43 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         }
     }
 
+    public function testRolesPath()
+    {
+        $samplePath = $this->getSamplesPathFor(AnsiblePlaybook::class);
+        $tests = [
+            [
+                'input' => '',
+                'expect' => false,
+            ],
+            [
+                'input' => $samplePath,
+                'expect' => $samplePath,
+            ],
+        ];
+
+        $ansible = null;
+        $builder = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
+        foreach ($tests as $test) {
+
+            $input = $test['input'];
+            $expect = $test['expect'];
+
+            $ansible = new AnsiblePlaybook($builder);
+            $ansible->rolesPath($input);
+            $env = $builder->getProcess()->getEnv();
+
+            // Handles cases when the ANSIBLE_ROLES_PATH var should be missing.
+            if ($expect === false) {
+                $this->assertArrayNotHasKey('ANSIBLE_ROLES_PATH', $env);
+                continue;
+            }
+
+            $this->assertArrayHasKey('ANSIBLE_ROLES_PATH', $env);
+            $this->assertEquals($expect, $env['ANSIBLE_ROLES_PATH']);
+        }
+
+        // Ensuring that the InvalidArgumentException is thrown
+        $this->expectException(InvalidArgumentException::class);
+        $ansible->rolesPath('/really/not/existing/path');
+    }
 }

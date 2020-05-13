@@ -43,15 +43,14 @@ class ProcessBuilder implements ProcessBuilderInterface
     private $envVars;
 
     /**
-
      * ProcessBuilder constructor.
      *
-     * @param string $prefix
-     * @param string $path
+     * @param string $command The command to run.
+     * @param string $path The working directory.
      */
-    public function __construct(string $prefix, string $path)
+    public function __construct(string $command, string $path)
     {
-        $this->arguments = [$prefix];
+        $this->arguments = [$command];
         $this->path = $path;
         $this->timeout = 900;
         $this->envVars = [];
