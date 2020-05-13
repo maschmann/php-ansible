@@ -385,4 +385,11 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return AnsiblePlaybookInterface
      */
     public function rolesPath(string $path): AnsiblePlaybookInterface;
+
+    /**
+     * Enables or disables the host's SSH key checking.
+     * @param bool $enable
+     * @return AnsiblePlaybookInterface
+     */
+    public function hostKeyChecking(bool $enable = true): AnsiblePlaybookInterface;
 }
