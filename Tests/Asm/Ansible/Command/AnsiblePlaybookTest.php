@@ -870,9 +870,20 @@ class AnsiblePlaybookTest extends AnsibleTestCase
                 $this->fail(sprintf('Failing asserting that %s exception has been thrown', InvalidArgumentException::class));
             }
             catch (InvalidArgumentException $ignored) {
-
             }
         }
+
+        // Testing multiple params instances
+        // (see https://github.com/metagusto/php-ansible/issues/7)
+        // ------------------------------------------------------
+        $ansible = new AnsiblePlaybook($builder);
+        $ansible->extraVars(['key' => 'value']);
+        $ansible->extraVars($playbookFile);
+
+        // We should get:
+        $arguments = $ansible->getCommandlineArguments();
+        $this->assertTrue(in_array('--extra-vars="key=value"', $arguments));
+        $this->assertTrue(in_array(sprintf('--extra-vars=@"%s"', $playbookFile), $arguments));
     }
 
     public function testInventory()
