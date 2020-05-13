@@ -963,4 +963,32 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $this->expectException(InvalidArgumentException::class);
         $ansible->rolesPath('/really/not/existing/path');
     }
+
+    public function testHostKeyChecking()
+    {
+        $tests = [
+            [
+                'input' => true,
+                'expect' => 'True',
+            ],
+            [
+                'input' => false,
+                'expect' => 'False',
+            ],
+        ];
+
+        $builder = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
+        foreach ($tests as $test) {
+
+            $input = $test['input'];
+            $expect = $test['expect'];
+
+            $ansible = new AnsiblePlaybook($builder);
+            $ansible->hostKeyChecking($input);
+            $env = $builder->getProcess()->getEnv();
+
+            $this->assertArrayHasKey('ANSIBLE_HOST_KEY_CHECKING', $env);
+            $this->assertEquals($expect, $env['ANSIBLE_HOST_KEY_CHECKING']);
+        }
+    }
 }
