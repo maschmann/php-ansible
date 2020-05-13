@@ -182,6 +182,9 @@ abstract class AbstractAnsibleCommand
             )
             ->getProcess();
 
+        // Logging the command
+        $this->logger->debug('Executing: ' . $process->getCommandLine());
+
         // exit code
         $result = $process->run($callback);
 
