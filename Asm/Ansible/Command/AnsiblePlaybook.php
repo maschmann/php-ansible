@@ -172,7 +172,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      *
      * Example:
      * ```php
-     * $ansible = new Ansible()->extraVars(['path' => 'some/path']);
+     * $ansible = new Ansible()->playbook()->extraVars(['path' => 'some/path']);
      * ```
      *
      * ## File
@@ -180,7 +180,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      *
      * Example:
      * ```php
-     * $ansible = new Ansible()->extraVars('/path/to/extra/vars.yml');
+     * $ansible = new Ansible()->playbook()->extraVars('/path/to/extra/vars.yml');
      * ```
      *
      * ## String
@@ -188,7 +188,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
 
      * Example:
      * ```php
-     * $ansible = new Ansible()->extraVars('path=/some/path');
+     * $ansible = new Ansible()->playbook()->extraVars('path=/some/path');
      * ```
      *
      * @param string|array $extraVars
