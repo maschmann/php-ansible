@@ -178,7 +178,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             foreach ($extraVars as $key => $value){
                 $vars[] = sprintf('%s=%s', $key, $value);
             }
-            $this->addOption('--extra-vars', sprintf('"%s"', implode(' ', $vars)));
+            $this->addOption('--extra-vars', implode(' ', $vars));
             return $this;
         }
 
@@ -196,13 +196,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         if (strpos($extraVars, '=') === false) {
             throw new InvalidArgumentException('The extra vars raw string should be in the "key=value" form.');
         }
-
-        // Here: we have a plain variable=value string
-        if (substr($extraVars, 0, 1) !== '"')
-            $extraVars = '"' . $extraVars;
-
-        if (substr($extraVars, -1, 1) !== '"')
-            $extraVars = $extraVars . '"';
 
         $this->addOption('--extra-vars', $extraVars);
         return $this;
