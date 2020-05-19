@@ -14,6 +14,7 @@ use Asm\Ansible\Process\ProcessBuilderInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\Process\Process;
 
 /**
  * Class AbstractAnsibleCommand
@@ -183,7 +184,7 @@ abstract class AbstractAnsibleCommand
             ->getProcess();
 
         // Logging the command
-        $this->logger->debug('Executing: ' . $process->getCommandLine());
+        $this->logger->debug('Executing: ' . $this->getProcessCommandline($process));
 
         // exit code
         $result = $process->run($callback);
@@ -198,5 +199,25 @@ abstract class AbstractAnsibleCommand
         }
 
         return $result;
+    }
+
+    /**
+     * Builds the complete commandline inclusive of the environment variables.
+     * @param Process $process The process instance.
+     * @return string
+     */
+    protected function getProcessCommandline(Process $process): string
+    {
+        $commandline = $process->getCommandLine();
+        if (count($process->getEnv()) === 0)
+            return $commandline;
+
+        // Here: we also need to dump the environment variables
+        $vars = [];
+        foreach ($process->getEnv() as $var => $value) {
+            $vars[] = sprintf('%s=\'%s\'', $var, $value);
+        }
+
+        return sprintf('%s %s', implode(' ', $vars), $commandline);
     }
 }

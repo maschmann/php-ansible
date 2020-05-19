@@ -656,6 +656,21 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * @inheritDoc
+     */
+    public function rolesPath(string $path): AnsiblePlaybookInterface
+    {
+        if (empty($path))
+            return $this;
+
+        if (!file_exists($path))
+            throw new InvalidArgumentException(sprintf('The path "%s" does not exist.', $path));
+
+        $this->processBuilder->setEnv('ANSIBLE_ROLES_PATH', $path);
+        return $this;
+    }
+
+    /**
      * If no inventory file is given, assume
      */
     private function checkInventory(): void
