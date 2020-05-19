@@ -374,4 +374,22 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return AnsiblePlaybookInterface
      */
     public function version(): AnsiblePlaybookInterface;
+
+    /**
+     * Let you specify your custom roles path.
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->playbook()->rolesPath('/path/to/your/roles');
+     * ```
+     * @param string $path
+     * @return AnsiblePlaybookInterface
+     */
+    public function rolesPath(string $path): AnsiblePlaybookInterface;
+
+    /**
+     * Enables or disables the host's SSH key checking.
+     * @param bool $enable
+     * @return AnsiblePlaybookInterface
+     */
+    public function hostKeyChecking(bool $enable = true): AnsiblePlaybookInterface;
 }
