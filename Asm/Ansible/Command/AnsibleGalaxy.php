@@ -18,7 +18,6 @@ namespace Asm\Ansible\Command;
  */
 final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalaxyInterface
 {
-
     /**
      * Executes a command process.
      * Returns either exitcode or string output if no callback is given.
