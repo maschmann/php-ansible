@@ -815,15 +815,15 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             ],
             [
                 'input' => ['key' => 'value'],
-                'expect' => '--extra-vars="key=value"',
+                'expect' => '--extra-vars=key=value',
             ],
             [
                 'input' => ['key1' => 'value1', 'key2' => 'value2'],
-                'expect' => '--extra-vars="key1=value1 key2=value2"',
+                'expect' => '--extra-vars=key1=value1 key2=value2',
             ],
             [
                 'input' => 'key=value',
-                'expect' => '--extra-vars="key=value"',
+                'expect' => '--extra-vars=key=value',
             ],
             [
                 'input' => $playbookFile,
@@ -882,7 +882,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         // We should get:
         $arguments = $ansible->getCommandlineArguments();
-        $this->assertTrue(in_array('--extra-vars="key=value"', $arguments));
+        $this->assertTrue(in_array('--extra-vars=key=value', $arguments));
         $this->assertTrue(in_array(sprintf('--extra-vars=@"%s"', $playbookFile), $arguments));
     }
 
