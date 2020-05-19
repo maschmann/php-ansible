@@ -236,7 +236,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             $extraVars = $extraVars . '"';
 
         $this->addOption('--extra-vars', $extraVars);
-
         return $this;
     }
 

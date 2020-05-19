@@ -221,8 +221,4 @@ EOT;
     {
         return implode('/', [$this->getSamplesPath(), str_replace('\\', '/', $class)]);
     }
-
-
-
-
 }

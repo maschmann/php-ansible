@@ -94,8 +94,31 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function diff(): AnsiblePlaybookInterface;
 
     /**
-     * Set additional variables as array [ 'key' => 'value' ] or string.
+     * Sends extra variables to Ansible. The $extraVars parameter can be one of the following.
      *
+     * ## Array
+     * If an array is passed, it must contain the [ 'key' => 'value' ] pairs of the variables.
+     *
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->playbook()->extraVars(['path' => 'some/path']);
+     * ```
+     *
+     * ## File
+     * As Ansible also supports extra vars loaded from an YML file, you can also pass a file path.
+     *
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->playbook()->extraVars('/path/to/extra/vars.yml');
+     * ```
+     *
+     * ## String
+     * You can also pass the raw extra vars string directly.
+     *
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->playbook()->extraVars('path=/some/path');
+     * ```
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
@@ -137,6 +160,19 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return AnsiblePlaybookInterface
      */
     public function inventoryFile(string $inventory = '/etc/ansible/hosts'): AnsiblePlaybookInterface;
+
+    /**
+     * Specify inventory host list manually.
+     * Example:
+     *
+     * ```php
+     * $ansible = new Ansible()->playbook()->inventory(['localhost', 'host1.example.com']);
+     * ```
+     *
+     * @param array $hosts An array containing the list of hosts.
+     * @return AnsiblePlaybookInterface
+     */
+    public function inventory(array $hosts = []): AnsiblePlaybookInterface;
 
     /**
      * Further limit selected hosts to an additional pattern.
