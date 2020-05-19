@@ -10,6 +10,8 @@
 
 namespace Asm\Ansible\Command;
 
+use InvalidArgumentException;
+
 /**
  * Class AnsiblePlaybook
  *
@@ -163,16 +165,73 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Set additional variables as array [ 'key' => 'value' ] or string.
+     * Sends extra variables to Ansible. The $extraVars parameter can be one of the following.
+     *
+     * ## Array
+     * If an array is passed, it must contain the [ 'key' => 'value' ] pairs of the variables.
+     *
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->playbook()->extraVars(['path' => 'some/path']);
+     * ```
+     *
+     * ## File
+     * As Ansible also supports extra vars loaded from an YML file, you can also pass a file path.
+     *
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->playbook()->extraVars('/path/to/extra/vars.yml');
+     * ```
+     *
+     * ## String
+     * You can also pass the raw extra vars string directly.
+
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->playbook()->extraVars('path=/some/path');
+     * ```
      *
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars($extraVars = ''): AnsiblePlaybookInterface
+    public function extraVars($extraVars=''): AnsiblePlaybookInterface
     {
-        $extraVars = $this->checkParam($extraVars, ' ');
-        $this->addOption('--extra-vars', $extraVars);
+        if (empty($extraVars))
+            return $this;
 
+        // Building the key=>value parameter
+        if (is_array($extraVars)){
+            $vars = [];
+            foreach ($extraVars as $key => $value){
+                $vars[] = sprintf('%s=%s', $key, $value);
+            }
+            $this->addOption('--extra-vars', sprintf('"%s"', implode(' ', $vars)));
+            return $this;
+        }
+
+        // Should we consider $extraVars as a JSON/YML file?
+        if (@is_file($extraVars)) {
+            $this->addOption('--extra-vars', sprintf('@"%s"', $extraVars));
+            return $this;
+        }
+
+        // At this point, the only allowed type is string.
+        if (!is_string($extraVars))
+            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
+
+
+        if (strpos($extraVars, '=') === false) {
+            throw new InvalidArgumentException('The extra vars raw string should be in the "key=value" form.');
+        }
+
+        // Here: we have a plain variable=value string
+        if (substr($extraVars, 0, 1) !== '"')
+            $extraVars = '"' . $extraVars;
+
+        if (substr($extraVars, -1, 1) !== '"')
+            $extraVars = $extraVars . '"';
+
+        $this->addOption('--extra-vars', $extraVars);
         return $this;
     }
 
