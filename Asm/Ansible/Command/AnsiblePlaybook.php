@@ -165,6 +165,10 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->extraVars('path=/some/path');
+     * ```
      * Sends extra variables to Ansible. The $extraVars parameter can be one of the following.
      *
      * ## Array
@@ -194,7 +198,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars($extraVars=''): AnsiblePlaybookInterface
+    public function extraVars($extraVars = ''): AnsiblePlaybookInterface
     {
         if (empty($extraVars))
             return $this;
@@ -232,6 +236,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             $extraVars = $extraVars . '"';
 
         $this->addOption('--extra-vars', $extraVars);
+
         return $this;
     }
 
