@@ -671,6 +671,19 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * @inheritDoc
+     */
+    public function hostKeyChecking(bool $enable = true): AnsiblePlaybookInterface
+    {
+        $enable ?
+            $flag = 'True' :
+            $flag = 'False';
+
+        $this->processBuilder->setEnv('ANSIBLE_HOST_KEY_CHECKING', $flag);
+        return $this;
+    }
+
+    /**
      * If no inventory file is given, assume
      */
     private function checkInventory(): void
