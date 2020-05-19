@@ -18,6 +18,9 @@ use Asm\Ansible\Exception\CommandException;
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Process\ProcessBuilderInterface;
 use Asm\Ansible\Utils\Env;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 /**
  * Ansible command factory
@@ -25,10 +28,14 @@ use Asm\Ansible\Utils\Env;
  * @package Asm\Ansible
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-final class Ansible
+final class Ansible implements LoggerAwareInterface
 {
-
     const DEFAULT_TIMEOUT = 300;
+
+    /**
+     * Adds a local $logger instance and the setter.
+     */
+    use LoggerAwareTrait;
 
     /**
      * @var string
@@ -55,16 +62,14 @@ final class Ansible
      * @param string $playbookCommand path to playbook executable, default ansible-playbook
      * @param string $galaxyCommand path to galaxy executable, default ansible-galaxy
      */
-    public function __construct(
-        string $ansibleBaseDir,
-        string $playbookCommand = '',
-        string $galaxyCommand = ''
-    ) {
+    public function __construct(string $ansibleBaseDir, string $playbookCommand = '', string $galaxyCommand = '')
+    {
         $this->ansibleBaseDir = $this->checkDir($ansibleBaseDir);
         $this->playbookCommand = $this->checkCommand($playbookCommand, 'ansible-playbook');
         $this->galaxyCommand = $this->checkCommand($galaxyCommand, 'ansible-galaxy');
 
         $this->timeout = Ansible::DEFAULT_TIMEOUT;
+        $this->logger= new NullLogger();
     }
 
     /**
@@ -75,7 +80,8 @@ final class Ansible
     public function playbook(): AnsiblePlaybookInterface
     {
         return new AnsiblePlaybook(
-            $this->createProcess($this->playbookCommand)
+            $this->createProcess($this->playbookCommand),
+            $this->logger
         );
     }
 
@@ -87,7 +93,8 @@ final class Ansible
     public function galaxy(): AnsibleGalaxyInterface
     {
         return new AnsibleGalaxy(
-            $this->createProcess($this->galaxyCommand)
+            $this->createProcess($this->galaxyCommand),
+            $this->logger
         );
     }
 

@@ -10,13 +10,15 @@
 
 namespace Asm\Ansible\Command;
 
+use Psr\Log\LoggerAwareInterface;
+
 /**
  * Interface AnsibleCommandInterface
  *
  * @package Asm\Ansible\Command
  * @author Marc Aschmann <maschmann@gmail.com>
  */
-interface AnsibleCommandInterface
+interface AnsibleCommandInterface extends LoggerAwareInterface
 {
     /**
      * Executes a command process.
