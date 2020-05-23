@@ -14,9 +14,8 @@ matrix:
   fast_finish: true
   allow_failures:
   include:
-    - php: 7.1
-    - php: 7.2
     - php: 7.3
+    - php: 7.4
 
 before_script:
   - if [ "$PROCESS_VERSION" != "" ]; then composer require symfony/process:${PROCESS_VERSION} --dev --no-update; fi
