@@ -43,7 +43,8 @@ class ProcessBuilderTest extends AnsibleTestCase
         $this->assertInstanceOf(Process::class, $process);
 
         // verify, all args are kept and merged correctly
-        $this->assertEquals("\"{$this->getGalaxyUri()}\" more_args", $process->getCommandLine());
+        // Process component escapes all arguments with '' 
+        $this->assertEquals("'{$this->getGalaxyUri()}' 'more_args'", $process->getCommandLine());
     }
 }
 
