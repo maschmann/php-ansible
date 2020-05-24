@@ -136,7 +136,7 @@ abstract class AbstractAnsibleCommand
      * @param string $baseOption
      * @return $this
      */
-    protected function addBaseoption(string $baseOption)
+    protected function addBaseOption(string $baseOption)
     {
         $this->baseOptions[] = $baseOption;
 

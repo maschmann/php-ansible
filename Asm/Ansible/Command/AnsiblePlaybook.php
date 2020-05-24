@@ -270,6 +270,30 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * @inheritDoc
+     */
+    public function inventory(array $hosts = []): AnsiblePlaybookInterface
+    {
+        if (empty($hosts))
+            return $this;
+
+        // In order to let ansible-playbook understand that the given option is a list of hosts, the list must end by
+        // comma "," if it contains just an entry. For example, supposing just a single host, "localhosts":
+        //
+        //   Wrong: --inventory="locahost"
+        // Correct: --inventory="locahost,"
+        $hostList = implode(', ', $hosts);
+
+        if (count($hosts) === 1)
+            $hostList .= ',';
+
+        $this->addOption('--inventory', sprintf('"%s"', $hostList));
+        $this->hasInventory = true;
+
+        return $this;
+    }
+
+    /**
      * Specify inventory host file (default=/etc/ansible/hosts).
      *
      * @param string $inventory filename for hosts file
