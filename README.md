@@ -101,9 +101,16 @@ $ansible
     ->execute();
 ```
 
+You can have a Json output adding json() option that enable 'ANSIBLE_STDOUT_CALLBACK=json' env vars to make a json output in ansible.
 
-
-
+```php
+$ansible
+    ->playbook()
+    ->json()
+    ->play('mydeployment.yml') // based on deployment root 
+    ->extraVars('/path/to/your/extra/vars/file.yml')
+    ->execute();
+```
 
 ### Galaxy
 
