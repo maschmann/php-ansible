@@ -236,6 +236,13 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function colors(bool $colors = true): AnsiblePlaybookInterface;
 
     /**
+     * Enable/Disable Json Output
+     *
+     * @return AnsiblePlaybookInterface
+     */
+    public function json(): AnsiblePlaybookInterface;
+
+    /**
      * Use this file to authenticate the connection.
      *
      * @param string $file private key file

@@ -386,6 +386,18 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * Enable/Disable Json Output
+     *
+     * @return AnsiblePlaybookInterface
+     */
+    public function json(): AnsiblePlaybookInterface
+    {
+        $this->processBuilder->setEnv('ANSIBLE_STDOUT_CALLBACK','json');
+
+        return $this;
+    }
+
+    /**
      * Use this file to authenticate the connection.
      *
      * @param string $file private key file
