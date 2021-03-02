@@ -203,10 +203,15 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         if (empty($extraVars))
             return $this;
 
+        // Throw exception when $extraVars is an object
+        if (gettype($extraVars) === 'object') {
+            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
+        }
+
         // Building the key=>value parameter
-        if (is_array($extraVars)){
+        if (is_array($extraVars)) {
             $vars = [];
-            foreach ($extraVars as $key => $value){
+            foreach ($extraVars as $key => $value) {
                 $vars[] = sprintf('%s=%s', $key, $value);
             }
             $this->addOption('--extra-vars', implode(' ', $vars));
@@ -392,7 +397,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function json(): AnsiblePlaybookInterface
     {
-        $this->processBuilder->setEnv('ANSIBLE_STDOUT_CALLBACK','json');
+        $this->processBuilder->setEnv('ANSIBLE_STDOUT_CALLBACK', 'json');
 
         return $this;
     }
@@ -571,9 +576,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function flushCache(): AnsiblePlaybookInterface
     {
-         $this->addParameter('--flush-cache');
+        $this->addParameter('--flush-cache');
 
-         return $this;
+        return $this;
     }
 
     /**
