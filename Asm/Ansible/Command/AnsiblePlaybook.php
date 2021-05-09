@@ -716,12 +716,13 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         $this->processBuilder->setEnv('ANSIBLE_HOST_KEY_CHECKING', $flag);
         return $this;
     }
-    
+
     /**
     * Ansible SSH pipelining option
     * https://docs.ansible.com/ansible/latest/reference_appendices/config.html#ansible-pipelining
     *
     * @param bool $enable
+    * @return AnsiblePlaybookInterface
     **/
     public function sshPipelining(bool $enable = false): AnsiblePlaybookInterface
     {

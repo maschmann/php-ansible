@@ -996,4 +996,32 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             $this->assertEquals($expect, $env['ANSIBLE_HOST_KEY_CHECKING']);
         }
     }
+
+    public function testSshPipelining()
+    {
+        $tests = [
+            [
+                'input'  => true,
+                'expect' => 'True',
+            ],
+            [
+                'input'  => false,
+                'expect' => 'False',
+            ],
+        ];
+
+        $builder = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
+        foreach ($tests as $test) {
+
+            $input  = $test['input'];
+            $expect = $test['expect'];
+
+            $ansible = new AnsiblePlaybook($builder);
+            $ansible->sshPipelining($input);
+            $env = $builder->getProcess()->getEnv();
+
+            $this->assertArrayHasKey('ANSIBLE_SSH_PIPELINING', $env);
+            $this->assertEquals($expect, $env['ANSIBLE_SSH_PIPELINING']);
+        }
+    }
 }
