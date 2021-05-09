@@ -321,6 +321,15 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function sshExtraArgs($extraArgs): AnsiblePlaybookInterface;
 
     /**
+     * Ansible SSH pipelining option
+     * https://docs.ansible.com/ansible/latest/reference_appendices/config.html#ansible-pipelining
+     *
+     * @param bool $enable
+     * @return AnsiblePlaybookInterface
+     **/
+    public function sshPipelining(bool $enable = false): AnsiblePlaybookInterface;
+
+    /**
      * Perform a syntax check on the playbook, but do not execute it.
      *
      * @return AnsiblePlaybookInterface

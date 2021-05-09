@@ -16,6 +16,7 @@ use DateTime;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\Process\Process;
+use TypeError;
 
 class AnsiblePlaybookTest extends AnsibleTestCase
 {
@@ -863,13 +864,17 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         foreach ($tests as $input) {
             try {
-                $ansible = new AnsiblePlaybook($builder);
-                $ansible->extraVars($input);
+                try {
+                    $ansible = new AnsiblePlaybook($builder);
+                    $ansible->extraVars($input);
 
-                // We should never reach this line!
-                $this->fail(sprintf('Failing asserting that %s exception has been thrown', InvalidArgumentException::class));
-            }
-            catch (InvalidArgumentException $ignored) {
+                    // We should never reach this line!
+                    $this->fail(sprintf('Failing asserting that %s exception has been thrown',
+                        InvalidArgumentException::class));
+                } catch (InvalidArgumentException $ignored) {
+                }
+            } catch (TypeError $ignored) {
+                // not nice .. this is to keep a bit of BC, since php is more strict on argument types
             }
         }
 
@@ -989,6 +994,34 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
             $this->assertArrayHasKey('ANSIBLE_HOST_KEY_CHECKING', $env);
             $this->assertEquals($expect, $env['ANSIBLE_HOST_KEY_CHECKING']);
+        }
+    }
+
+    public function testSshPipelining()
+    {
+        $tests = [
+            [
+                'input'  => true,
+                'expect' => 'True',
+            ],
+            [
+                'input'  => false,
+                'expect' => 'False',
+            ],
+        ];
+
+        $builder = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
+        foreach ($tests as $test) {
+
+            $input  = $test['input'];
+            $expect = $test['expect'];
+
+            $ansible = new AnsiblePlaybook($builder);
+            $ansible->sshPipelining($input);
+            $env = $builder->getProcess()->getEnv();
+
+            $this->assertArrayHasKey('ANSIBLE_SSH_PIPELINING', $env);
+            $this->assertEquals($expect, $env['ANSIBLE_SSH_PIPELINING']);
         }
     }
 }
