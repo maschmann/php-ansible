@@ -170,7 +170,7 @@ $ansible
 ## Thank you for your contributions!
 
 thank you for reviewing, bug reporting, suggestions and PRs :-)
-[xabbuh](https://github.com/xabbuh), [emielmolenaar](https://github.com/emielmolenaar), [saverio](https://github.com/saverio), [soupdiver](https://github.com/soupdiver), [linaori](https://github.com/linaori), [paveldanilin](https://github.com/paveldanilin)
+[xabbuh](https://github.com/xabbuh), [emielmolenaar](https://github.com/emielmolenaar), [saverio](https://github.com/saverio), [soupdiver](https://github.com/soupdiver), [linaori](https://github.com/linaori), [paveldanilin](https://github.com/paveldanilin) and many others! 
 
 
 
@@ -178,8 +178,12 @@ thank you for reviewing, bug reporting, suggestions and PRs :-)
 
 The Next steps for implementation are:
 
--  wrapping the library into a bundle.
-- provide commandline-capabilities.
+- improve type handling and structure, due to overall complexity of the playbook at the moment
+- scalar typehints all over the place
+- provide docker support for development
+- move to php8.0 exclusively for the next major release
+- wrapping the library into a bundle -> maybe
+- provide commandline-capabilities -> maybe
 
 
 
