@@ -16,6 +16,7 @@ use DateTime;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\Process\Process;
+use TypeError;
 
 class AnsiblePlaybookTest extends AnsibleTestCase
 {
@@ -863,13 +864,17 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         foreach ($tests as $input) {
             try {
-                $ansible = new AnsiblePlaybook($builder);
-                $ansible->extraVars($input);
+                try {
+                    $ansible = new AnsiblePlaybook($builder);
+                    $ansible->extraVars($input);
 
-                // We should never reach this line!
-                $this->fail(sprintf('Failing asserting that %s exception has been thrown', InvalidArgumentException::class));
-            }
-            catch (InvalidArgumentException $ignored) {
+                    // We should never reach this line!
+                    $this->fail(sprintf('Failing asserting that %s exception has been thrown',
+                        InvalidArgumentException::class));
+                } catch (InvalidArgumentException $ignored) {
+                }
+            } catch (TypeError $ignored) {
+                // not nice .. this is to keep a bit of BC, since php is more strict on argument types
             }
         }
 
