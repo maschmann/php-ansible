@@ -203,10 +203,15 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         if (empty($extraVars))
             return $this;
 
+        // Throw exception when $extraVars is an object
+        if (gettype($extraVars) === 'object') {
+            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
+        }
+
         // Building the key=>value parameter
-        if (is_array($extraVars)){
+        if (is_array($extraVars)) {
             $vars = [];
-            foreach ($extraVars as $key => $value){
+            foreach ($extraVars as $key => $value) {
                 $vars[] = sprintf('%s=%s', $key, $value);
             }
             $this->addOption('--extra-vars', implode(' ', $vars));
@@ -386,6 +391,18 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * Enable/Disable Json Output
+     *
+     * @return AnsiblePlaybookInterface
+     */
+    public function json(): AnsiblePlaybookInterface
+    {
+        $this->processBuilder->setEnv('ANSIBLE_STDOUT_CALLBACK', 'json');
+
+        return $this;
+    }
+
+    /**
      * Use this file to authenticate the connection.
      *
      * @param string $file private key file
@@ -559,9 +576,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function flushCache(): AnsiblePlaybookInterface
     {
-         $this->addParameter('--flush-cache');
+        $this->addParameter('--flush-cache');
 
-         return $this;
+        return $this;
     }
 
     /**
@@ -697,6 +714,22 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             $flag = 'False';
 
         $this->processBuilder->setEnv('ANSIBLE_HOST_KEY_CHECKING', $flag);
+        return $this;
+    }
+    
+    /**
+    * Ansible SSH pipelining option
+    * https://docs.ansible.com/ansible/latest/reference_appendices/config.html#ansible-pipelining
+    *
+    * @param bool $enable
+    **/
+    public function sshPipelining(bool $enable = false): AnsiblePlaybookInterface
+    {
+        $enable ?
+            $flag = 'True' :
+            $flag = 'False';
+
+        $this->processBuilder->setEnv('ANSIBLE_SSH_PIPELINING', $flag);
         return $this;
     }
 

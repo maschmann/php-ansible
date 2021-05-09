@@ -1733,7 +1733,7 @@
             "autoload": {
                 "classmap": [
                     "src/"
-                ]
+     <<<<<<< develop           ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
