@@ -1,12 +1,6 @@
 <?php
-/*
- * This file is part of the php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
+declare(strict_types=1);
 
 namespace Asm\Ansible\Command;
 
@@ -28,25 +22,17 @@ abstract class AbstractAnsibleCommand
      * Adds a local $logger instance and the setter.
      */
     use LoggerAwareTrait;
-    /**
-     * @var ProcessBuilderInterface
-     */
-    protected $processBuilder;
+
+    protected ProcessBuilderInterface $processBuilder;
 
     /**
      * @var Option[]
      */
-    private $options;
+    private array $options;
 
-    /**
-     * @var array
-     */
-    private $parameters;
+    private array $parameters;
 
-    /**
-     * @var array
-     */
-    private $baseOptions;
+    private array $baseOptions;
 
     /**
      * @param ProcessBuilderInterface $processBuilder
@@ -67,7 +53,7 @@ abstract class AbstractAnsibleCommand
      * @param bool $asArray
      * @return string|array
      */
-    protected function prepareArguments(bool $asArray = true)
+    protected function prepareArguments(bool $asArray = true): string|array
     {
         $arguments = array_merge(
             [$this->getBaseOptions()],
@@ -86,11 +72,11 @@ abstract class AbstractAnsibleCommand
      * Add an Option.
      *
      * @param string $name
-     * @param string $value
+     * @param int|string $value
      */
-    protected function addOption(string $name, string $value): void
+    protected function addOption(string $name, int|string $value): void
     {
-        $this->options[] = new Option($name, $value);
+        $this->options[] = new Option($name, (string)$value);
     }
 
     /**
@@ -136,7 +122,7 @@ abstract class AbstractAnsibleCommand
      * @param string $baseOption
      * @return $this
      */
-    protected function addBaseOption(string $baseOption)
+    protected function addBaseOption(string $baseOption): self
     {
         $this->baseOptions[] = $baseOption;
 
@@ -160,7 +146,7 @@ abstract class AbstractAnsibleCommand
      * @param string $glue
      * @return string
      */
-    protected function checkParam($param, string $glue = ' '): string
+    protected function checkParam(string|array $param, string $glue = ' '): string
     {
         if (is_array($param)) {
             $param = implode($glue, $param);
@@ -171,11 +157,12 @@ abstract class AbstractAnsibleCommand
 
     /**
      * Creates process with processBuilder builder and executes it.
+     * Has to return the process exit code in case of error
      *
      * @param callable|null $callback
      * @return int|string
      */
-    protected function runProcess($callback = null)
+    protected function runProcess(?callable $callback): int|string
     {
         $process = $this->processBuilder
             ->setArguments(
@@ -209,8 +196,9 @@ abstract class AbstractAnsibleCommand
     protected function getProcessCommandline(Process $process): string
     {
         $commandline = $process->getCommandLine();
-        if (count($process->getEnv()) === 0)
+        if (count($process->getEnv()) === 0) {
             return $commandline;
+        }
 
         // Here: we also need to dump the environment variables
         $vars = [];

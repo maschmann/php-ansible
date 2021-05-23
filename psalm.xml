@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="2"
+    resolveFromConfigFile="1"
+    phpVersion="8.0"
+>
+    <projectFiles>
+        <directory name="Asm" />
+    </projectFiles>
+</psalm>

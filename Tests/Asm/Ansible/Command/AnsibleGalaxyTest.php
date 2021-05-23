@@ -1,12 +1,7 @@
 <?php
-/*
- * This file is part of the php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
+declare(strict_types=1);
+
 namespace Asm\Ansible\Command;
 
 use Asm\Ansible\Process\ProcessBuilder;
@@ -18,12 +13,12 @@ class AnsibleGalaxyTest extends AnsibleTestCase
     /**
      * @return AnsibleGalaxyInterface
      */
-    public function testCreateInstance()
+    public function testCreateInstance(): AnsibleGalaxyInterface
     {
         $process = new ProcessBuilder($this->getGalaxyUri(), $this->getProjectUri());
         $ansibleGalaxy = new AnsibleGalaxy($process);
 
-        $this->assertInstanceOf('\Asm\Ansible\Command\AnsibleGalaxy', $ansibleGalaxy);
+        $this->assertInstanceOf(AnsibleGalaxy::class, $ansibleGalaxy);
 
         return $ansibleGalaxy;
     }
@@ -32,7 +27,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
      * @depends testCreateInstance
      * @param AnsibleGalaxyInterface $command
      */
-    public function testExecute(AnsibleGalaxyInterface $command)
+    public function testExecute(AnsibleGalaxyInterface $command): void
     {
         // Skipped on Windows
         if (Env::isWindows()) {
@@ -46,7 +41,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertTrue(true);
     }
 
-    public function testInit()
+    public function testInit(): void
     {
         $command = $this->testCreateInstance();
 
@@ -66,7 +61,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertArrayHasKey('--server=http://ansible.com', $arguments);
     }
 
-    public function testInfo()
+    public function testInfo(): void
     {
         $command = $this->testCreateInstance();
         $command->info('test_role');
@@ -75,7 +70,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertArrayHasKey('info test_role', $arguments);
     }
 
-    public function testInfoWithVersion()
+    public function testInfoWithVersion(): void
     {
         $command = $this->testCreateInstance();
         $command->info('test_role', '1.0');
@@ -84,7 +79,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertArrayHasKey('info test_role,1.0', $arguments);
     }
 
-    public function testInstall()
+    public function testInstall(): void
     {
         $command = $this->testCreateInstance();
         $command->install('test_role');
@@ -93,7 +88,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertArrayHasKey('install test_role', $arguments);
     }
 
-    public function testInstallWithRoles()
+    public function testInstallWithRoles(): void
     {
         $command = $this->testCreateInstance();
         $command->install(
@@ -108,7 +103,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertArrayHasKey('install test_role another_role yet_another_role', $arguments);
     }
 
-    public function testInstallWithOptions()
+    public function testInstallWithOptions(): void
     {
         $command = $this->testCreateInstance();
 
@@ -133,7 +128,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertArrayHasKey('--no-deps', $arguments);
     }
 
-    public function testList()
+    public function testList(): void
     {
         $command = $this->testCreateInstance();
         $command->modulelist();
@@ -141,7 +136,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertEquals('list', $command->getCommandlineArguments(false));
     }
 
-    public function testListWithRole()
+    public function testListWithRole(): void
     {
         $command = $this->testCreateInstance();
         $command->modulelist('test_role');
@@ -149,7 +144,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertEquals('list test_role', $command->getCommandlineArguments(false));
     }
 
-    public function testListWithHelp()
+    public function testListWithHelp(): void
     {
         $command = $this->testCreateInstance();
         $command
@@ -159,7 +154,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertEquals('list --help', $command->getCommandlineArguments(false));
     }
 
-    public function testRemove()
+    public function testRemove(): void
     {
         $command = $this->testCreateInstance();
         $command->remove('test_role');
@@ -167,7 +162,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $this->assertEquals('remove test_role', $command->getCommandlineArguments(false));
     }
 
-    public function testRemoveRoles()
+    public function testRemoveRoles(): void
     {
         $command = $this->testCreateInstance();
         $command->remove(

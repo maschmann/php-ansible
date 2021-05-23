@@ -1,11 +1,6 @@
 <?php
-/**
- *
- * For the full copyright and license information, please view the
- * LICENSE file that was distributed with this source code.
- *
- * @copyright Copyright (c) 2016 Metagûsto <info@metagusto.com>
- */
+
+declare(strict_types=1);
 
 namespace Asm\Ansible\Command;
 
@@ -13,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class OptionTest extends TestCase
 {
-    public function testInstance()
+    public function testInstance(): void
     {
         $option = new Option('name', 'value');
         $this->assertEquals('name', $option->getName());
