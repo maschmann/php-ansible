@@ -3,4 +3,3 @@ parameters:
     paths:
         - Asm
         - Tests
-    memoryLimitFile: 128
