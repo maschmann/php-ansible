@@ -81,10 +81,10 @@ class Option
      */
     public function equals(?Option $other)
     {
-        if ($other === null)
+        if ($other === null) {
             return false;
+        }
 
         return $this->name === $other->getName() && $this->value === $other->value;
     }
-
 }

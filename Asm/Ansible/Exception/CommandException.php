@@ -16,4 +16,3 @@ class CommandException extends RuntimeException
 {
     protected $code = 500;
 }
-
