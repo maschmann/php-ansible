@@ -1,12 +1,6 @@
 <?php
-/*
- * This file is part of the php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
+declare(strict_types=1);
 
 namespace Asm\Ansible\Command;
 
@@ -122,7 +116,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars($extraVars = ''): AnsiblePlaybookInterface;
+    public function extraVars(string|array $extraVars = ''): AnsiblePlaybookInterface;
 
     /**
      * clear the fact cache
@@ -180,7 +174,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param array|string $subset list of hosts
      * @return AnsiblePlaybookInterface
      */
-    public function limit($subset = ''): AnsiblePlaybookInterface;
+    public function limit(string|array $subset = ''): AnsiblePlaybookInterface;
 
     /**
      * Outputs a list of matching hosts; does not execute anything else.
@@ -256,7 +250,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param array|string $tags list of tags to skip
      * @return AnsiblePlaybookInterface
      */
-    public function skipTags($tags = ''): AnsiblePlaybookInterface;
+    public function skipTags(string|array $tags = ''): AnsiblePlaybookInterface;
 
     /**
      * Start the playbook at the task matching this name.
@@ -294,7 +288,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param string|array $scpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function scpExtraArgs($scpExtraArgs): AnsiblePlaybookInterface;
+    public function scpExtraArgs(string|array $scpExtraArgs): AnsiblePlaybookInterface;
 
     /**
      * specify extra arguments to pass to sftp only (e.g. -f, -l)
@@ -302,7 +296,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param string|array $sftpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sftpExtraArgs($sftpExtraArgs): AnsiblePlaybookInterface;
+    public function sftpExtraArgs(string|array $sftpExtraArgs): AnsiblePlaybookInterface;
 
     /**
      * specify common arguments to pass to sftp/scp/ssh (e.g. ProxyCommand)
@@ -310,7 +304,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param string|array $sshArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sshCommonArgs($sshArgs): AnsiblePlaybookInterface;
+    public function sshCommonArgs(string|array $sshArgs): AnsiblePlaybookInterface;
 
     /**
      * specify extra arguments to pass to ssh only (e.g. -R)
@@ -318,7 +312,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param string|array $extraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sshExtraArgs($extraArgs): AnsiblePlaybookInterface;
+    public function sshExtraArgs(string|array $extraArgs): AnsiblePlaybookInterface;
 
     /**
      * Ansible SSH pipelining option
@@ -342,7 +336,7 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @param string|array $tags list of tags
      * @return AnsiblePlaybookInterface
      */
-    public function tags($tags): AnsiblePlaybookInterface;
+    public function tags(string|array $tags): AnsiblePlaybookInterface;
 
     /**
      * Override the SSH timeout in seconds (default=10).

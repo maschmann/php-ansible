@@ -1,13 +1,6 @@
 <?php
+
 declare(strict_types=1);
-/*
- * This file is part of the asm\php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Asm\Ansible\Process;
 
@@ -24,23 +17,23 @@ class ProcessBuilder implements ProcessBuilderInterface
     /**
      * @var array
      */
-    private $arguments;
+    private array $arguments;
 
     /**
      * @var int
      */
-    private $timeout;
+    private int $timeout;
 
     /**
      * @var string
      */
-    private $path;
+    private string $path;
 
     /**
 
      * @var array
      */
-    private $envVars;
+    private array $envVars;
 
     /**
      * ProcessBuilder constructor.
@@ -84,10 +77,10 @@ class ProcessBuilder implements ProcessBuilderInterface
 
     /**
      * @param string $name name of ENV VAR
-     * @param string $value
+     * @param string|int $value
      * @return ProcessBuilderInterface
      */
-    public function setEnv(string $name, string $value): ProcessBuilderInterface
+    public function setEnv(string $name, string|int $value): ProcessBuilderInterface
     {
         $this->envVars[$name] = $value;
 

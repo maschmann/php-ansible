@@ -13,6 +13,7 @@ namespace Asm\Ansible\Testing;
 use Asm\Ansible\Utils\Env;
 use LogicException;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 
@@ -24,27 +25,15 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AnsibleTestCase extends TestCase
 {
-    /**
-     * @var vfsStreamFile
-     */
-    protected $ansiblePlaybook;
-    /**
-     * @var vfsStreamFile
-     */
-    protected $ansibleGalaxy;
-    /**
-     * @var
-     */
-    protected $project;
-    /**
-     * @var string|null
-     */
-    protected $testRootPath = null;
+    protected vfsStreamFile $ansiblePlaybook;
 
-    /**
-     * default setup
-     */
-    protected function setUp():void
+    protected vfsStreamFile $ansibleGalaxy;
+
+    protected vfsStreamDirectory $project;
+
+    protected ?string $testRootPath = null;
+
+    protected function setUp(): void
     {
         $this->createProjectStructure();
     }
@@ -52,7 +41,7 @@ abstract class AnsibleTestCase extends TestCase
     /**
      * Setup file system structure for tests.
      */
-    protected function createProjectStructure()
+    protected function createProjectStructure(): vfsStreamDirectory
     {
         $projectStructure = [
             'ansible-project' => [
@@ -66,34 +55,22 @@ abstract class AnsibleTestCase extends TestCase
         return $this->project;
     }
 
-    /**
-     * @return string
-     */
-    protected function getProjectUri()
+    protected function getProjectUri(): string
     {
         return $this->project->url() . '/ansible-project';
     }
 
-    /**
-     * @return string
-     */
-    protected function getPlayUri()
+    protected function getPlayUri(): string
     {
         return $this->project->url() . '/ansible-project/testproject.yml';
     }
 
-    /**
-     * @return string
-     */
-    protected function getInventoryUri()
+    protected function getInventoryUri(): string
     {
         return $this->project->url() . '/ansible-project/testproject';
     }
 
-    /**
-     * @return string
-     */
-    protected function getPlaybookUri()
+    protected function getPlaybookUri(): string
     {
         Env::isWindows() ?
             $command = 'ansible-playbook.bat' :
@@ -102,10 +79,7 @@ abstract class AnsibleTestCase extends TestCase
         return implode('/', [$this->getAssetsBinPath(), $command]);
     }
 
-    /**
-     * @return string
-     */
-    protected function getGalaxyUri()
+    protected function getGalaxyUri(): string
     {
         Env::isWindows() ?
             $command = 'ansible-galaxy.bat' :
@@ -114,10 +88,7 @@ abstract class AnsibleTestCase extends TestCase
         return implode('/', [$this->getAssetsBinPath(), $command]);
     }
 
-    /**
-     * @return string
-     */
-    protected function getPlaybookContent()
+    protected function getPlaybookContent(): string
     {
         return <<<EOT
 #!/bin/bash
@@ -125,10 +96,7 @@ return 1
 EOT;
     }
 
-    /**
-     * @return string
-     */
-    protected function getGalaxyContent()
+    protected function getGalaxyContent(): string
     {
         return <<<EOT
 #!/bin/bash
@@ -136,10 +104,7 @@ return 1
 EOT;
     }
 
-    /**
-     * @return string
-     */
-    protected function getPlayContent()
+    protected function getPlayContent(): string
     {
         return <<<EOT
 - hosts: test
@@ -148,10 +113,7 @@ EOT;
 EOT;
     }
 
-    /**
-     * @return string
-     */
-    protected function getInventoryContent()
+    protected function getInventoryContent(): string
     {
         return <<<EOT
 [test]

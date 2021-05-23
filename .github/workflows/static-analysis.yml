@@ -1,0 +1,52 @@
+---
+name: Test and analyze
+on:
+  push: {}
+  pull_request:
+    branches:
+      - main
+      - develop
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          extensions: redis, apcu, ctype, dom, iconv, gd, mbstring, fileinfo, intl, json, mysql, bcmath, zip
+          coverage: none # disable xdebug, pcov
+          ini-values: post_max_size=256M memory
+          tools: cs2pr, pecl, php-cs-fixer, phpunit, vimeo/psalm, phpstan, phpcs
+
+      - uses: actions/checkout@v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist -q
+
+      - name: Run UnitTests
+        run: phpunit # options
+
+      - name: Run phpstan
+        run: phpstan analyse --error-format=checkstyle -c "phpstan.neon" | cs2pr
+
+      #- name: Run psalm
+      #  run: psalm -c psalm.xml --output-format=github
+
+      - name: Check PHP code style
+        continue-on-error: true
+        run: phpcs --standard=phpcs.xml --parallel=2 --report-full --report-checkstyle=./phpcs-report.xml
+
+      - name: Show PHPCS results in PR
+        run: cs2pr ./phpcs-report.xml

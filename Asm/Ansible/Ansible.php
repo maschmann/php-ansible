@@ -1,12 +1,6 @@
 <?php
-/*
- * This file is part of the php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
+declare(strict_types=1);
 
 namespace Asm\Ansible;
 
@@ -18,6 +12,7 @@ use Asm\Ansible\Exception\CommandException;
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Process\ProcessBuilderInterface;
 use Asm\Ansible\Utils\Env;
+use JetBrains\PhpStorm\Pure;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -30,32 +25,20 @@ use Psr\Log\NullLogger;
  */
 final class Ansible implements LoggerAwareInterface
 {
-    const DEFAULT_TIMEOUT = 300;
-
     /**
      * Adds a local $logger instance and the setter.
      */
     use LoggerAwareTrait;
 
-    /**
-     * @var string
-     */
-    private $playbookCommand;
+    private const DEFAULT_TIMEOUT = 300;
 
-    /**
-     * @var string
-     */
-    private $galaxyCommand;
+    private string $playbookCommand;
 
-    /**
-     * @var string
-     */
-    private $ansibleBaseDir;
+    private string $galaxyCommand;
 
-    /**
-     * @var integer
-     */
-    private $timeout;
+    private string $ansibleBaseDir;
+
+    private int $timeout;
 
     /**
      * @param string $ansibleBaseDir base directory of ansible project structure
@@ -69,7 +52,7 @@ final class Ansible implements LoggerAwareInterface
         $this->galaxyCommand = $this->checkCommand($galaxyCommand, 'ansible-galaxy');
 
         $this->timeout = Ansible::DEFAULT_TIMEOUT;
-        $this->logger= new NullLogger();
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -115,7 +98,7 @@ final class Ansible implements LoggerAwareInterface
      * @param string $prefix base command
      * @return ProcessBuilderInterface
      */
-    private function createProcess(string  $prefix): ProcessBuilderInterface
+    private function createProcess(string $prefix): ProcessBuilderInterface
     {
         $process = new ProcessBuilder($prefix, $this->ansibleBaseDir);
 
@@ -132,8 +115,9 @@ final class Ansible implements LoggerAwareInterface
     {
         // normally ansible is in /usr/local/bin/*
         if (empty($command)) {
-            if (Env::isWindows())
+            if (Env::isWindows()) {
                 return $default;
+            }
 
             // not testable without ansible installation
             if (null === shell_exec('which ' . $default)) {
@@ -173,17 +157,20 @@ final class Ansible implements LoggerAwareInterface
      * @param string $command
      * @return bool
      */
-    private function isExecutable($command): bool
+    private function isExecutable(string $command): bool
     {
-        if (empty($command))
+        if (empty($command)) {
             return false;
+        }
 
-        if (!Env::isWindows())
+        if (!Env::isWindows()) {
             return is_executable($command);
+        }
 
         foreach (['exe', 'com', 'bat', 'cmd', 'ps1'] as $ext) {
-            if (strtolower(substr($command, -3, 3)) === $ext)
+            if (strtolower(substr($command, -3, 3)) === $ext) {
                 return true;
+            }
         }
 
         return false;

@@ -1,12 +1,6 @@
 <?php
-/*
- * This file is part of the php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
+declare(strict_types=1);
 
 namespace Asm\Ansible\Command;
 
@@ -42,7 +36,7 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
      * @param string|array $roles role_name(s)[,version] | scm+role_repo_url[,version]
      * @return AnsibleGalaxyInterface
      */
-    public function install($roles = ''): AnsibleGalaxyInterface;
+    public function install(string|array $roles = ''): AnsibleGalaxyInterface;
 
     /**
      * Get a list of installed modules.
@@ -58,7 +52,7 @@ interface AnsibleGalaxyInterface extends AnsibleCommandInterface
      * @param string|array $roles
      * @return AnsibleGalaxyInterface
      */
-    public function remove($roles = ''): AnsibleGalaxyInterface;
+    public function remove(string|array $roles = ''): AnsibleGalaxyInterface;
 
     /**
      * Show general or specific help.
