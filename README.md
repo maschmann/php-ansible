@@ -93,11 +93,20 @@ If no callback is given, the method will return the ansible-playbook output as a
 
 You can also pass an external YML/JSON file as extraVars containing a complex data structure to be passed to Ansible:
 
+External YML file.
 ```php
 $ansible
     ->playbook()
     ->play('mydeployment.yml') // based on deployment root 
     ->extraVars('/path/to/your/extra/vars/file.yml')
+    ->execute();
+```
+External JSON file.
+```php
+$ansible
+    ->playbook()
+    ->play('mydeployment.yml') // based on deployment root 
+    ->extraVars('/path/to/your/extra/vars/file.json')
     ->execute();
 ```
 

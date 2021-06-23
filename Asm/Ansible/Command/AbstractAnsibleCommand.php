@@ -163,10 +163,13 @@ abstract class AbstractAnsibleCommand
     protected function checkParam($param, string $glue = ' '): string
     {
         if (is_array($param)) {
-            $param = implode($glue, $param);
+            $paramStr = "";
+            foreach ($param as $key => $value) {
+                $paramStr .= "$key=$value ";
+            }
+            return $paramStr;
         }
-
-        return $param;
+        return "@$param";
     }
 
     /**
