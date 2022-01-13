@@ -32,11 +32,11 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param callable|null $callback
      * @return integer|string
      */
-    public function execute($callback = null)
+    public function execute($callback = null, array $env = [])
     {
         $this->checkInventory();
 
-        return $this->runProcess($callback);
+        return $this->runProcess($callback, $env);
     }
 
     /**

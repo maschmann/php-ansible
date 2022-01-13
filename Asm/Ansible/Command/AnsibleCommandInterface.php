@@ -27,7 +27,7 @@ interface AnsibleCommandInterface extends LoggerAwareInterface
      * @param callable|null $callback
      * @return integer|string
      */
-    public function execute($callback = null);
+    public function execute($callback = null, array $env = []);
 
     /**
      * Get parameter string which will be used to call ansible.

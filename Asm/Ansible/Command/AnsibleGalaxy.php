@@ -25,9 +25,9 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      * @param callable|null $callback
      * @return integer|string
      */
-    public function execute($callback = null)
+    public function execute($callback = null, array $env = [])
     {
-        return $this->runProcess($callback);
+        return $this->runProcess($callback, $env);
     }
 
     /**
