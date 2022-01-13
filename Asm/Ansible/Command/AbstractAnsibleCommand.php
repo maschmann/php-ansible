@@ -175,7 +175,7 @@ abstract class AbstractAnsibleCommand
      * @param callable|null $callback
      * @return int|string
      */
-    protected function runProcess($callback = null)
+    protected function runProcess($callback = null, array $env = [])
     {
         $process = $this->processBuilder
             ->setArguments(
@@ -187,7 +187,7 @@ abstract class AbstractAnsibleCommand
         $this->logger->debug('Executing: ' . $this->getProcessCommandline($process));
 
         // exit code
-        $result = $process->run($callback);
+        $result = $process->run($callback, $env);
 
         // text-mode
         if (null === $callback) {
