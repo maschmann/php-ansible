@@ -1,12 +1,6 @@
 <?php
-/*
- * This file is part of the php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
+declare(strict_types=1);
 
 namespace Asm\Ansible\Command;
 
@@ -20,19 +14,16 @@ use InvalidArgumentException;
  */
 final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePlaybookInterface
 {
-    /**
-     * @var boolean
-     */
-    private $hasInventory = false;
+    private bool $hasInventory = false;
 
     /**
      * Executes a command process.
-     * Returns either exitcode or string output if no callback is given.
+     * Returns either exit code or string output if no callback is given.
      *
      * @param callable|null $callback
      * @return integer|string
      */
-    public function execute($callback = null)
+    public function execute(?callable $callback = null): int|string
     {
         $this->checkInventory();
 
@@ -198,14 +189,10 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $extraVars
      * @return AnsiblePlaybookInterface
      */
-    public function extraVars($extraVars = ''): AnsiblePlaybookInterface
+    public function extraVars(string|array $extraVars = ''): AnsiblePlaybookInterface
     {
-        if (empty($extraVars))
+        if (empty($extraVars)) {
             return $this;
-
-        // Throw exception when $extraVars is an object
-        if (gettype($extraVars) === 'object') {
-            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
         }
 
         // Building the key=>value parameter
@@ -218,18 +205,12 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             return $this;
         }
 
-        // Should we consider $extraVars as a JSON/YML file?
-        if (@is_file($extraVars)) {
-            $this->addOption('--extra-vars', sprintf('@"%s"', $extraVars));
-            return $this;
+        // At this point, the only allowed type is string.
+        if (!is_string($extraVars)) {
+            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
         }
 
-        // At this point, the only allowed type is string.
-        if (!is_string($extraVars))
-            throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
-
-
-        if (strpos($extraVars, '=') === false) {
+        if (!str_contains($extraVars, '=')) {
             throw new InvalidArgumentException('The extra vars raw string should be in the "key=value" form.');
         }
 
@@ -257,7 +238,8 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function forks(int $forks = 5): AnsiblePlaybookInterface
     {
-        $this->addOption('--forks', $forks);
+        // this is ugly, but on commandline it will later be automatically string anyways
+        $this->addOption('--forks', (string)$forks);
 
         return $this;
     }
@@ -279,8 +261,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function inventory(array $hosts = []): AnsiblePlaybookInterface
     {
-        if (empty($hosts))
+        if (empty($hosts)) {
             return $this;
+        }
 
         // In order to let ansible-playbook understand that the given option is a list of hosts, the list must end by
         // comma "," if it contains just an entry. For example, supposing just a single host, "localhosts":
@@ -289,8 +272,9 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         // Correct: --inventory="locahost,"
         $hostList = implode(', ', $hosts);
 
-        if (count($hosts) === 1)
+        if (count($hosts) === 1) {
             $hostList .= ',';
+        }
 
         $this->addOption('--inventory', sprintf('"%s"', $hostList));
         $this->hasInventory = true;
@@ -315,13 +299,12 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Further limit selected hosts to an additional pattern.
      *
-     * @param array|string $subset list of hosts
+     * @param string|array $subset list of hosts
      * @return AnsiblePlaybookInterface
      */
-    public function limit($subset = ''): AnsiblePlaybookInterface
+    public function limit(string|array $subset = ''): AnsiblePlaybookInterface
     {
         $subset = $this->checkParam($subset, ',');
-
         $this->addOption('--limit', $subset);
 
         return $this;
@@ -418,10 +401,10 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     /**
      * Only run plays and tasks whose tags do not match these values.
      *
-     * @param array|string $tags list of tags to skip
+     * @param string|array $tags list of tags to skip
      * @return AnsiblePlaybookInterface
      */
-    public function skipTags($tags = ''): AnsiblePlaybookInterface
+    public function skipTags(string|array $tags = ''): AnsiblePlaybookInterface
     {
         $tags = $this->checkParam($tags, ',');
         $this->addOption('--skip-tags', $tags);
@@ -497,7 +480,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $tags list of tags
      * @return AnsiblePlaybookInterface
      */
-    public function tags($tags): AnsiblePlaybookInterface
+    public function tags(string|array $tags): AnsiblePlaybookInterface
     {
         $tags = $this->checkParam($tags, ',');
         $this->addOption('--tags', $tags);
@@ -613,7 +596,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $scpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function scpExtraArgs($scpExtraArgs): AnsiblePlaybookInterface
+    public function scpExtraArgs(string|array $scpExtraArgs): AnsiblePlaybookInterface
     {
         $scpExtraArgs = $this->checkParam($scpExtraArgs, ',');
         $this->addOption('--scp-extra-args', $scpExtraArgs);
@@ -627,7 +610,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $sftpExtraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sftpExtraArgs($sftpExtraArgs): AnsiblePlaybookInterface
+    public function sftpExtraArgs(string|array $sftpExtraArgs): AnsiblePlaybookInterface
     {
         $sftpExtraArgs = $this->checkParam($sftpExtraArgs, ',');
         $this->addOption('--sftp-extra-args', $sftpExtraArgs);
@@ -641,7 +624,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $sshArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sshCommonArgs($sshArgs): AnsiblePlaybookInterface
+    public function sshCommonArgs(string|array $sshArgs): AnsiblePlaybookInterface
     {
         $sshArgs = $this->checkParam($sshArgs, ',');
         $this->addOption('--ssh-common-args', $sshArgs);
@@ -655,7 +638,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param string|array $extraArgs
      * @return AnsiblePlaybookInterface
      */
-    public function sshExtraArgs($extraArgs): AnsiblePlaybookInterface
+    public function sshExtraArgs(string|array $extraArgs): AnsiblePlaybookInterface
     {
         $extraArgs = $this->checkParam($extraArgs, ',');
         $this->addOption('--ssh-extra-args', $extraArgs);
@@ -682,7 +665,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      * @param bool $asArray
      * @return string|array
      */
-    public function getCommandlineArguments(bool $asArray = true)
+    public function getCommandlineArguments(bool $asArray = true): string|array
     {
         $this->checkInventory();
 
@@ -694,11 +677,13 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function rolesPath(string $path): AnsiblePlaybookInterface
     {
-        if (empty($path))
+        if (empty($path)) {
             return $this;
+        }
 
-        if (!file_exists($path))
+        if (!file_exists($path)) {
             throw new InvalidArgumentException(sprintf('The path "%s" does not exist.', $path));
+        }
 
         $this->processBuilder->setEnv('ANSIBLE_ROLES_PATH', $path);
         return $this;
@@ -709,9 +694,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      */
     public function hostKeyChecking(bool $enable = true): AnsiblePlaybookInterface
     {
-        $enable ?
-            $flag = 'True' :
-            $flag = 'False';
+        $enable ? $flag = 'True' : $flag = 'False';
 
         $this->processBuilder->setEnv('ANSIBLE_HOST_KEY_CHECKING', $flag);
         return $this;

@@ -1,12 +1,6 @@
 <?php
-/*
- * This file is part of the php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
+declare(strict_types=1);
 
 namespace Asm\Ansible\Command;
 
@@ -22,12 +16,12 @@ interface AnsibleCommandInterface extends LoggerAwareInterface
 {
     /**
      * Executes a command process.
-     * Returns either exitcode or string output if no callback is given.
+     * Returns either exit code or string output if no callback is given.
      *
      * @param callable|null $callback
      * @return integer|string
      */
-    public function execute($callback = null);
+    public function execute(?callable $callback = null): int|string;
 
     /**
      * Get parameter string which will be used to call ansible.
@@ -35,5 +29,5 @@ interface AnsibleCommandInterface extends LoggerAwareInterface
      * @param bool $asArray
      * @return string|array
      */
-    public function getCommandlineArguments(bool $asArray = true);
+    public function getCommandlineArguments(bool $asArray = true): string|array;
 }

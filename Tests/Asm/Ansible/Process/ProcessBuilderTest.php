@@ -1,13 +1,6 @@
 <?php
+
 declare(strict_types=1);
-/*
- * This file is part of the <package> package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Asm\Ansible\Process;
 
@@ -20,7 +13,7 @@ class ProcessBuilderTest extends AnsibleTestCase
     /**
      * @return ProcessBuilderInterface
      */
-    public function testCreateInstance()
+    public function testCreateInstance(): ProcessBuilderInterface
     {
         $processBuilder = new ProcessBuilder($this->getGalaxyUri(), $this->getProjectUri());
         $this->assertInstanceOf(ProcessBuilderInterface::class, $processBuilder);
@@ -29,10 +22,10 @@ class ProcessBuilderTest extends AnsibleTestCase
     }
 
     /**
-     * @param $processBuilder
+     * @param ProcessBuilderInterface $processBuilder
      * @depends testCreateInstance
      */
-    public function testGetProcess(ProcessBuilderInterface $processBuilder)
+    public function testGetProcess(ProcessBuilderInterface $processBuilder): void
     {
         $process = $processBuilder
             ->setArguments(['more_args'])
@@ -43,7 +36,7 @@ class ProcessBuilderTest extends AnsibleTestCase
         $this->assertInstanceOf(Process::class, $process);
 
         // verify, all args are kept and merged correctly
-        // Process component escapes all arguments with '' 
+        // Process component escapes all arguments with ''
         $this->assertEquals("'{$this->getGalaxyUri()}' 'more_args'", $process->getCommandLine());
     }
 }

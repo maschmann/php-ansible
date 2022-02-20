@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CodeSniffer">
+    <description>default cs ruleset for php-ansible</description>
+
+    <file>Asm</file>
+
+    <exclude-pattern>*/Tests/*</exclude-pattern>
+
+    <arg value="np"/>
+    <arg name="extensions" value="php" />
+    <arg name="report" value="summary"/>
+    <arg name="colors"/>
+
+    <!-- Our base rule: set to PSR12 -->
+    <rule ref="PSR12"/>
+
+    <!-- we're not on vim 640x480 anymore -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="M"/>
+        </properties>
+    </rule>
+</ruleset>

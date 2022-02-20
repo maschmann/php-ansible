@@ -1,7 +1,6 @@
 # php-ansible library
-[![Build Status](https://travis-ci.org/maschmann/php-ansible.png?branch=master)](https://travis-ci.org/maschmann/php-ansible)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/maschmann/php-ansible/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/maschmann/php-ansible/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/maschmann/php-ansible/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/maschmann/php-ansible/?branch=master)
+![PHP8.0 build](https://github.com/maschmann/php-ansible/actions/workflows/static-analysis.yml/badge.svg)
+![PHP8.1 build](https://github.com/maschmann/php-ansible/actions/workflows/static-analysis-8-1.yml/badge.svg)
 
 This library is a OOP-wrapper for the ansible provisioning tool.
 I intend to use this library for a symfony2 bundle and also a deployment GUI, based on php/symfony2.
@@ -13,7 +12,6 @@ The current implementation is feature-complete for the `ansible-playbook` and `a
 
 Your OS should be a flavor of linux and ansible has to be installed. It's easiest if ansible is in PATH :-)
 The library tries to find ansible-playbook and ansible-galaxy by itself or use the paths/executables you provide. 
-
 
 
 ## Usage
@@ -170,7 +168,7 @@ $ansible
 ## Thank you for your contributions!
 
 thank you for reviewing, bug reporting, suggestions and PRs :-)
-[xabbuh](https://github.com/xabbuh), [emielmolenaar](https://github.com/emielmolenaar), [saverio](https://github.com/saverio), [soupdiver](https://github.com/soupdiver), [linaori](https://github.com/linaori), [paveldanilin](https://github.com/paveldanilin)
+[xabbuh](https://github.com/xabbuh), [emielmolenaar](https://github.com/emielmolenaar), [saverio](https://github.com/saverio), [soupdiver](https://github.com/soupdiver), [linaori](https://github.com/linaori), [paveldanilin](https://github.com/paveldanilin) and many others! 
 
 
 
@@ -178,8 +176,12 @@ thank you for reviewing, bug reporting, suggestions and PRs :-)
 
 The Next steps for implementation are:
 
--  wrapping the library into a bundle.
-- provide commandline-capabilities.
+- improve type handling and structure, due to overall complexity of the playbook at the moment
+- scalar typehints all over the place
+- provide docker support for development
+- move to php8.0 exclusively for the next major release
+- wrapping the library into a bundle -> maybe
+- provide commandline-capabilities -> maybe
 
 
 

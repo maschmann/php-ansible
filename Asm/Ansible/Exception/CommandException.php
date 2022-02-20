@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Asm\Ansible\Exception;
 
 use RuntimeException;
@@ -13,4 +16,3 @@ class CommandException extends RuntimeException
 {
     protected $code = 500;
 }
-

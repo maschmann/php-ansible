@@ -1,12 +1,6 @@
 <?php
-/*
- * This file is part of the php-ansible package.
- *
- * (c) Marc Aschmann <maschmann@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+
+declare(strict_types=1);
 
 namespace Asm\Ansible\Command;
 
@@ -25,7 +19,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      * @param callable|null $callback
      * @return integer|string
      */
-    public function execute($callback = null)
+    public function execute(?callable $callback = null): int|string
     {
         return $this->runProcess($callback);
     }
@@ -72,7 +66,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      * @param string|array $roles role_name(s)[,version] | scm+role_repo_url[,version]
      * @return AnsibleGalaxyInterface
      */
-    public function install($roles = ''): AnsibleGalaxyInterface
+    public function install(string|array $roles = ''): AnsibleGalaxyInterface
     {
         $roles = $this->checkParam($roles, ' ');
 
@@ -108,7 +102,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      * @param string|array $roles
      * @return AnsibleGalaxyInterface
      */
-    public function remove($roles = ''): AnsibleGalaxyInterface
+    public function remove(string|array $roles = ''): AnsibleGalaxyInterface
     {
         $roles = $this->checkParam($roles, ' ');
 
@@ -241,7 +235,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      * @param bool $asArray
      * @return string|array
      */
-    public function getCommandlineArguments(bool $asArray = true)
+    public function getCommandlineArguments(bool $asArray = true): string|array
     {
         return $this->prepareArguments($asArray);
     }
