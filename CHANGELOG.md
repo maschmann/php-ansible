@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.0
+ * drop php7.x compat, 8.0+ only
+ * removed travis, scrutinizer, replace with github actions
+ * add symfony process v6.x, drop process <5.x
+ * fix differences main/dev >.<
+
+## v3.0.x
+ * switch to 7.3|8.0
+
 ## v2.0.0
  * migration to php >=7.1 only
  * move to ansible 2.x
