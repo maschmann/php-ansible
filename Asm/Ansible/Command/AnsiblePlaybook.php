@@ -14,7 +14,6 @@ use InvalidArgumentException;
  */
 final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePlaybookInterface
 {
-
     private bool $hasInventory = false;
 
     /**

@@ -12,9 +12,10 @@ env:
 
 matrix:
   fast_finish: true
-  allow_failures:
+  #allow_failures:
   include:
     - php: 8.0
+    - php: 8.1
 
 before_script:
   - if [ "$PROCESS_VERSION" != "" ]; then composer require symfony/process:${PROCESS_VERSION} --dev --no-update; fi
