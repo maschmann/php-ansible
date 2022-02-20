@@ -1,5 +1,5 @@
 ---
-name: Test and analyze
+name: Test and analyze PHP 8.0
 on:
   push: {}
   pull_request:
