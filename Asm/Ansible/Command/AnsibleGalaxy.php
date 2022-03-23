@@ -17,11 +17,12 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      * Returns either exitcode or string output if no callback is given.
      *
      * @param callable|null $callback
+     * @param array $env
      * @return integer|string
      */
-    public function execute(?callable $callback = null): int|string
+    public function execute(?callable $callback = null, array $env = []): int|string
     {
-        return $this->runProcess($callback);
+        return $this->runProcess($callback, $env);
     }
 
     /**
