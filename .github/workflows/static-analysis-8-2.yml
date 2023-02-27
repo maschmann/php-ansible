@@ -37,8 +37,8 @@ jobs:
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v3
-        version: 10
         with:
+          version: 10
           configuration: "phpunit-10.xml.dist"
           memory_limit: "256M"
 
