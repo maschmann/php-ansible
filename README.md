@@ -1,6 +1,7 @@
 # php-ansible library
 ![PHP8.0 build](https://github.com/maschmann/php-ansible/actions/workflows/static-analysis.yml/badge.svg)
 ![PHP8.1 build](https://github.com/maschmann/php-ansible/actions/workflows/static-analysis-8-1.yml/badge.svg)
+![PHP8.2 build](https://github.com/maschmann/php-ansible/actions/workflows/static-analysis-8-2.yml/badge.svg)
 
 This library is a OOP-wrapper for the ansible provisioning tool.
 I intend to use this library for a symfony2 bundle and also a deployment GUI, based on php/symfony2.
