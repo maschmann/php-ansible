@@ -17,7 +17,7 @@ jobs:
           extensions: redis, apcu, ctype, dom, iconv, gd, mbstring, fileinfo, intl, json, mysql, bcmath, zip
           coverage: none # disable xdebug, pcov
           ini-values: post_max_size=256M memory
-          tools: cs2pr, pecl, php-cs-fixer, phpunit:10, vimeo/psalm, phpstan, phpcs
+          tools: cs2pr, pecl, php-cs-fixer, phpunit:9.5, vimeo/psalm, phpstan, phpcs
 
       - uses: actions/checkout@v2
 
@@ -35,8 +35,11 @@ jobs:
       - name: Install dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist -q
 
+      - name: Install phpunit output for PRs
+        run: composer require mheap/phpunit-github-actions-printer
+
       - name: Run UnitTests
-        run: phpunit -c phpunit.xml.dist
+        run: phpunit --printer mheap\\GithubActionsReporter\\Printer -c phpunit.xml.dist
 
       - name: Run phpstan
         run: phpstan analyse --error-format=checkstyle -c "phpstan.neon" | cs2pr
