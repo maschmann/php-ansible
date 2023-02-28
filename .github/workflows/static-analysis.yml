@@ -1,5 +1,5 @@
 ---
-name: Test and analyze PHP 8.0
+name: Test and analyze PHP
 on:
   push: {}
   pull_request:
@@ -9,37 +9,40 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php:
+          - "8.0"
+          - "8.1"
+          - "8.2"
+        include:
+          - php-version: "8.0"
+            phpunit: "9.5"
+            phpunit-config: "phpunit.xml.dist"
+
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: "${{ matrix.php }}"
           extensions: redis, apcu, ctype, dom, iconv, gd, mbstring, fileinfo, intl, json, mysql, bcmath, zip
           coverage: none # disable xdebug, pcov
           ini-values: post_max_size=256M memory
-          tools: cs2pr, pecl, php-cs-fixer, phpunit:9.5, vimeo/psalm, phpstan, phpcs
+          tools: cs2pr, pecl, php-cs-fixer, vimeo/psalm, phpstan, phpcs
 
       - uses: actions/checkout@v3
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
+      - uses: "ramsey/composer-install@v2"
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          composer-options: "--no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist -q"
 
-      - name: Install dependencies
-        run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist -q
-
-      - name: Install phpunit output for PRs
-        run: composer require mheap/phpunit-github-actions-printer
-
-      - name: Run UnitTests
-        run: phpunit --printer mheap\\GithubActionsReporter\\Printer -c phpunit.xml.dist
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v3
+        with:
+          version: "${{ matrix.phpunit }}"
+          configuration: "${{ matrix.phpunit-config }}"
+          memory_limit: "256M"
 
       - name: Run phpstan
         run: phpstan analyse --error-format=checkstyle -c "phpstan.neon" | cs2pr
