@@ -175,7 +175,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      *
      * Example:
      * ```php
-     * $ansible = new Ansible()->playbook()->extraVars('/path/to/extra/vars.yml');
+     * $ansible = new Ansible()->playbook()->extraVars('@"/path/to/extra/vars.yml"');
      * ```
      *
      * ## String
@@ -210,8 +210,8 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
         }
 
-        if (!str_contains($extraVars, '=')) {
-            throw new InvalidArgumentException('The extra vars raw string should be in the "key=value" form.');
+        if (!str_contains($extraVars, '=') && !str_starts_with($extraVars, '@')) {
+            throw new InvalidArgumentException('The extra vars raw string should either be in the "key=value" form or be a file path starting with @.');
         }
 
         $this->addOption('--extra-vars', $extraVars);
