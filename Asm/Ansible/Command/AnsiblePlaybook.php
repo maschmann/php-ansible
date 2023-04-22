@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Asm\Ansible\Command;
 
+use Asm\Ansible\Utils\Str;
 use InvalidArgumentException;
+use JsonException;
 
 /**
  * Class AnsiblePlaybook
@@ -208,6 +210,20 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         // At this point, the only allowed type is string.
         if (!is_string($extraVars)) {
             throw new InvalidArgumentException(sprintf('Expected string|array, got "%s"', gettype($extraVars)));
+        }
+
+        // Trim the string & check if empty before moving on.
+        $extraVars = trim($extraVars);
+
+        if ($extraVars === '') {
+            return $this;
+        }
+
+        // JSON formatted string can be used for extra vars as is, wrap around single quotes.
+        if (Str::isJsonFormatted($extraVars)) {
+            $this->addOption('--extra-vars', '\'' . Str::escapeSingleQuotes($extraVars) . '\'');
+
+            return $this;
         }
 
         if (!str_contains($extraVars, '=')) {
