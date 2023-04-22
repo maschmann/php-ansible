@@ -34,16 +34,4 @@ class StrTest extends TestCase
 
         $this->assertFalse(Str::isJsonFormatted($value));
     }
-
-    /**
-     * Assert single quotes are properly escaped.
-     *
-     * @return void
-     */
-    public function testSingleQuotesEscaped(): void
-    {
-        $value = "O'What";
-
-        $this->assertEquals("O\'What", Str::escapeSingleQuotes($value));
-    }
 }

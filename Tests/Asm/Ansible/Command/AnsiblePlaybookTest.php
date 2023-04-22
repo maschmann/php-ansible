@@ -827,12 +827,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             // Test valid JSON.
             [
                 'input' => '{ "key1": "value1", "key2": "value2" }',
-                'expect' => '--extra-vars=\'{ "key1": "value1", "key2": "value2" }\'',
-            ],
-            // Test valid JSON with single quotes escaped.
-            [
-                'input' => '{ "key1": "va\'lue1", "key2": "va\'lue2" }',
-                'expect' => '--extra-vars=\'{ "key1": "va\\\'lue1", "key2": "va\\\'lue2" }\'',
+                'expect' => '--extra-vars={ "key1": "value1", "key2": "value2" }',
             ],
             // Test key value string.
             [

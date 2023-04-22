@@ -219,9 +219,10 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             return $this;
         }
 
-        // JSON formatted string can be used for extra vars as is, wrap around single quotes.
+        // JSON formatted string can be used for extra vars as is.
+        // The value is automatically escaped & wrapped around single quotes from the Library's process.
         if (Str::isJsonFormatted($extraVars)) {
-            $this->addOption('--extra-vars', '\'' . Str::escapeSingleQuotes($extraVars) . '\'');
+            $this->addOption('--extra-vars', $extraVars);
 
             return $this;
         }

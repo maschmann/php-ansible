@@ -25,15 +25,4 @@ class Str
             return false;
         }
     }
-
-    /**
-     * Escape single quotes.
-     *
-     * @param string $value
-     * @return string
-     */
-    public static function escapeSingleQuotes(string $value): string
-    {
-        return str_replace("'", "\'", $value);
-    }
 }
