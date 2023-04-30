@@ -6,7 +6,6 @@ namespace Asm\Ansible\Command;
 
 use Asm\Ansible\Utils\Str;
 use InvalidArgumentException;
-use JsonException;
 
 /**
  * Class AnsiblePlaybook
