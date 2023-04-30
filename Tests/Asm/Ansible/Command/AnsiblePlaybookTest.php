@@ -801,14 +801,21 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         //$playbookFile = $this->getSamplesPathFor(AnsiblePlaybook::class) . '/playbook1.yml';
 
         $tests = [
+            // Test empty strings (with & without spaces).
             [
                 'input' => '',
                 'expect' => false,
             ],
             [
+                'input' => '   ',
+                'expect' => false,
+            ],
+            // Test empty array.
+            [
                 'input' => [],
                 'expect' => false,
             ],
+            // Test Arrays
             [
                 'input' => ['key' => 'value'],
                 'expect' => '--extra-vars=key=value',
@@ -817,6 +824,12 @@ class AnsiblePlaybookTest extends AnsibleTestCase
                 'input' => ['key1' => 'value1', 'key2' => 'value2'],
                 'expect' => '--extra-vars=key1=value1 key2=value2',
             ],
+            // Test valid JSON.
+            [
+                'input' => '{ "key1": "value1", "key2": "value2" }',
+                'expect' => '--extra-vars={ "key1": "value1", "key2": "value2" }',
+            ],
+            // Test key value string.
             [
                 'input' => 'key=value',
                 'expect' => '--extra-vars=key=value',
@@ -854,7 +867,8 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $tests = [
             'string without equals',
-            new DateTime()
+            '{ key1: "value1" }', // Invalid JSON syntax (missing " from key1) which would trigger string without `=`.
+            new DateTime() // Invalid type
         ];
 
         foreach ($tests as $input) {
