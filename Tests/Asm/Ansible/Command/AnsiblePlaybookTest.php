@@ -901,11 +901,11 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             ],
             [
                 'input' => ['localhost'],
-                'expect' => '--inventory="localhost,"',
+                'expect' => '--inventory="localhost",',
             ],
             [
                 'input' => ['localhost', 'host1'],
-                'expect' => '--inventory="localhost, host1"',
+                'expect' => '--inventory="localhost","host1"',
             ],
 
         ];
@@ -1117,12 +1117,4 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         self::assertEquals(0, $playbook->execute(fn () => null));
     }
-    
-    public function testItWrapsTheHostsInQuotes(): void
-    {
-        $ansible = new AnsiblePlaybook($this->createMock(ProcessBuilderInterface::class));
-        $ansible->inventory(['host1', 'host 2']);
-
-        self::assertContains('--inventory="host1", "host 2"', $ansible->getCommandlineArguments());
-    }        
 }

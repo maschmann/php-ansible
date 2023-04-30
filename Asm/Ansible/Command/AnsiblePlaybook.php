@@ -289,7 +289,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
         //
         //   Wrong: --inventory="locahost"
         // Correct: --inventory="locahost,"
-        $hostList = implode(', ', $hosts);
+        $hostList = implode(',', $hosts);
 
         if (count($hosts) === 1) {
             $hostList .= ',';
