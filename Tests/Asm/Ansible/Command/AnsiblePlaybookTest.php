@@ -855,7 +855,8 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $tests = [
             'string without equals',
-            new DateTime(),
+            '{ key1: "value1" }', // Invalid JSON syntax (missing " from key1) which would trigger string without `=`.
+            new DateTime() // Invalid type
         ];
 
         foreach ($tests as $input) {
@@ -1001,11 +1002,11 @@ class AnsiblePlaybookTest extends AnsibleTestCase
     {
         $tests = [
             [
-                'input' => true,
+                'input'  => true,
                 'expect' => 'True',
             ],
             [
-                'input' => false,
+                'input'  => false,
                 'expect' => 'False',
             ],
         ];
@@ -1013,7 +1014,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $builder = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
 
         foreach ($tests as $test) {
-            $input = $test['input'];
+            $input  = $test['input'];
             $expect = $test['expect'];
 
             $ansible = new AnsiblePlaybook($builder);
