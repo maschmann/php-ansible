@@ -855,7 +855,8 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $tests = [
             'string without equals',
-            new DateTime()
+            '{ key1: "value1" }', // Invalid JSON syntax (missing " from key1) which would trigger string without `=`.
+            new DateTime() // Invalid type
         ];
 
         foreach ($tests as $input) {
@@ -1025,11 +1026,103 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         }
     }
 
+    public function testReturnsErrorOutputIfProcessWasNotSuccessful(): void
+    {
+        $builder = $this->createMock(ProcessBuilderInterface::class);
+        $builder
+            ->expects(self::once())
+            ->method('setArguments')
+            ->willReturnSelf();
+        $builder
+            ->expects(self::once())
+            ->method('getProcess')
+            ->willReturn($process = $this->createMock(Process::class));
+        $process
+            ->expects(self::once())
+            ->method('run');
+        $process
+            ->expects(self::once())
+            ->method('isSuccessful')
+            ->willReturn(false);
+        $process
+            ->expects(self::once())
+            ->method('getErrorOutput')
+            ->willReturn('error output');
+        $process
+            ->expects(self::never())
+            ->method('getOutput');
+
+        $playbook = new AnsiblePlaybook($builder);
+
+        self::assertEquals('error output', $playbook->execute());
+    }
+
+    public function testReturnsNormalOutputIfProcessWasSuccessful(): void
+    {
+        $builder = $this->createMock(ProcessBuilderInterface::class);
+        $builder
+            ->expects(self::once())
+            ->method('setArguments')
+            ->willReturnSelf();
+        $builder
+            ->expects(self::once())
+            ->method('getProcess')
+            ->willReturn($process = $this->createMock(Process::class));
+        $process
+            ->expects(self::once())
+            ->method('run');
+        $process
+            ->expects(self::once())
+            ->method('isSuccessful')
+            ->willReturn(true);
+        $process
+            ->expects(self::once())
+            ->method('getOutput')
+            ->willReturn('success');
+        $process
+            ->expects(self::never())
+            ->method('getErrorOutput');
+
+        $playbook = new AnsiblePlaybook($builder);
+
+        self::assertEquals('success', $playbook->execute());
+    }
+
+    public function testReturnsExitCodeIfCallbackwasPassed(): void
+    {
+        $builder = $this->createMock(ProcessBuilderInterface::class);
+        $builder
+            ->expects(self::once())
+            ->method('setArguments')
+            ->willReturnSelf();
+        $builder
+            ->expects(self::once())
+            ->method('getProcess')
+            ->willReturn($process = $this->createMock(Process::class));
+        $process
+            ->expects(self::once())
+            ->method('run')
+            ->willReturn(0);
+        $process
+            ->expects(self::never())
+            ->method('isSuccessful');
+        $process
+            ->expects(self::never())
+            ->method('getOutput');
+        $process
+            ->expects(self::never())
+            ->method('getErrorOutput');
+
+        $playbook = new AnsiblePlaybook($builder);
+
+        self::assertEquals(0, $playbook->execute(fn () => null));
+    }
+    
     public function testItWrapsTheHostsInQuotes(): void
     {
         $ansible = new AnsiblePlaybook($this->createMock(ProcessBuilderInterface::class));
         $ansible->inventory(['host1', 'host 2']);
 
         self::assertContains('--inventory="host1", "host 2"', $ansible->getCommandlineArguments());
-    }
+    }        
 }
