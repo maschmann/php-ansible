@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Asm\Ansible\Command;
 
 use Asm\Ansible\Process\ProcessBuilder;
+use Asm\Ansible\Process\ProcessBuilderInterface;
 use Asm\Ansible\Testing\AnsibleTestCase;
 use Asm\Ansible\Utils\Env;
 use DateTime;
@@ -1022,5 +1023,36 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             $this->assertArrayHasKey('ANSIBLE_SSH_PIPELINING', $env);
             $this->assertEquals($expect, $env['ANSIBLE_SSH_PIPELINING']);
         }
+    }
+
+    public function testReturnsErrorOutputIfProcessWasNotSuccessful(): void
+    {
+        $builder = $this->createMock(ProcessBuilderInterface::class);
+        $builder
+            ->expects(self::once())
+            ->method('setArguments')
+            ->willReturnSelf();
+        $builder
+            ->expects(self::once())
+            ->method('getProcess')
+            ->willReturn($process = $this->createMock(Process::class));
+        $process
+            ->expects(self::once())
+            ->method('run');
+        $process
+            ->expects(self::once())
+            ->method('isSuccessful')
+            ->willReturn(false);
+        $process
+            ->expects(self::once())
+            ->method('getErrorOutput')
+            ->willReturn('error output');
+        $process
+            ->expects(self::never())
+            ->method('getOutput');
+
+        $playbook = new AnsiblePlaybook($builder);
+
+        self::assertEquals('error output', $playbook->execute());
     }
 }
