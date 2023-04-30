@@ -855,7 +855,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $tests = [
             'string without equals',
-            new DateTime()
+            new DateTime(),
         ];
 
         foreach ($tests as $input) {
@@ -1001,11 +1001,11 @@ class AnsiblePlaybookTest extends AnsibleTestCase
     {
         $tests = [
             [
-                'input'  => true,
+                'input' => true,
                 'expect' => 'True',
             ],
             [
-                'input'  => false,
+                'input' => false,
                 'expect' => 'False',
             ],
         ];
@@ -1013,7 +1013,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $builder = new ProcessBuilder($this->getPlaybookUri(), $this->getProjectUri());
 
         foreach ($tests as $test) {
-            $input  = $test['input'];
+            $input = $test['input'];
             $expect = $test['expect'];
 
             $ansible = new AnsiblePlaybook($builder);
@@ -1054,5 +1054,66 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $playbook = new AnsiblePlaybook($builder);
 
         self::assertEquals('error output', $playbook->execute());
+    }
+
+    public function testReturnsNormalOutputIfProcessWasSuccessful(): void
+    {
+        $builder = $this->createMock(ProcessBuilderInterface::class);
+        $builder
+            ->expects(self::once())
+            ->method('setArguments')
+            ->willReturnSelf();
+        $builder
+            ->expects(self::once())
+            ->method('getProcess')
+            ->willReturn($process = $this->createMock(Process::class));
+        $process
+            ->expects(self::once())
+            ->method('run');
+        $process
+            ->expects(self::once())
+            ->method('isSuccessful')
+            ->willReturn(true);
+        $process
+            ->expects(self::once())
+            ->method('getOutput')
+            ->willReturn('success');
+        $process
+            ->expects(self::never())
+            ->method('getErrorOutput');
+
+        $playbook = new AnsiblePlaybook($builder);
+
+        self::assertEquals('success', $playbook->execute());
+    }
+
+    public function testReturnsExitCodeIfCallbackwasPassed(): void
+    {
+        $builder = $this->createMock(ProcessBuilderInterface::class);
+        $builder
+            ->expects(self::once())
+            ->method('setArguments')
+            ->willReturnSelf();
+        $builder
+            ->expects(self::once())
+            ->method('getProcess')
+            ->willReturn($process = $this->createMock(Process::class));
+        $process
+            ->expects(self::once())
+            ->method('run')
+            ->willReturn(0);
+        $process
+            ->expects(self::never())
+            ->method('isSuccessful');
+        $process
+            ->expects(self::never())
+            ->method('getOutput');
+        $process
+            ->expects(self::never())
+            ->method('getErrorOutput');
+
+        $playbook = new AnsiblePlaybook($builder);
+
+        self::assertEquals(0, $playbook->execute(fn () => null));
     }
 }
