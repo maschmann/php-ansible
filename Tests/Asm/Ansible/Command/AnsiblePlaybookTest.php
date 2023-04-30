@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Asm\Ansible\Command;
 
 use Asm\Ansible\Process\ProcessBuilder;
+use Asm\Ansible\Process\ProcessBuilderInterface;
 use Asm\Ansible\Testing\AnsibleTestCase;
 use Asm\Ansible\Utils\Env;
 use DateTime;
@@ -1022,5 +1023,13 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             $this->assertArrayHasKey('ANSIBLE_SSH_PIPELINING', $env);
             $this->assertEquals($expect, $env['ANSIBLE_SSH_PIPELINING']);
         }
+    }
+
+    public function testItWrapsTheHostsInQuotes(): void
+    {
+        $ansible = new AnsiblePlaybook($this->createMock(ProcessBuilderInterface::class));
+        $ansible->inventory(['host1', 'host 2']);
+
+        self::assertContains('--inventory="host1", "host 2"', $ansible->getCommandlineArguments());
     }
 }
