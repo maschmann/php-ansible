@@ -276,7 +276,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             $hostList .= ',';
         }
 
-        $this->addOption('--inventory', sprintf('"%s"', $hostList));
+        $this->addOption('--inventory', $hostList);
         $this->hasInventory = true;
 
         return $this;
