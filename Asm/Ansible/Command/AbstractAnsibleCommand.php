@@ -33,6 +33,7 @@ abstract class AbstractAnsibleCommand
     private array $parameters;
 
     private array $baseOptions;
+    private ?Process $process = null;
 
     /**
      * @param ProcessBuilderInterface $processBuilder
@@ -164,17 +165,15 @@ abstract class AbstractAnsibleCommand
      */
     protected function runProcess(?callable $callback): int|string
     {
-        $process = $this->processBuilder
-            ->setArguments(
-                $this->prepareArguments()
-            )
-            ->getProcess();
+        if ($this->process instanceof Process){
+            $this->process = null;
+        }
 
         // Logging the command
-        $this->logger->debug('Executing: ' . $this->getProcessCommandline($process));
+        $this->logger->debug('Executing: ' . $this->getProcessCommandline($this->getProcess()));
 
         // exit code
-        $result = $process->run($callback);
+        $result = $this->getProcess()->run($callback);
 
         // if a callback is set, we return the exit code
         if (null !== $callback) {
@@ -182,12 +181,12 @@ abstract class AbstractAnsibleCommand
         }
 
         // if no callback is set, and the process is not successful, we return the output
-        if (false === $process->isSuccessful()) {
-            return $process->getErrorOutput();
+        if (false === $this->getProcess()->isSuccessful()) {
+            return $this->getProcess()->getErrorOutput();
         }
 
         // if no callback is set, and the process is successful, we return the output
-        return $process->getOutput();
+        return $this->getProcess()->getOutput();
     }
 
     /**
@@ -209,5 +208,19 @@ abstract class AbstractAnsibleCommand
         }
 
         return sprintf('%s %s', implode(' ', $vars), $commandline);
+    }
+
+    public function getProcess(): Process
+    {
+        if ($this->process instanceof Process) {
+            return $this->process;
+        }
+        $this->process = $this->processBuilder
+            ->setArguments(
+                $this->prepareArguments()
+            )
+            ->getProcess();
+
+        return $this->process;
     }
 }
