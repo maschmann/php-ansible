@@ -176,16 +176,18 @@ abstract class AbstractAnsibleCommand
         // exit code
         $result = $process->run($callback);
 
-        // text-mode
-        if (null === $callback) {
-            $result = $process->getOutput();
-
-            if (false === $process->isSuccessful()) {
-                $process->getErrorOutput();
-            }
+        // if a callback is set, we return the exit code
+        if (null !== $callback) {
+            return $result;
         }
 
-        return $result;
+        // if no callback is set, and the process is not successful, we return the output
+        if (false === $process->isSuccessful()) {
+            return $process->getErrorOutput();
+        }
+
+        // if no callback is set, and the process is successful, we return the output
+        return $process->getOutput();
     }
 
     /**
