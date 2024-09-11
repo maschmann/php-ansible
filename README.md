@@ -168,7 +168,7 @@ You can use the provided docker image with ```docker compose up``` which uses a 
 
 Composer install: ```docker exec -u <YOUR_UID> -w /var/php-ansible -it php-ansible composer install```
 
-You can run code or the tests within the container: ```docker exec -u <YOUR_UID> -w /var/php-ansible -it php-ansible php ./vendor/bin/phpunit -c phpunit-10.xml.dist --testdox```
+You can run code or the tests within the container: ```docker exec -u <YOUR_UID> -w /var/php-ansible -it php-ansible php ./vendor/bin/phpunit --testdox```
 
 ## Thank you for your contributions!
 

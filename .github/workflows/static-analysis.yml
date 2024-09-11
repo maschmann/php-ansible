@@ -13,13 +13,14 @@ jobs:
     strategy:
       matrix:
         php:
-          - "8.0"
           - "8.1"
           - "8.2"
+          - "8.3"
+          - "8.4"
         include:
-          - php-version: "8.0"
-            phpunit: "9.5"
-            phpunit-config: "phpunit.xml.dist"
+          - phpunit: "10"
+          - phpunit: "11"
+          - phpunit-config: "phpunit.xml.dist"
 
     steps:
       - name: Setup PHP
@@ -31,9 +32,11 @@ jobs:
           ini-values: post_max_size=256M memory
           tools: cs2pr, pecl, php-cs-fixer, vimeo/psalm, phpstan, phpcs
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .
 
-      - uses: "ramsey/composer-install@v2"
+      - uses: "ramsey/composer-install@v3"
         with:
           composer-options: "--no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist -q"
 
