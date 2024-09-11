@@ -12,15 +12,13 @@ jobs:
 
     strategy:
       matrix:
-        php:
-          - "8.1"
-          - "8.2"
-          - "8.3"
-          - "8.4"
+        php: [ "8.1", "8.2", "8.3", "8.4" ]
+        phpunit: [ "10", "11" ]
         include:
           - phpunit: "10"
+            phpunit-config: "phpunit.xml.dist"
           - phpunit: "11"
-          - phpunit-config: "phpunit.xml.dist"
+            phpunit-config: "phpunit-11.xml.dist"
 
     steps:
       - name: Setup PHP
@@ -42,8 +40,10 @@ jobs:
         uses: php-actions/phpunit@v3
         with:
           version: "${{ matrix.phpunit }}"
+          php_version: "${{matrix.php}}"
           configuration: "${{ matrix.phpunit-config }}"
           memory_limit: "256M"
+          test_suffix: .php
 
       - name: Run phpstan
         run: phpstan analyse --error-format=checkstyle -c "phpstan.neon" | cs2pr
