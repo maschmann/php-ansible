@@ -289,18 +289,21 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
             return $this;
         }
 
+        // Wrapping each host in double quotes to avoid issues with spaces in host names.
+        $hosts = array_map(fn ($host) => sprintf('"%s"', $host), $hosts);
+
         // In order to let ansible-playbook understand that the given option is a list of hosts, the list must end by
         // comma "," if it contains just an entry. For example, supposing just a single host, "localhosts":
         //
         //   Wrong: --inventory="locahost"
         // Correct: --inventory="locahost,"
-        $hostList = implode(', ', $hosts);
+        $hostList = implode(',', $hosts);
 
         if (count($hosts) === 1) {
             $hostList .= ',';
         }
 
-        $this->addOption('--inventory', sprintf('"%s"', $hostList));
+        $this->addOption('--inventory', $hostList);
         $this->hasInventory = true;
 
         return $this;
