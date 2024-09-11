@@ -23,12 +23,10 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         return $ansibleGalaxy;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsibleGalaxyInterface $command
-     */
-    public function testExecute(AnsibleGalaxyInterface $command): void
+    public function testExecute(): void
     {
+        $command = $this->testCreateInstance();
+
         // Skipped on Windows
         if (Env::isWindows()) {
             $this->assertTrue(true);

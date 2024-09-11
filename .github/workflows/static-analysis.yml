@@ -13,12 +13,12 @@ jobs:
     strategy:
       matrix:
         php: [ "8.1", "8.2", "8.3", "8.4" ]
-        phpunit: [ "10", "11" ]
+        phpunit: [ "11" ]
         include:
           - phpunit: "10"
             phpunit-config: "phpunit.xml.dist"
           - phpunit: "11"
-            phpunit-config: "phpunit-11.xml.dist"
+            phpunit-config: "phpunit.xml.dist"
 
     steps:
       - name: Setup PHP
