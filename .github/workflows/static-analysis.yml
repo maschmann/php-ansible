@@ -33,8 +33,6 @@ jobs:
           tools: cs2pr, pecl, php-cs-fixer, vimeo/psalm, phpstan, phpcs
 
       - uses: actions/checkout@v4
-        with:
-          sparse-checkout: .
 
       - uses: "ramsey/composer-install@v3"
         with:
