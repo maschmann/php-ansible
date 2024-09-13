@@ -10,13 +10,15 @@ use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
+#[CoversClass(\Asm\Ansible\Ansible::class)]
+#[CoversFunction('playbook')]
+#[CoversFunction('createProcess')]
+#[CoversFunction('checkCommand')]
+#[CoversFunction('checkDir')]
+#[CoversFunction('__construct')]
 class AnsibleTest extends AnsibleTestCase
 {
 
-    #[CoversClass(\Asm\Ansible\Ansible::class)]
-    #[CoversFunction('checkCommand')]
-    #[CoversFunction('checkDir')]
-    #[CoversFunction('__construct')]
     public function testInstance()
     {
         $ansible = new Ansible(
@@ -27,10 +29,6 @@ class AnsibleTest extends AnsibleTestCase
         $this->assertInstanceOf('\Asm\Ansible\Ansible', $ansible, 'Instantiation with given paths');
     }
 
-    #[CoversClass(\Asm\Ansible\Ansible::class)]
-    #[CoversFunction('checkCommand')]
-    #[CoversFunction('checkDir')]
-    #[CoversFunction('__construct')]
     public function testAnsibleProjectPathNotFoundException()
     {
         $this->expectException(CommandException::class);
@@ -41,10 +39,6 @@ class AnsibleTest extends AnsibleTestCase
         );
     }
 
-    #[CoversClass(\Asm\Ansible\Ansible::class)]
-    #[CoversFunction('checkCommand')]
-    #[CoversFunction('checkDir')]
-    #[CoversFunction('__construct')]
     public function testAnsibleCommandNotFoundException()
     {
         $this->expectException(CommandException::class);
@@ -55,10 +49,6 @@ class AnsibleTest extends AnsibleTestCase
         );
     }
 
-    #[CoversClass(\Asm\Ansible\Ansible::class)]
-    #[CoversFunction('checkCommand')]
-    #[CoversFunction('checkDir')]
-    #[CoversFunction('__construct')]
     public function testAnsibleNoCommandGivenException()
     {
         // TODO: Not sure why the following command should give an error.
@@ -68,10 +58,6 @@ class AnsibleTest extends AnsibleTestCase
         //        );
     }
 
-    #[CoversClass(\Asm\Ansible\Ansible::class)]
-    #[CoversFunction('checkCommand')]
-    #[CoversFunction('checkDir')]
-    #[CoversFunction('__construct')]
     public function testAnsibleCommandNotExecutableException()
     {
         $this->expectException(CommandException::class);
@@ -86,12 +72,6 @@ class AnsibleTest extends AnsibleTestCase
         );
     }
 
-    #[CoversClass(\Asm\Ansible\Ansible::class)]
-    #[CoversFunction('playbook')]
-    #[CoversFunction('createProcess')]
-    #[CoversFunction('checkCommand')]
-    #[CoversFunction('checkDir')]
-    #[CoversFunction('__construct')]
     public function testPlaybookCommandInstance()
     {
         $ansible = new Ansible(
@@ -105,12 +85,6 @@ class AnsibleTest extends AnsibleTestCase
         $this->assertInstanceOf('\Asm\Ansible\Command\AnsiblePlaybook', $playbook);
     }
 
-    #[CoversClass(\Asm\Ansible\Ansible::class)]
-    #[CoversFunction('playbook')]
-    #[CoversFunction('createProcess')]
-    #[CoversFunction('checkCommand')]
-    #[CoversFunction('checkDir')]
-    #[CoversFunction('__construct')]
     public function testGalaxyCommandInstance()
     {
         $ansible = new Ansible(
