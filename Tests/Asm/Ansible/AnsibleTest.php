@@ -7,6 +7,7 @@ namespace Asm\Ansible;
 use Asm\Ansible\Exception\CommandException;
 use Asm\Ansible\Testing\AnsibleTestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversFunction;
 
 class AnsibleTest extends AnsibleTestCase
