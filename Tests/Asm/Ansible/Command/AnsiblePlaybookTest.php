@@ -603,7 +603,13 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
     public function textExecuteWithTextOutput(): void
     {
+        $command = $this->testCreateInstance();
         $result = $command
+            ->play($this->getPlayUri())
+            ->user('maschmann')
+            ->extraVars(['project_release=' . (new DateTime())->getTimestamp()])
+            ->limit('test')
+            ->check()
             ->execute(null);
 
         $this->assertTrue(is_string($result));
