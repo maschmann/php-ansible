@@ -6,9 +6,7 @@ namespace Asm\Ansible\Utils;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group utils
- */
+#[Group('utils')]
 class StrTest extends TestCase
 {
     /**

@@ -570,17 +570,22 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $this->assertTrue(is_string($command->getCommandlineArguments(false)));
     }
 
-    /**
-     * @depends testDefaultDeployment
-     * @param AnsiblePlaybookInterface $command
-     */
-    public function testExecuteWithCallback(AnsiblePlaybookInterface $command): void
+    public function testExecuteWithCallback(): void
     {
         // Skipped on Windows
         if (Env::isWindows()) {
             $this->assertTrue(true);
             return;
         }
+
+        $command = $this->testCreateInstance();
+
+        $command
+            ->play($this->getPlayUri())
+            ->user('maschmann')
+            ->extraVars(['project_release=' . (new DateTime())->getTimestamp()])
+            ->limit('test')
+            ->check();
 
         $exitCode = $command
             ->execute(function (string $type, string $buffer) {
@@ -596,11 +601,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $this->assertTrue(is_integer($exitCode));
     }
 
-    /**
-     * @depends testDefaultDeployment
-     * @param AnsiblePlaybookInterface $command
-     */
-    public function textExecuteWithTextOutput(AnsiblePlaybookInterface $command): void
+    public function textExecuteWithTextOutput(): void
     {
         $result = $command
             ->execute(null);

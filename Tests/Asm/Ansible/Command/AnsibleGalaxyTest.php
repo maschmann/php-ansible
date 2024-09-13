@@ -25,14 +25,13 @@ class AnsibleGalaxyTest extends AnsibleTestCase
 
     public function testExecute(): void
     {
-        $command = $this->testCreateInstance();
-
         // Skipped on Windows
         if (Env::isWindows()) {
             $this->assertTrue(true);
             return;
         }
 
+        $command = $this->testCreateInstance();
         $command->execute();
 
         // if command executes without exception

@@ -21,12 +21,10 @@ class ProcessBuilderTest extends AnsibleTestCase
         return $processBuilder;
     }
 
-    /**
-     * @param ProcessBuilderInterface $processBuilder
-     * @depends testCreateInstance
-     */
-    public function testGetProcess(ProcessBuilderInterface $processBuilder): void
+    public function testGetProcess(): void
     {
+        $processBuilder = $this->testCreateInstance();
+
         $process = $processBuilder
             ->setArguments(['more_args'])
             ->setEnv('SOME', 'value')
