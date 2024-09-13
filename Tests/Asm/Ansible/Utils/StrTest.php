@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Asm\Ansible\Utils;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 #[Group('utils')]
 class StrTest extends TestCase

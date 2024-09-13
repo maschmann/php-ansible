@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Asm\Ansible;
@@ -6,6 +7,7 @@ namespace Asm\Ansible;
 use Asm\Ansible\Exception\CommandException;
 use Asm\Ansible\Testing\AnsibleTestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\CoversFunction;
 
 class AnsibleTest extends AnsibleTestCase
 {
