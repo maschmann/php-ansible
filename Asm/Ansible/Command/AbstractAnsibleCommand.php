@@ -215,7 +215,7 @@ abstract class AbstractAnsibleCommand
     }
 
     /**
-     * in case ansible explicitly is in json mode, this will be set to be able to get error outputs 
+     * in case ansible explicitly is in json mode, this will be set to be able to get error outputs
      *
      * @return void
      */
