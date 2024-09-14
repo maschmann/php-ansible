@@ -51,7 +51,14 @@ abstract class AnsibleTestCase extends TestCase
 
     protected function getProjectUri(): string
     {
-        return $this->project->url() . '/ansible-project';
+        /*
+         * @todo using a virtual file system with an URI here, breaks proc_open for PHP 8.3.x due to change in 
+         * the way it works underneath when not finding an executable. Providing an existing path here, does not
+         * break behavior of tests and has no real impact. 
+         * @see https://github.com/php/php-src/issues/13743
+         * / 
+        //return $this->project->url() . '/ansible-project';
+        return $this->getAssetsBinPath();
     }
 
     protected function getPlayUri(): string
