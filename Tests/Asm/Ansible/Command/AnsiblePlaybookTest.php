@@ -30,13 +30,11 @@ class AnsiblePlaybookTest extends AnsibleTestCase
     }
 
     /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
      * @throws Exception
      */
-    public function testDefaultDeployment(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+    public function testDefaultDeployment(): AnsiblePlaybookInterface
     {
+        $command = $this->testCreateInstance();
         $today = new DateTime();
 
         $command
@@ -52,81 +50,56 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testAskPassArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+    public function testAskPassArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->askPass();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--ask-pass', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testAskSuPassArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+    public function testAskSuPassArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->askSuPass();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--ask-su-pass', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testAskBecomePassArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testAskBecomePassArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->askBecomePass();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--ask-become-pass', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testAskVaultPassArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testAskVaultPassArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->askVaultPass();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--ask-vault-pass', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testConnectionArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testConnectionArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->connection();
@@ -139,51 +112,36 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--connection=test', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testDiffArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testDiffArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->diff();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--diff', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testForceHandlersArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testForceHandlersArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->forceHandlers();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--force-handlers', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testForksArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testForksArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->forks();
@@ -196,34 +154,24 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--forks=10', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testHelpArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testHelpArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->help();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--help', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testLimitArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testLimitArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->limit('test');
@@ -242,51 +190,36 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--limit=test,more,some', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testlistHostsArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testlistHostsArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->listHosts();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--list-hosts', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testListTasksArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testListTasksArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->listTasks();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--list-tasks', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testModulePathArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testModulePathArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->modulePath();
@@ -299,34 +232,24 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--module-path=/test,/narf', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testPrivateKeyArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testPrivateKeyArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->privateKey('/path/to/private/key');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--private-key=/path/to/private/key', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testSkipTagsArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testSkipTagsArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->skipTags('test');
@@ -345,68 +268,48 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--skip-tags=test,another', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testStartAtTaskArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testStartAtTaskArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->startAtTask('test');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--start-at-task=test', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testStepArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testStepArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->step();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--step', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testSuArgumentPresent(AnsiblePlaybookInterface $command)
+
+    public function testSuArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->su();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--su', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testSuUserArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testSuUserArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->suUser();
@@ -419,34 +322,24 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--su-user=maschmann', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testBecomeArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testBecomeArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->become();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--become', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testBecomeUserArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testBecomeUserArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->becomeUser();
@@ -459,34 +352,24 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--become-user=maschmann', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testSyntaxCheckArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testSyntaxCheckArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->syntaxCheck();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--syntax-check', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testTagsArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testTagsArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->tags('oneTag');
@@ -505,17 +388,12 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--tags=oneTag,anotherTag', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testTimeoutArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testTimeoutArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->timeout();
@@ -528,51 +406,36 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--timeout=115', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testUserArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testUserArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->user('maschmann');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--user=maschmann', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testVaultPasswordFileArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testVaultPasswordFileArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->vaultPasswordFile('/path/to/vault');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--vault-password-file=/path/to/vault', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testVerboseArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testVerboseArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->verbose();
@@ -585,191 +448,144 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('-vvv', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testVersionArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testVersionArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->version();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--version', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testFlushCacheParameterPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testFlushCacheParameterPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->flushCache();
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--flush-cache', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testNewVaultIdArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testNewVaultIdArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->newVaultId('someId');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--new-vault-id=someId', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testNewVaultPasswordFileArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testNewVaultPasswordFileArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->newVaultPasswordFile('/path/to/vault');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--new-vault-password-file=/path/to/vault', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testScpExtraArgsArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testScpExtraArgsArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->scpExtraArgs('SomeExtraArgs');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--scp-extra-args=SomeExtraArgs', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testSftpExtraArgsArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testSftpExtraArgsArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->sftpExtraArgs('SftExtraArgs');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--sftp-extra-args=SftExtraArgs', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testSshCommonArgsArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testSshCommonArgsArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->sshCommonArgs('SshCommonArgs');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--ssh-common-args=SshCommonArgs', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testSshExtraArgsArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testSshExtraArgsArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->sshExtraArgs('SshExtraArgs');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--ssh-extra-args=SshExtraArgs', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testVaultIdArgumentPresent(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testVaultIdArgumentPresent()
     {
+        $command = $this->testCreateInstance();
         $command
             ->play($this->getPlayUri())
             ->vaultId('VaultId');
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--vault-id=VaultId', $arguments);
-
-        return $command;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsiblePlaybookInterface $command
-     * @return AnsiblePlaybookInterface
-     */
-    public function testGetCommandlineArguments(AnsiblePlaybookInterface $command): AnsiblePlaybookInterface
+
+    public function testGetCommandlineArguments()
     {
+        $command = $this->testCreateInstance();
         $arguments = $command
             ->play($this->getPlayUri())
             ->getCommandlineArguments();
 
         $this->assertTrue(is_array($arguments));
         $this->assertTrue(is_string($command->getCommandlineArguments(false)));
-
-        return $command;
     }
 
-    /**
-     * @depends testDefaultDeployment
-     * @param AnsiblePlaybookInterface $command
-     */
-    public function testExecuteWithCallback(AnsiblePlaybookInterface $command): void
+    public function testExecuteWithCallback(): void
     {
         // Skipped on Windows
         if (Env::isWindows()) {
             $this->assertTrue(true);
             return;
         }
+
+        $command = $this->testCreateInstance();
+
+        $command
+            ->play($this->getPlayUri())
+            ->user('maschmann')
+            ->extraVars(['project_release=' . (new DateTime())->getTimestamp()])
+            ->limit('test')
+            ->check();
 
         $exitCode = $command
             ->execute(function (string $type, string $buffer) {
@@ -785,13 +601,15 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $this->assertTrue(is_integer($exitCode));
     }
 
-    /**
-     * @depends testDefaultDeployment
-     * @param AnsiblePlaybookInterface $command
-     */
-    public function textExecuteWithTextOutput(AnsiblePlaybookInterface $command): void
+    public function textExecuteWithTextOutput(): void
     {
+        $command = $this->testCreateInstance();
         $result = $command
+            ->play($this->getPlayUri())
+            ->user('maschmann')
+            ->extraVars(['project_release=' . (new DateTime())->getTimestamp()])
+            ->limit('test')
+            ->check()
             ->execute(null);
 
         $this->assertTrue(is_string($result));
@@ -1101,7 +919,7 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         self::assertEquals('success', $playbook->execute());
     }
 
-    public function testReturnsExitCodeIfCallbackwasPassed(): void
+    public function testReturnsExitCodeIfCallbackWasPassed(): void
     {
         $builder = $this->createMock(ProcessBuilderInterface::class);
         $builder

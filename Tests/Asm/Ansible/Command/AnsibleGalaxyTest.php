@@ -23,11 +23,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         return $ansibleGalaxy;
     }
 
-    /**
-     * @depends testCreateInstance
-     * @param AnsibleGalaxyInterface $command
-     */
-    public function testExecute(AnsibleGalaxyInterface $command): void
+    public function testExecute(): void
     {
         // Skipped on Windows
         if (Env::isWindows()) {
@@ -35,6 +31,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
             return;
         }
 
+        $command = $this->testCreateInstance();
         $command->execute();
 
         // if command executes without exception

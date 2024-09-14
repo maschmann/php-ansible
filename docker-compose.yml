@@ -1,0 +1,6 @@
+services:
+  php-ansible:
+    build: ./.docker
+    container_name: php-ansible
+    volumes:
+      - ./:/var/php-ansible

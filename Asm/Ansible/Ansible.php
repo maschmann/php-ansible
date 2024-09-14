@@ -12,7 +12,6 @@ use Asm\Ansible\Exception\CommandException;
 use Asm\Ansible\Process\ProcessBuilder;
 use Asm\Ansible\Process\ProcessBuilderInterface;
 use Asm\Ansible\Utils\Env;
-use JetBrains\PhpStorm\Pure;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
