@@ -408,6 +408,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function json(): AnsiblePlaybookInterface
     {
         $this->processBuilder->setEnv('ANSIBLE_STDOUT_CALLBACK', 'json');
+        $this->useStdoutForError();
 
         return $this;
     }
