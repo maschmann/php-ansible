@@ -732,11 +732,11 @@ class AnsiblePlaybookTest extends AnsibleTestCase
             ],
             [
                 'input' => ['localhost'],
-                'expect' => '--inventory="localhost,"',
+                'expect' => '--inventory="localhost",',
             ],
             [
                 'input' => ['localhost', 'host1'],
-                'expect' => '--inventory="localhost, host1"',
+                'expect' => '--inventory="localhost","host1"',
             ],
 
         ];
