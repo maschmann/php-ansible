@@ -30,7 +30,7 @@ jobs:
           php-version: "${{ matrix.php }}"
           extensions: redis, apcu, ctype, dom, iconv, gd, mbstring, fileinfo, intl, json, mysql, bcmath, zip
           coverage: none # disable xdebug, pcov
-          ini-values: post_max_size=256M memory
+          #ini-values: post_max_size=256M memory
           tools: cs2pr, pecl, php-cs-fixer, vimeo/psalm, phpstan, phpcs
 
       - uses: actions/checkout@v4
