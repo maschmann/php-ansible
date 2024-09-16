@@ -181,10 +181,18 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
      *
      * ## String
      * You can also pass the raw extra vars string directly.
-
+     *
      * Example:
      * ```php
      * $ansible = new Ansible()->playbook()->extraVars('path=/some/path');
+     * ```
+     *
+     * ## JSON String
+     * You can also use a JSON string to pass the key/value pairs of extra vars.
+     *
+     * Example:
+     * ```php
+     * $ansible = new Ansible()->playbook()->extraVars('{ "key1": "value1" }');
      * ```
      *
      * @param string|array $extraVars
