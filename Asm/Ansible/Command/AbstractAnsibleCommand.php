@@ -34,6 +34,8 @@ abstract class AbstractAnsibleCommand
 
     private array $baseOptions;
 
+    private bool $useStdoutForError;
+
     /**
      * @param ProcessBuilderInterface $processBuilder
      * @param LoggerInterface|null         $logger
@@ -44,6 +46,7 @@ abstract class AbstractAnsibleCommand
         $this->options = [];
         $this->parameters = [];
         $this->baseOptions = [];
+        $this->useStdoutForError = false;
         $this->setLogger($logger ?? new NullLogger());
     }
 
@@ -183,7 +186,7 @@ abstract class AbstractAnsibleCommand
 
         // if no callback is set, and the process is not successful, we return the output
         if (false === $process->isSuccessful()) {
-            return $process->getErrorOutput();
+            return $this->useStdoutForError ? $process->getOutput() : $process->getErrorOutput();
         }
 
         // if no callback is set, and the process is successful, we return the output
@@ -209,5 +212,15 @@ abstract class AbstractAnsibleCommand
         }
 
         return sprintf('%s %s', implode(' ', $vars), $commandline);
+    }
+
+    /**
+     * in case ansible explicitly is in json mode, this will be set to be able to get error outputs
+     *
+     * @return void
+     */
+    protected function useStdoutForError(): void
+    {
+        $this->useStdoutForError = true;
     }
 }

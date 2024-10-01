@@ -888,6 +888,38 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         self::assertEquals('error output', $playbook->execute());
     }
 
+    public function testReturnsErrorOutputIfProcessWasNotSuccessfulInJsonMode(): void
+    {
+        $builder = $this->createMock(ProcessBuilderInterface::class);
+        $builder
+            ->expects(self::once())
+            ->method('setArguments')
+            ->willReturnSelf();
+        $builder
+            ->expects(self::once())
+            ->method('getProcess')
+            ->willReturn($process = $this->createMock(Process::class));
+        $process
+            ->expects(self::once())
+            ->method('run');
+        $process
+            ->expects(self::once())
+            ->method('isSuccessful')
+            ->willReturn(false);
+        $process
+            ->expects(self::once())
+            ->method('getOutput')
+            ->willReturn('{ "error": "error output" }');
+        $process
+            ->expects(self::never())
+            ->method('getErrorOutput');
+
+        $playbook = new AnsiblePlaybook($builder);
+        $playbook->json();
+
+        self::assertEquals('{ "error": "error output" }', $playbook->execute());
+    }
+
     public function testReturnsNormalOutputIfProcessWasSuccessful(): void
     {
         $builder = $this->createMock(ProcessBuilderInterface::class);
