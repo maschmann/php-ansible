@@ -1,5 +1,7 @@
 FROM php:8.3-cli
 
+WORKDIR /app
+
 ENV ANSIBLE_VERSION 2.9.17
 
 # composer

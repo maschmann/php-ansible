@@ -164,11 +164,10 @@ $ansible
 
 ## Development
 
-You can use the provided docker image with ```docker compose up``` which uses a default php-cli docker image and ansible 2.x. See the ```.docker/Dockerfile``` for more info.
-
-Composer install: ```docker exec -u <YOUR_UID> -w /var/php-ansible -it php-ansible composer install```
-
-You can run code or the tests within the container: ```docker exec -u <YOUR_UID> -w /var/php-ansible -it php-ansible php ./vendor/bin/phpunit --testdox```
+You can use the provided docker image with ```make build``` which uses a default php-cli docker image and ansible 2.x. See the ```Dockerfile``` for more info.  
+Start the container with ```make up```.  
+Composer install: ```make vendor```  
+You can run code or the tests within the container: ```make test c="--testdox"```
 
 ## Thank you for your contributions!
 
