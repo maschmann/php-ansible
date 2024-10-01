@@ -2,7 +2,7 @@
 <psalm
     errorLevel="2"
     resolveFromConfigFile="1"
-    phpVersion="8.0"
+    phpVersion="8.3"
 >
     <projectFiles>
         <directory name="Asm" />
