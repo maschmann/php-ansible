@@ -12,13 +12,15 @@ jobs:
 
     strategy:
       matrix:
-        php:
-          - "8.0"
-          - "8.1"
-          - "8.2"
         include:
-          - php-version: "8.0"
-            phpunit: "9.5"
+          - php: "8.1"
+            phpunit: "10"
+            phpunit-config: "phpunit-10.xml.dist"
+          - php: "8.2"
+            phpunit: "11"
+            phpunit-config: "phpunit.xml.dist"
+          - php: "8.3"
+            phpunit: "11"
             phpunit-config: "phpunit.xml.dist"
 
     steps:
@@ -28,12 +30,12 @@ jobs:
           php-version: "${{ matrix.php }}"
           extensions: redis, apcu, ctype, dom, iconv, gd, mbstring, fileinfo, intl, json, mysql, bcmath, zip
           coverage: none # disable xdebug, pcov
-          ini-values: post_max_size=256M memory
+          #ini-values: post_max_size=256M memory
           tools: cs2pr, pecl, php-cs-fixer, vimeo/psalm, phpstan, phpcs
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: "ramsey/composer-install@v2"
+      - uses: "ramsey/composer-install@v3"
         with:
           composer-options: "--no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist -q"
 
@@ -41,8 +43,10 @@ jobs:
         uses: php-actions/phpunit@v3
         with:
           version: "${{ matrix.phpunit }}"
+          php_version: "${{matrix.php}}"
           configuration: "${{ matrix.phpunit-config }}"
           memory_limit: "256M"
+          test_suffix: .php
 
       - name: Run phpstan
         run: phpstan analyse --error-format=checkstyle -c "phpstan.neon" | cs2pr

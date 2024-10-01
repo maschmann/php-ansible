@@ -408,6 +408,7 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function json(): AnsiblePlaybookInterface
     {
         $this->processBuilder->setEnv('ANSIBLE_STDOUT_CALLBACK', 'json');
+        $this->useStdoutForError();
 
         return $this;
     }
@@ -728,12 +729,12 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-    * Ansible SSH pipelining option
-    * https://docs.ansible.com/ansible/latest/reference_appendices/config.html#ansible-pipelining
-    *
-    * @param bool $enable
-    * @return AnsiblePlaybookInterface
-    **/
+     * Ansible SSH pipelining option
+     * https://docs.ansible.com/ansible/latest/reference_appendices/config.html#ansible-pipelining
+     *
+     * @param bool $enable
+     * @return AnsiblePlaybookInterface
+     **/
     public function sshPipelining(bool $enable = false): AnsiblePlaybookInterface
     {
         $enable ?

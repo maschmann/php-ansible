@@ -162,7 +162,12 @@ $ansible
     …
 ```
 
+## Development
 
+You can use the provided docker image with ```make build``` which uses a default php-cli docker image and ansible 2.x. See the ```Dockerfile``` for more info.  
+Start the container with ```make up```.  
+Composer install: ```make vendor```  
+You can run code or the tests within the container: ```make test c="--testdox"```
 
 ## Thank you for your contributions!
 
@@ -178,7 +183,6 @@ The Next steps for implementation are:
 - improve type handling and structure, due to overall complexity of the playbook at the moment
 - scalar typehints all over the place
 - provide docker support for development
-- move to php8.0 exclusively for the next major release
 - wrapping the library into a bundle -> maybe
 - provide commandline-capabilities -> maybe
 

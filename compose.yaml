@@ -1,0 +1,6 @@
+services:
+  php-ansible:
+    build: .
+    container_name: php-ansible
+    volumes:
+      - ./:/app
