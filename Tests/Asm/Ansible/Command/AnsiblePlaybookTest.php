@@ -61,18 +61,6 @@ class AnsiblePlaybookTest extends AnsibleTestCase
         $this->assertArrayHasKey('--ask-pass', $arguments);
     }
 
-    public function testAskSuPassArgumentPresent()
-    {
-        $command = $this->testCreateInstance();
-        $command
-            ->play($this->getPlayUri())
-            ->askSuPass();
-
-        $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--ask-su-pass', $arguments);
-    }
-
-
     public function testAskBecomePassArgumentPresent()
     {
         $command = $this->testCreateInstance();
@@ -217,6 +205,18 @@ class AnsiblePlaybookTest extends AnsibleTestCase
     }
 
 
+    public function testListTagsArgumentPresent()
+    {
+        $command = $this->testCreateInstance();
+        $command
+            ->play($this->getPlayUri())
+            ->listTags();
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--list-tags', $arguments);
+    }
+
+
     public function testModulePathArgumentPresent()
     {
         $command = $this->testCreateInstance();
@@ -295,36 +295,6 @@ class AnsiblePlaybookTest extends AnsibleTestCase
     }
 
 
-    public function testSuArgumentPresent()
-    {
-        $command = $this->testCreateInstance();
-        $command
-            ->play($this->getPlayUri())
-            ->su();
-
-        $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--su', $arguments);
-    }
-
-
-    public function testSuUserArgumentPresent()
-    {
-        $command = $this->testCreateInstance();
-        $command
-            ->play($this->getPlayUri())
-            ->suUser();
-
-        $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--su-user=root', $arguments);
-
-        $command
-            ->suUser('maschmann');
-
-        $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--su-user=maschmann', $arguments);
-    }
-
-
     public function testBecomeArgumentPresent()
     {
         $command = $this->testCreateInstance();
@@ -352,6 +322,48 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--become-user=maschmann', $arguments);
+    }
+
+
+    public function testBecomeMethodArgumentPresent()
+    {
+        $command = $this->testCreateInstance();
+        $command
+            ->play($this->getPlayUri())
+            ->becomeMethod();
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--become-method=sudo', $arguments);
+
+        $command
+            ->becomeMethod('su');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--become-method=su', $arguments);
+    }
+
+
+    public function testBecomePasswordFileArgumentPresent()
+    {
+        $command = $this->testCreateInstance();
+        $command
+            ->play($this->getPlayUri())
+            ->becomePasswordFile('/path/to/become_pass');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--become-password-file=/path/to/become_pass', $arguments);
+    }
+
+
+    public function testConnectionPasswordFileArgumentPresent()
+    {
+        $command = $this->testCreateInstance();
+        $command
+            ->play($this->getPlayUri())
+            ->connectionPasswordFile('/path/to/conn_pass');
+
+        $arguments = array_flip($command->getCommandlineArguments());
+        $this->assertArrayHasKey('--connection-password-file=/path/to/conn_pass', $arguments);
     }
 
 
@@ -472,30 +484,6 @@ class AnsiblePlaybookTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
         $this->assertArrayHasKey('--flush-cache', $arguments);
-    }
-
-
-    public function testNewVaultIdArgumentPresent()
-    {
-        $command = $this->testCreateInstance();
-        $command
-            ->play($this->getPlayUri())
-            ->newVaultId('someId');
-
-        $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--new-vault-id=someId', $arguments);
-    }
-
-
-    public function testNewVaultPasswordFileArgumentPresent()
-    {
-        $command = $this->testCreateInstance();
-        $command
-            ->play($this->getPlayUri())
-            ->newVaultPasswordFile('/path/to/vault');
-
-        $arguments = array_flip($command->getCommandlineArguments());
-        $this->assertArrayHasKey('--new-vault-password-file=/path/to/vault', $arguments);
     }
 
 

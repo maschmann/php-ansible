@@ -1,6 +1,27 @@
 services:
-  php-ansible:
-    build: .
-    container_name: php-ansible
+  php-ansible-8.4:
+    build:
+      context: .
+      args:
+        PHP_VERSION: "8.4"
+    container_name: php-ansible-8.4
+    volumes:
+      - ./:/app
+
+  php-ansible-8.3:
+    build:
+      context: .
+      args:
+        PHP_VERSION: "8.3"
+    container_name: php-ansible-8.3
+    volumes:
+      - ./:/app
+
+  php-ansible-8.2:
+    build:
+      context: .
+      args:
+        PHP_VERSION: "8.2"
+    container_name: php-ansible-8.2
     volumes:
       - ./:/app

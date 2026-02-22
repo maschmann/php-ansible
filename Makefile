@@ -1,8 +1,9 @@
 # Executables (local)
 DOCKER_COMP = docker compose
+PHP_VERSION ?= 8.4
 
 # Docker containers
-PHP_CONT = $(DOCKER_COMP) exec php-ansible
+PHP_CONT = $(DOCKER_COMP) exec php-ansible-$(PHP_VERSION)
 
 # Executables
 PHP      = $(PHP_CONT) php
@@ -30,10 +31,10 @@ down: ## Stop the docker hub
 logs: ## Show live logs
 	@$(DOCKER_COMP) logs --tail=0 --follow
 
-sh: ## Connect to the php-fpm container
+sh: ## Connect to the php container (use PHP_VERSION=8.2|8.3|8.4 to specify)
 	@$(PHP_CONT) sh
 
-bash: ## Connect to the php-fpm container via bash so up and down arrows go to previous commands
+bash: ## Connect to the php container via bash (use PHP_VERSION=8.2|8.3|8.4 to specify)
 	@$(PHP_CONT) bash
 
 test: ## Start tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure"
@@ -42,15 +43,15 @@ test: ## Start tests with phpunit, pass the parameter "c=" to add options to php
 
 analyze: ## Start analysis with phpstan, pass the parameter "c=" to add options to phpstan. Default config ist always used, example: make analyze c="--group e2e"
 	@$(eval c ?=)
-	@$(PHP_CONT) vendor/bin/phpstan --configuration=phpstan.neon $(c)
+	@$(PHP_CONT) vendor/bin/phpstan --configuration=phpstan.neon --memory-limit=256M $(c)
 
 codestyle: ## Start codestyle analysis with phpcs, pass the parameter "c=" to add options to phpcs. Default config ist always used. Example: make codestyle c="--parallel=2"
 	@$(eval c ?=)
-	@$(PHP_CONT) vendor/bin/phpcs --standard=phpcs.xml.dist $(c)
+	@$(PHP_CONT) vendor/bin/phpcs --standard=phpcs.xml $(c)
 
 codestyle-fix: ## Start codestyle analysis with phpcbf, pass the parameter "c=" to add options to phpcbf. Default config ist always used. Example: make codestyle c="--parallel=2"
 	@$(eval c ?=)
-	@$(PHP_CONT) vendor/bin/phpcbf --standard=phpcs.xml.dist $(c)
+	@$(PHP_CONT) vendor/bin/phpcbf --standard=phpcs.xml $(c)
 
 psalm: ## Start code analysis with psalm, pass the parameter "c=" to add options to psalm. Default config ist always used. Example: make codestyle c="--level=2"
 	@$(eval c ?=)

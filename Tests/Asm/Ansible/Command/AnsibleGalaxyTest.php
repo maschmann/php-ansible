@@ -51,7 +51,9 @@ class AnsibleGalaxyTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
 
-        $this->assertArrayHasKey('init test_role', $arguments);
+        $this->assertArrayHasKey('role', $arguments);
+        $this->assertArrayHasKey('init', $arguments);
+        $this->assertArrayHasKey('test_role', $arguments);
         $this->assertArrayHasKey('--init-path=/tmp/php-ansible', $arguments);
         $this->assertArrayHasKey('--force', $arguments);
         $this->assertArrayHasKey('--offline', $arguments);
@@ -64,7 +66,9 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $command->info('test_role');
         $arguments = array_flip($command->getCommandlineArguments());
 
-        $this->assertArrayHasKey('info test_role', $arguments);
+        $this->assertArrayHasKey('role', $arguments);
+        $this->assertArrayHasKey('info', $arguments);
+        $this->assertArrayHasKey('test_role', $arguments);
     }
 
     public function testInfoWithVersion(): void
@@ -73,7 +77,9 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $command->info('test_role', '1.0');
         $arguments = array_flip($command->getCommandlineArguments());
 
-        $this->assertArrayHasKey('info test_role,1.0', $arguments);
+        $this->assertArrayHasKey('role', $arguments);
+        $this->assertArrayHasKey('info', $arguments);
+        $this->assertArrayHasKey('test_role,1.0', $arguments);
     }
 
     public function testInstall(): void
@@ -82,7 +88,9 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $command->install('test_role');
         $arguments = array_flip($command->getCommandlineArguments());
 
-        $this->assertArrayHasKey('install test_role', $arguments);
+        $this->assertArrayHasKey('role', $arguments);
+        $this->assertArrayHasKey('install', $arguments);
+        $this->assertArrayHasKey('test_role', $arguments);
     }
 
     public function testInstallWithRoles(): void
@@ -97,7 +105,11 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         );
         $arguments = array_flip($command->getCommandlineArguments());
 
-        $this->assertArrayHasKey('install test_role another_role yet_another_role', $arguments);
+        $this->assertArrayHasKey('role', $arguments);
+        $this->assertArrayHasKey('install', $arguments);
+        $this->assertArrayHasKey('test_role', $arguments);
+        $this->assertArrayHasKey('another_role', $arguments);
+        $this->assertArrayHasKey('yet_another_role', $arguments);
     }
 
     public function testInstallWithOptions(): void
@@ -116,6 +128,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
 
         $arguments = array_flip($command->getCommandlineArguments());
 
+        $this->assertArrayHasKey('role', $arguments);
         $this->assertArrayHasKey('install', $arguments);
         $this->assertArrayHasKey('--role-file=test_role', $arguments);
         $this->assertArrayHasKey('--roles-path=/tmp/roles', $arguments);
@@ -130,7 +143,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $command = $this->testCreateInstance();
         $command->modulelist();
 
-        $this->assertEquals('list', $command->getCommandlineArguments(false));
+        $this->assertEquals('role list', $command->getCommandlineArguments(false));
     }
 
     public function testListWithRole(): void
@@ -138,7 +151,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $command = $this->testCreateInstance();
         $command->modulelist('test_role');
 
-        $this->assertEquals('list test_role', $command->getCommandlineArguments(false));
+        $this->assertEquals('role list test_role', $command->getCommandlineArguments(false));
     }
 
     public function testListWithHelp(): void
@@ -148,7 +161,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
             ->modulelist()
             ->help();
 
-        $this->assertEquals('list --help', $command->getCommandlineArguments(false));
+        $this->assertEquals('role list --help', $command->getCommandlineArguments(false));
     }
 
     public function testRemove(): void
@@ -156,7 +169,7 @@ class AnsibleGalaxyTest extends AnsibleTestCase
         $command = $this->testCreateInstance();
         $command->remove('test_role');
 
-        $this->assertEquals('remove test_role', $command->getCommandlineArguments(false));
+        $this->assertEquals('role remove test_role', $command->getCommandlineArguments(false));
     }
 
     public function testRemoveRoles(): void
@@ -169,6 +182,6 @@ class AnsibleGalaxyTest extends AnsibleTestCase
             ]
         );
 
-        $this->assertEquals('remove test_role another_role', $command->getCommandlineArguments(false));
+        $this->assertEquals('role remove test_role another_role', $command->getCommandlineArguments(false));
     }
 }

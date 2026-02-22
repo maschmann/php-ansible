@@ -65,6 +65,17 @@ class ProcessBuilder implements ProcessBuilderInterface
     }
 
     /**
+     * @param string $path
+     * @return ProcessBuilderInterface
+     */
+    public function setWorkingDirectory(string $path): ProcessBuilderInterface
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
      * @param int $timeout
      * @return ProcessBuilderInterface
      */

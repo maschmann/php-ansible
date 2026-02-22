@@ -40,7 +40,7 @@ abstract class AbstractAnsibleCommand
      * @param ProcessBuilderInterface $processBuilder
      * @param LoggerInterface|null         $logger
      */
-    public function __construct(ProcessBuilderInterface $processBuilder, LoggerInterface $logger = null)
+    public function __construct(ProcessBuilderInterface $processBuilder, ?LoggerInterface $logger = null)
     {
         $this->processBuilder = $processBuilder;
         $this->options = [];
@@ -59,7 +59,7 @@ abstract class AbstractAnsibleCommand
     protected function prepareArguments(bool $asArray = true): string|array
     {
         $arguments = array_merge(
-            [$this->getBaseOptions()],
+            $this->getBaseOptionsAsArray(),
             $this->getOptions(),
             $this->getParameters()
         );
@@ -140,6 +140,16 @@ abstract class AbstractAnsibleCommand
     protected function getBaseOptions(): string
     {
         return implode(' ', $this->baseOptions);
+    }
+
+    /**
+     * Get base options as array.
+     *
+     * @return array
+     */
+    protected function getBaseOptionsAsArray(): array
+    {
+        return $this->baseOptions;
     }
 
     /**
