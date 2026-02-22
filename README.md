@@ -188,10 +188,11 @@ $ansible
 
 ## Development
 
-You can use the provided docker image with ```make build``` which uses a default php-cli docker image and ansible 2.x. See the ```Dockerfile``` for more info.  
-Start the container with ```make up```.  
-Composer install: ```make vendor```  
-You can run code or the tests within the container: ```make test c="--testdox"```
+You can use the provided docker setup with ```make build``` which creates PHP 8.2, 8.3, and 8.4 containers with modern ansible versions. See the ```Dockerfile``` and ```compose.yaml``` for more info.
+Start the containers with ```make up```.  
+Composer install: ```make vendor``` (defaults to PHP 8.4, use `make vendor PHP_VERSION=8.2` etc.)
+You can run code or the tests within the container: ```make test```
+To run tools on a specific PHP version, specify `PHP_VERSION`: ```make test PHP_VERSION=8.3```
 
 ## Thank you for your contributions!
 

@@ -1,8 +1,9 @@
 # Executables (local)
 DOCKER_COMP = docker compose
+PHP_VERSION ?= 8.4
 
 # Docker containers
-PHP_CONT = $(DOCKER_COMP) exec php-ansible
+PHP_CONT = $(DOCKER_COMP) exec php-ansible-$(PHP_VERSION)
 
 # Executables
 PHP      = $(PHP_CONT) php
@@ -30,10 +31,10 @@ down: ## Stop the docker hub
 logs: ## Show live logs
 	@$(DOCKER_COMP) logs --tail=0 --follow
 
-sh: ## Connect to the php-fpm container
+sh: ## Connect to the php container (use PHP_VERSION=8.2|8.3|8.4 to specify)
 	@$(PHP_CONT) sh
 
-bash: ## Connect to the php-fpm container via bash so up and down arrows go to previous commands
+bash: ## Connect to the php container via bash (use PHP_VERSION=8.2|8.3|8.4 to specify)
 	@$(PHP_CONT) bash
 
 test: ## Start tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure"

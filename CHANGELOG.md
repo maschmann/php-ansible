@@ -1,6 +1,27 @@
 # Changelog
 
-## v4.0
+## Unreleased
+ * Updated API compatibility to modern Ansible (e.g., explicitly prepending 'role' to ansible-galaxy commands).
+ * Introduced `AnsibleGalaxyCollectionInterface` for full `ansible-galaxy collection` support (init, build, publish, install).
+ * Resolved `Symfony\Process` argument passing issues to ensure reliable escaping of options.
+ * Modernized `ansible-playbook` wrapper by dropping deprecated `--su` parameters and adding `--become-method`, `--become-password-file`, `--connection-password-file`, and `--list-tags`.
+ * Refactored codebase for PHP 8.4 compatibility (e.g., explicitly nullable `LoggerInterface` parameter).
+ * Fixed GitHub Actions workflow dependency resolution for PHP 8.2 and 8.3 by broadening `phpunit/phpunit` version constraints.
+ * Upgraded Docker development environment to simultaneously support PHP 8.2, 8.3, and 8.4 via `compose.yaml` profiles/services.
+ * Created robust DTOs (e.g., `ProcessResult`) for process output and exit code management.
+ * Resolved over 30 static analysis and code style errors (`phpstan`, `phpcs`).
+ * General library, static analysis tooling (PHPUnit 13), and test suite upgrades.
+
+## v5.0.0
+ * Wrapping each host into quotes instead of having double quotes around all hosts.
+ * Fixed error output parsing (removed extra escaping).
+ * Permitted JSON format strings for the `--extra-vars` parameter.
+
+## v4.1.0
+ * Allowed all psr/log versions to be used.
+ * Feature/build and version cleanup.
+
+## v4.0.0
  * drop php7.x compat, 8.0+ only
  * removed travis, scrutinizer, replace with github actions
  * add symfony process v6.x, drop process <5.x
