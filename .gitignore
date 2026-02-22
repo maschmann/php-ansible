@@ -16,3 +16,5 @@ Tests/data/**
 !Tests/data/temp/.empty
 composer.lock
 .phpunit.cache
+GEMINI.md
+AGENTS.md

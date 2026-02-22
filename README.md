@@ -1,5 +1,5 @@
 # php-ansible library
-![Build PHP 8.0/8.1/8.2](https://github.com/maschmann/php-ansible/actions/workflows/static-analysis.yml/badge.svg)
+![Build PHP 8.2/8.3/8.4](https://github.com/maschmann/php-ansible/actions/workflows/static-analysis.yml/badge.svg)
 
 This library is a OOP-wrapper for the ansible provisioning tool.
 I intend to use this library for a symfony2 bundle and also a deployment GUI, based on php/symfony2.
@@ -111,8 +111,10 @@ $ansible
 
 ### Galaxy
 
-The syntax follows ansible's syntax with one deviation: list is a reserved keyword in php (array context) and
-therefore I had to rename it to "modulelist()".
+The `ansible-galaxy` commands support both the `role` and `collection` functionality.
+
+#### Role Commands
+The syntax follows ansible's syntax with one deviation: `list` is a reserved keyword in php (array context) and therefore I had to rename it to "modulelist()".
 
 ```php
 $ansible
@@ -124,10 +126,10 @@ $ansible
 would generate:
 
 ```bash
-$ ansible-galaxy init my_role --init-path=/tmp/my_path
+$ ansible-galaxy role init my_role --init-path=/tmp/my_path
 ```
 
-You can access all galaxy commands:
+You can access all galaxy role commands:
 
  * `init()`
  * `info()`
@@ -135,6 +137,28 @@ You can access all galaxy commands:
  * `help()`
  * `modulelist()`
  * `remove()`
+
+#### Collection Commands
+
+```php
+$ansible
+    ->galaxyCollection()
+    ->install('my_namespace.my_collection')
+    ->collectionsPath('/tmp/my_path') 
+    ->execute();
+```
+would generate:
+
+```bash
+$ ansible-galaxy collection install my_namespace.my_collection --collections-path=/tmp/my_path
+```
+
+You can access all galaxy collection commands:
+
+ * `init()`
+ * `build()`
+ * `publish()`
+ * `install()`
 
 You can combine the calls with their possible arguments, though I don't have any logic preventing e.g. ```--force``` from being applied to e.g. info().
 
@@ -181,8 +205,6 @@ thank you for reviewing, bug reporting, suggestions and PRs :-)
 The Next steps for implementation are:
 
 - improve type handling and structure, due to overall complexity of the playbook at the moment
-- scalar typehints all over the place
-- provide docker support for development
 - wrapping the library into a bundle -> maybe
 - provide commandline-capabilities -> maybe
 

@@ -28,13 +28,6 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function askPass(): AnsiblePlaybookInterface;
 
     /**
-     * Ask for su password.
-     *
-     * @return AnsiblePlaybookInterface
-     */
-    public function askSuPass(): AnsiblePlaybookInterface;
-
-    /**
      * Ask for sudo password.
      *
      * @return AnsiblePlaybookInterface
@@ -63,6 +56,30 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return AnsiblePlaybookInterface
      */
     public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface;
+
+    /**
+     * privilege escalation method to use (default=sudo)
+     *
+     * @param string $method
+     * @return AnsiblePlaybookInterface
+     */
+    public function becomeMethod(string $method = 'sudo'): AnsiblePlaybookInterface;
+
+    /**
+     * Become password file
+     *
+     * @param string $file
+     * @return AnsiblePlaybookInterface
+     */
+    public function becomePasswordFile(string $file): AnsiblePlaybookInterface;
+
+    /**
+     * Connection password file
+     *
+     * @param string $file
+     * @return AnsiblePlaybookInterface
+     */
+    public function connectionPasswordFile(string $file): AnsiblePlaybookInterface;
 
     /**
      * Don't make any changes; instead, try to predict some of the changes that may occur.
@@ -191,28 +208,19 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
     public function listTasks(): AnsiblePlaybookInterface;
 
     /**
+     * List all available tags.
+     *
+     * @return AnsiblePlaybookInterface
+     */
+    public function listTags(): AnsiblePlaybookInterface;
+
+    /**
      * Specify path(s) to module library (default=/usr/share/ansible/).
      *
      * @param array $path list of paths for modules
      * @return AnsiblePlaybookInterface
      */
     public function modulePath(array $path = ['/usr/share/ansible/']): AnsiblePlaybookInterface;
-
-    /**
-     * the new vault identity to use for rekey
-     *
-     * @param string $vaultId
-     * @return AnsiblePlaybookInterface
-     */
-    public function newVaultId(string $vaultId): AnsiblePlaybookInterface;
-
-    /**
-     * new vault password file for rekey
-     *
-     * @param string $passwordFile
-     * @return AnsiblePlaybookInterface
-     */
-    public function newVaultPasswordFile(string $passwordFile): AnsiblePlaybookInterface;
 
     /**
      * Disable cowsay
@@ -266,21 +274,6 @@ interface AnsiblePlaybookInterface extends AnsibleCommandInterface
      * @return AnsiblePlaybookInterface
      */
     public function step(): AnsiblePlaybookInterface;
-
-    /**
-     * Run operations with su.
-     *
-     * @return AnsiblePlaybookInterface
-     */
-    public function su(): AnsiblePlaybookInterface;
-
-    /**
-     * Run operations with su as this user (default=root).
-     *
-     * @param string $user
-     * @return AnsiblePlaybookInterface
-     */
-    public function suUser(string $user = 'root'): AnsiblePlaybookInterface;
 
     /**
      * specify extra arguments to pass to scp only (e.g. -l)

@@ -42,15 +42,15 @@ test: ## Start tests with phpunit, pass the parameter "c=" to add options to php
 
 analyze: ## Start analysis with phpstan, pass the parameter "c=" to add options to phpstan. Default config ist always used, example: make analyze c="--group e2e"
 	@$(eval c ?=)
-	@$(PHP_CONT) vendor/bin/phpstan --configuration=phpstan.neon $(c)
+	@$(PHP_CONT) vendor/bin/phpstan --configuration=phpstan.neon --memory-limit=256M $(c)
 
 codestyle: ## Start codestyle analysis with phpcs, pass the parameter "c=" to add options to phpcs. Default config ist always used. Example: make codestyle c="--parallel=2"
 	@$(eval c ?=)
-	@$(PHP_CONT) vendor/bin/phpcs --standard=phpcs.xml.dist $(c)
+	@$(PHP_CONT) vendor/bin/phpcs --standard=phpcs.xml $(c)
 
 codestyle-fix: ## Start codestyle analysis with phpcbf, pass the parameter "c=" to add options to phpcbf. Default config ist always used. Example: make codestyle c="--parallel=2"
 	@$(eval c ?=)
-	@$(PHP_CONT) vendor/bin/phpcbf --standard=phpcs.xml.dist $(c)
+	@$(PHP_CONT) vendor/bin/phpcbf --standard=phpcs.xml $(c)
 
 psalm: ## Start code analysis with psalm, pass the parameter "c=" to add options to psalm. Default config ist always used. Example: make codestyle c="--level=2"
 	@$(eval c ?=)

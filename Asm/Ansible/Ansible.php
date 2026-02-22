@@ -6,6 +6,8 @@ namespace Asm\Ansible;
 
 use Asm\Ansible\Command\AnsibleGalaxy;
 use Asm\Ansible\Command\AnsibleGalaxyInterface;
+use Asm\Ansible\Command\AnsibleGalaxyCollection;
+use Asm\Ansible\Command\AnsibleGalaxyCollectionInterface;
 use Asm\Ansible\Command\AnsiblePlaybook;
 use Asm\Ansible\Command\AnsiblePlaybookInterface;
 use Asm\Ansible\Exception\CommandException;
@@ -44,8 +46,11 @@ final class Ansible implements LoggerAwareInterface
      * @param string $playbookCommand path to playbook executable, default ansible-playbook
      * @param string $galaxyCommand path to galaxy executable, default ansible-galaxy
      */
-    public function __construct(string $ansibleBaseDir, string $playbookCommand = '', string $galaxyCommand = '')
-    {
+    public function __construct(
+        string $ansibleBaseDir,
+        string $playbookCommand = '',
+        string $galaxyCommand = ''
+    ) {
         $this->ansibleBaseDir = $this->checkDir($ansibleBaseDir);
         $this->playbookCommand = $this->checkCommand($playbookCommand, 'ansible-playbook');
         $this->galaxyCommand = $this->checkCommand($galaxyCommand, 'ansible-galaxy');
@@ -75,6 +80,19 @@ final class Ansible implements LoggerAwareInterface
     public function galaxy(): AnsibleGalaxyInterface
     {
         return new AnsibleGalaxy(
+            $this->createProcess($this->galaxyCommand),
+            $this->logger
+        );
+    }
+
+    /**
+     * AnsibleGalaxyCollection instance creator
+     *
+     * @return AnsibleGalaxyCollectionInterface
+     */
+    public function galaxyCollection(): AnsibleGalaxyCollectionInterface
+    {
+        return new AnsibleGalaxyCollection(
             $this->createProcess($this->galaxyCommand),
             $this->logger
         );

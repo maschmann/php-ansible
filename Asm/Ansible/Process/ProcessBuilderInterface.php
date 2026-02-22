@@ -19,6 +19,12 @@ interface ProcessBuilderInterface
     public function setArguments(array $arguments): ProcessBuilderInterface;
 
     /**
+     * @param string $path
+     * @return ProcessBuilderInterface
+     */
+    public function setWorkingDirectory(string $path): ProcessBuilderInterface;
+
+    /**
      * @param int $timeout
      * @return ProcessBuilderInterface
      */

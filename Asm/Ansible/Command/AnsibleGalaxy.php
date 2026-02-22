@@ -33,6 +33,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
     public function init(string $roleName): AnsibleGalaxyInterface
     {
         $this
+            ->addBaseOption('role')
             ->addBaseOption('init')
             ->addBaseOption($roleName);
 
@@ -51,6 +52,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
         }
 
         $this
+            ->addBaseOption('role')
             ->addBaseOption('info')
             ->addBaseOption($role);
 
@@ -70,10 +72,16 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
     {
         $roles = $this->checkParam($roles, ' ');
 
+        $this->addBaseOption('role');
         $this->addBaseOption('install');
 
         if ('' !== $roles) {
-            $this->addBaseOption($roles);
+            $rolesArray = explode(' ', $roles);
+            foreach ($rolesArray as $role) {
+                if ($role !== '') {
+                    $this->addBaseOption($role);
+                }
+            }
         }
 
         return $this;
@@ -87,6 +95,7 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
      */
     public function modulelist(string $roleName = ''): AnsibleGalaxyInterface
     {
+        $this->addBaseOption('role');
         $this->addBaseOption('list');
 
         if ('' !== $roleName) {
@@ -106,9 +115,17 @@ final class AnsibleGalaxy extends AbstractAnsibleCommand implements AnsibleGalax
     {
         $roles = $this->checkParam($roles, ' ');
 
-        $this
-            ->addBaseOption('remove')
-            ->addBaseOption($roles);
+        $this->addBaseOption('role');
+        $this->addBaseOption('remove');
+
+        if ('' !== $roles) {
+            $rolesArray = explode(' ', $roles);
+            foreach ($rolesArray as $role) {
+                if ($role !== '') {
+                    $this->addBaseOption($role);
+                }
+            }
+        }
 
         return $this;
     }

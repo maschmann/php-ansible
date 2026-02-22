@@ -57,18 +57,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Ask for su password.
-     *
-     * @return AnsiblePlaybookInterface
-     */
-    public function askSuPass(): AnsiblePlaybookInterface
-    {
-        $this->addParameter('--ask-su-pass');
-
-        return $this;
-    }
-
-    /**
      * Ask for sudo password.
      *
      * @return AnsiblePlaybookInterface
@@ -114,6 +102,45 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function becomeUser(string $user = 'root'): AnsiblePlaybookInterface
     {
         $this->addOption('--become-user', $user);
+
+        return $this;
+    }
+
+    /**
+     * privilege escalation method to use (default=sudo)
+     *
+     * @param string $method
+     * @return AnsiblePlaybookInterface
+     */
+    public function becomeMethod(string $method = 'sudo'): AnsiblePlaybookInterface
+    {
+        $this->addOption('--become-method', $method);
+
+        return $this;
+    }
+
+    /**
+     * Become password file
+     *
+     * @param string $file
+     * @return AnsiblePlaybookInterface
+     */
+    public function becomePasswordFile(string $file): AnsiblePlaybookInterface
+    {
+        $this->addOption('--become-password-file', $file);
+
+        return $this;
+    }
+
+    /**
+     * Connection password file
+     *
+     * @param string $file
+     * @return AnsiblePlaybookInterface
+     */
+    public function connectionPasswordFile(string $file): AnsiblePlaybookInterface
+    {
+        $this->addOption('--connection-password-file', $file);
 
         return $this;
     }
@@ -362,6 +389,18 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
+     * List all available tags.
+     *
+     * @return AnsiblePlaybookInterface
+     */
+    public function listTags(): AnsiblePlaybookInterface
+    {
+        $this->addParameter('--list-tags');
+
+        return $this;
+    }
+
+    /**
      * Specify path(s) to module library (default=/usr/share/ansible/).
      *
      * @param array $path list of paths for modules
@@ -466,31 +505,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     }
 
     /**
-     * Run operations with su.
-     *
-     * @return AnsiblePlaybookInterface
-     */
-    public function su(): AnsiblePlaybookInterface
-    {
-        $this->addParameter('--su');
-
-        return $this;
-    }
-
-    /**
-     * Run operations with su as this user (default=root).
-     *
-     * @param string $user
-     * @return AnsiblePlaybookInterface
-     */
-    public function suUser(string $user = 'root'): AnsiblePlaybookInterface
-    {
-        $this->addOption('--su-user', $user);
-
-        return $this;
-    }
-
-    /**
      * Perform a syntax check on the playbook, but do not execute it.
      *
      * @return AnsiblePlaybookInterface
@@ -588,32 +602,6 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     public function flushCache(): AnsiblePlaybookInterface
     {
         $this->addParameter('--flush-cache');
-
-        return $this;
-    }
-
-    /**
-     * the new vault identity to use for rekey
-     *
-     * @param string $vaultId
-     * @return AnsiblePlaybookInterface
-     */
-    public function newVaultId(string $vaultId): AnsiblePlaybookInterface
-    {
-        $this->addOption('--new-vault-id', $vaultId);
-
-        return $this;
-    }
-
-    /**
-     * new vault password file for rekey
-     *
-     * @param string $passwordFile
-     * @return AnsiblePlaybookInterface
-     */
-    public function newVaultPasswordFile(string $passwordFile): AnsiblePlaybookInterface
-    {
-        $this->addOption('--new-vault-password-file', $passwordFile);
 
         return $this;
     }
@@ -751,8 +739,12 @@ final class AnsiblePlaybook extends AbstractAnsibleCommand implements AnsiblePla
     private function checkInventory(): void
     {
         if (!$this->hasInventory) {
-            $inventory = str_replace('.yml', '', $this->getBaseOptions());
-            $this->inventoryFile($inventory);
+            $baseOptions = $this->getBaseOptionsAsArray();
+            $playbook = isset($baseOptions[0]) ? $baseOptions[0] : '';
+            $inventory = str_replace('.yml', '', $playbook);
+            if ($inventory !== '') {
+                $this->inventoryFile($inventory);
+            }
         }
     }
 }
