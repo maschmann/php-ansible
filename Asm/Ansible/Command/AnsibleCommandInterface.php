@@ -19,9 +19,10 @@ interface AnsibleCommandInterface extends LoggerAwareInterface
      * Returns either exit code or string output if no callback is given.
      *
      * @param callable|null $callback
+     * @param array $env
      * @return integer|string
      */
-    public function execute(?callable $callback = null): int|string;
+    public function execute(?callable $callback = null, array $env = []): int|string;
 
     /**
      * Get parameter string which will be used to call ansible.

@@ -173,9 +173,10 @@ abstract class AbstractAnsibleCommand
      * Has to return the process exit code in case of error
      *
      * @param callable|null $callback
+     * @param array $callback
      * @return int|string
      */
-    protected function runProcess(?callable $callback): int|string
+    protected function runProcess(?callable $callback, array $env = []): int|string
     {
         $process = $this->processBuilder
             ->setArguments(
@@ -187,7 +188,7 @@ abstract class AbstractAnsibleCommand
         $this->logger->debug('Executing: ' . $this->getProcessCommandline($process));
 
         // exit code
-        $result = $process->run($callback);
+        $result = $process->run($callback, $env);
 
         // if a callback is set, we return the exit code
         if (null !== $callback) {
